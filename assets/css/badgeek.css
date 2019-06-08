@@ -1,0 +1,33 @@
+body
+{
+    background: black;
+    color:white;
+}
+
+	
+/* Général - Fonts */
+@font-face {
+    font-family: 'BGFont';
+    src: url('../font/BRLNSR.eot');
+    src: url('../font/BRLNSR.eot?#iefix') format('embedded-opentype'),
+         url('../font/BRLNSR.TTF') format('truetype');
+}
+@font-face {
+    font-family: 'BTTFFont';
+    src: url('../font/BTTF.eot');
+    src: url('../font/BTTF.eot?#iefix') format('embedded-opentype'),
+         url('../font/BTTF.ttf') format('truetype');
+}
+
+.padding-10
+{
+    padding: 10px 10px 10px 10px;
+}
+.margin-top-10
+{
+    margin-top: 10px;
+}
+.margin-top-30
+{
+    margin-top: 30px;
+}
