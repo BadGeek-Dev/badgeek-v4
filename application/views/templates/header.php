@@ -12,6 +12,8 @@
                 <link href="<?php echo base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
                 <link href="<?php echo base_url('assets/css/fontello.css') ?>" rel="stylesheet">
                 <link href="<?php echo base_url('assets/css/badgeek.css') ?>" rel="stylesheet">
+                <script src="<?php echo base_url('assets/js/jquery-3.4.1.min.js')?>"></script>
+                <script src="<?php echo base_url('assets/js/bootstrap.js')?>"></script>
         </head>
 
         <body>
