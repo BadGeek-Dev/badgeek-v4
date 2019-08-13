@@ -18,7 +18,7 @@ class Badgeek extends CI_Controller
     public function index()
     {
         $this->load->helper('url');
-        $this->load->view('templates/header');
+        $this->load->view('templates/header', array("extras" => array("js" => array("assets/js/register.js"))));
         $this->load->view("public/index", array("user" => $this->user));
         $this->load->view('templates/footer');
     }

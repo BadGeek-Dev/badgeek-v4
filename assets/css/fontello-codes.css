@@ -1,3 +1,8 @@
 
 .icon-mic:before { content: '\e800'; } /* '' */
 .icon-headphones-1:before { content: '\e801'; } /* '' */
+.icon-help-circled:before { content: '\e802'; } /* '' */
+.icon-mail:before { content: '\e803'; } /* '' */
+.icon-key:before { content: '\e804'; } /* '' */
+.icon-edit:before { content: '\e805'; } /* '' */
+.icon-login:before { content: '\e806'; } /* '' */

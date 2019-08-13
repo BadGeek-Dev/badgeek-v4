@@ -8,6 +8,10 @@ application/logs/*
 
 !application/*/.htaccess
 
+application/vendor/*
+
+assets/node_modules/*
+
 composer.lock
 
 user_guide/*

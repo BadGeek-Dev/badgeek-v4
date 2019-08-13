@@ -1,0 +1,13 @@
+{
+  "name": "badgeek-code",
+  "version": "1.0.0",
+  "description": "Le site de Badgeek en V4",
+  "repository": "https://github.com/Nemotaku/badgeek-code.git",
+  "author": "Nemo <nemo.emmanuel@gmail.com>",
+  "license": "MIT",
+  "private": null,
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.1"
+  }
+}

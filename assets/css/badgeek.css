@@ -35,3 +35,13 @@ body
 {
     display: none;
 }
+.carousel-indicators 
+{
+    bottom:-35px;
+    padding-bottom: 10px ;
+}
+
+.modal-black div
+{
+    color: black;
+}
