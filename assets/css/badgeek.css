@@ -19,6 +19,10 @@ body
          url('../font/BTTF.ttf') format('truetype');
 }
 
+.animate-spin[class^="icon-"]:before, .animate-spin[class*=" icon-"]:before {
+    display:block;
+  }
+
 .padding-10
 {
     padding: 10px 10px 10px 10px;

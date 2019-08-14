@@ -69,11 +69,11 @@ $lang['create_user_submit_btn']                        = 'Créer l\'utilisateur'
 $lang['create_user_validation_fname_label']            = 'Prénom';
 $lang['create_user_validation_lname_label']            = 'Nom';
 $lang['create_user_validation_identity_label']         = 'Identité :';
-$lang['create_user_validation_email_label']            = 'Adresse Email';
+$lang['create_user_validation_email_label']            = 'Email';
 $lang['create_user_validation_phone_label']            = 'Téléphone';
 $lang['create_user_validation_company_label']          = 'Société';
 $lang['create_user_validation_password_label']         = 'Mot de passe';
-$lang['create_user_validation_password_confirm_label'] = 'Confirmation du mot de passe';
+$lang['create_user_validation_password_confirm_label'] = 'Confirmation mot de passe';
 
 // Edit User
 $lang['edit_user_heading']                           = 'Éditer l\'utilisateur';
@@ -132,7 +132,7 @@ $lang['forgot_password_heading']                 = 'Mot de passe oublié';
 $lang['forgot_password_subheading']              = 'Veuillez entrer votre %s pour que nous puissions vous envoyer votre nouveau mot de passe.';
 $lang['forgot_password_email_label']             = '%s :';
 $lang['forgot_password_submit_btn']              = 'Envoyer';
-$lang['forgot_password_validation_email_label']  = 'Adresse Email';
+$lang['forgot_password_validation_email_label']  = 'Email';
 $lang['forgot_password_username_identity_label'] = 'Nom d\'utilisateur';
 $lang['forgot_password_email_identity_label']    = 'Email';
 $lang['forgot_password_email_not_found']         = 'Cette adresse email n\'est pas enregistrée chez nous.';

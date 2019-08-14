@@ -1588,4 +1588,24 @@ class CI_Form_validation {
 		return $this;
 	}
 
+
+	/**
+	 * Get start tag for error wrapping
+	 *
+	 * @return  string
+	 */ 
+	public function get_error_prefix()
+	{
+		return $this->_error_prefix;
+	}
+
+	/**
+	 * Get end tag for error wrapping
+	 *
+	 * @return  string
+	 */ 
+	public function get_error_suffix()
+	{
+		return $this->_error_suffix;
+	}
 }

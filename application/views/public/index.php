@@ -1,12 +1,3 @@
-<?php if($user): ?>
-    <h1> Bienvenue <a href="<?=site_url("profile/edit")?>"><?=$user->username?></a></h1><a href="<?=site_url("auth/logout")?>">Se déconnecter</a>
-<?php else: ?>
-    <button name="" id="" class="btn btn-info" type="button" data-toggle="modal" data-target="#registerModal">
-        <i class='icon-edit'></i>
-        M'inscrire
-    </button>
-    <a href="<?=site_url("auth/login")?>"><button name="" id="" class="btn btn-dark" type="button"><i class='icon-login'></i>Se connecter</button> </a>
-<?php endif; ?>
 
 <!-- MODAL REGISTER -->
 <div class="modal fade modal-black" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModal" aria-hidden="true">
@@ -19,25 +10,32 @@
                     </button>
             </div>
             <div class="modal-body">
-                <form id="register_form">
+                <div class="alert alert-success d-none" role="alert" id="register-ok-message">
+                </div>
+                <div class="alert alert-danger d-none" role="alert" id="register-ko-message">
+                </div>
+                <div class="d-none" id="register-successful">
+                </div>
+                <form id="register-form">
                     <div class="form-group row">
-                        <label for="email" class="col-md-4 col-form-label text-right"><i class='icon-mail' data-toggle="tooltip"></i>&nbsp;Email * : </label>
+                        <label for="email" class="col-md-4 col-form-label text-right"><i class='icon-mail' data-toggle="tooltip"></i>&nbsp;Email : </label>
                         <div class="col-md-6">
                             <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelpId" placeholder="Votre email" value="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Mot de passe * :</label>
+                        <label for="password" class="col-md-4 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Mot de passe :</label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Votre mot de passe">
+                            <input type="password" class="form-control" id="register-form-password" name="password" placeholder="Votre mot de passe">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="password_confirmation" class="col-md-4 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Répeter mot de passe * :</label>
+                        <label for="password_confirmation" class="col-md-4 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Confirmation mot de passe :</label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control" name="password_confirm" id="password_confirmation" placeholder="Votre mot de passe">
+                            <input type="password" class="form-control" name="password_confirm" id="register-form-password-confirmation" placeholder="Votre mot de passe">
                         </div>
                     </div>
+                    <input type="hidden" name="sid" id="register-form-sid" value="<?=$sid?>"/>
                 </form>
             </div>
             <div class="modal-footer">

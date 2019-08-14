@@ -14,7 +14,7 @@ class Auth extends CI_Controller
 		parent::__construct();
 		$this->load->database();
 		$this->load->library(['ion_auth', 'form_validation']);
-		$this->load->helper(['url', 'language']);
+		$this->load->helper(['url', 'language', 'badgeek']);
 
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -569,93 +569,6 @@ class Auth extends CI_Controller
 	}
 
 	/**
-	 * Create a new user
-	 */
-	public function register_validation()
-	{
-		$tables = $this->config->item('tables', 'ion_auth');
-		$identity_column = $this->config->item('identity', 'ion_auth');
-		$this->data['identity_column'] = $identity_column;
-
-		// validate form input
-		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
-		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[password_confirm]');
-		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
-
-		if ($this->form_validation->run() === TRUE)
-		{
-			$email = strtolower($this->input->post('email'));
-			$identity = ($identity_column === 'email') ? $email : $this->input->post('identity');
-			$password = $this->input->post('password');
-		}
-
-		if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $email))
-		{
-			// check to see if we are creating the user
-			// redirect them back to the admin page
-			$this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect("auth", 'refresh');
-		}
-		else
-		{
-			// display the create user form
-			// set the flash data error message if there is one
-			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-
-			$this->data['first_name'] = [
-				'name' => 'first_name',
-				'id' => 'first_name',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('first_name'),
-			];
-			$this->data['last_name'] = [
-				'name' => 'last_name',
-				'id' => 'last_name',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('last_name'),
-			];
-			$this->data['identity'] = [
-				'name' => 'identity',
-				'id' => 'identity',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('identity'),
-			];
-			$this->data['email'] = [
-				'name' => 'email',
-				'id' => 'email',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('email'),
-			];
-			$this->data['company'] = [
-				'name' => 'company',
-				'id' => 'company',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('company'),
-			];
-			$this->data['phone'] = [
-				'name' => 'phone',
-				'id' => 'phone',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('phone'),
-			];
-			$this->data['password'] = [
-				'name' => 'password',
-				'id' => 'password',
-				'type' => 'password',
-				'value' => $this->form_validation->set_value('password'),
-			];
-			$this->data['password_confirm'] = [
-				'name' => 'password_confirm',
-				'id' => 'password_confirm',
-				'type' => 'password',
-				'value' => $this->form_validation->set_value('password_confirm'),
-			];
-
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'create_user', $this->data);
-		}
-	}
-	
-	/**
 	* Redirect a user checking if is admin
 	*/
 	public function redirectUser(){
@@ -990,5 +903,57 @@ class Auth extends CI_Controller
 		$this->_render_page("templates/footer");
 
 	}
+
+	
+	/**
+	 * Create a new user
+	 */
+	public function register_validation()
+	{
+		//Sécurité SID
+		$form_sid = $this->input->post('sid');
+		$session_sid = $this->session->sid;
+		if($form_sid != $session_sid)
+		{
+			echo "Error";
+			redirect('', 'refresh');
+		}
+		$new_sid = refreshSid();
+		$tables = $this->config->item('tables', 'ion_auth');
+		$identity_column = $this->config->item('identity', 'ion_auth');
+		$this->data['identity_column'] = $identity_column;
+
+		// validate form input
+		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
+		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[password_confirm]');
+		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+
+		if ($this->form_validation->run() === TRUE)
+		{
+			$email = strtolower($this->input->post('email'));
+			$identity = ($identity_column === 'email') ? $email : $this->input->post('identity');
+			$password = $this->input->post('password');
+		}
+
+		if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $email))
+		{
+			//Tout est OK
+			$result = "OK";
+			$message = $this->ion_auth->messages();
+			$mailwebsite = substr($email, strpos($email, "@") + 1);
+		}
+		else
+		{
+			//Il y a des erreurs
+			$result = "KO";
+			$message = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+			$mailwebsite = null;
+		}
+
+		$message = str_replace($this->form_validation->get_error_prefix(), "", $message);
+		$message = str_replace($this->form_validation->get_error_suffix(), "<br/>", $message);
+		echo json_encode(array("result" => $result, "message" => $message, "mailwebsite" => $mailwebsite, "sid" => $new_sid));
+	}
+	
 
 }
