@@ -19,11 +19,14 @@ class Badgeek extends CI_Controller
     public function index()
     {
         $this->load->helper('url');
+        $flashdata = $this->session->flashdata();
+        $sid = refreshSid();
         $this->load->view('templates/header', array(
             "user" => $this->user, 
-            "extras" => array("js" => array("assets/js/register.js"))));
-        $sid = refreshSid();
-        $this->load->view("public/index", array("sid" => $sid));
+            "flashdata" => $flashdata ,
+            "sid" => $sid,
+            "extras" => array("js" => array("assets/js/header.js"))));
+        $this->load->view("public/index", array());
         $this->load->view('templates/footer');
     }
 

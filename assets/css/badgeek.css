@@ -65,3 +65,18 @@ body
 {
     color: black;
 }
+#toast-message
+{
+    width: 350px !important;
+}
+#toast-message .toast-header, .modal-header
+{
+    color: white !important;
+    background-color:red !important;
+}
+
+#toast-message .toast-body
+{
+    background-color: white;
+    color: black;
+}
