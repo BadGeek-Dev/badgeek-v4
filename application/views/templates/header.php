@@ -38,7 +38,7 @@
                         <?php if($user): ?>
                         <h1> Bienvenue <a href="<?=site_url("profile/edit")?>"><?=$user->username?></a></h1><a href="<?=site_url("auth/logout")?>">Se déconnecter</a>
                         <?php else: ?>
-                        <button name="" id="" class="btn btn-info" type="button" data-toggle="modal" data-target="#registerModal">
+                        <button name="" id="" class="btn btn-info margin-right-10" type="button" data-toggle="modal" data-target="#registerModal">
                                 <i class='icon-edit'></i>
                                 M'inscrire
                         </button>
