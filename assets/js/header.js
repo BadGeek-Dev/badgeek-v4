@@ -52,7 +52,7 @@ $(document).ready(function () {
         var form_values = $("#login-form").serializeArray();
         //Blocage du formulaire
         $("#login-form input").attr("disabled", true);
-        $("#login-submit-button").data("save", $("#login-submit-button").html()).html("<i class='icon-spin6'></i> Création en cours...");
+        $("#login-submit-button").data("save", $("#login-submit-button").html()).html("<i class='icon-spin6'></i> Login en cours...");
         //Appel au controller
         $.ajax({
             type: "POST",
@@ -66,6 +66,39 @@ $(document).ready(function () {
                     showKOMessage("login-ko-message", response.message);
                     $("#login-submit-button").html($("#login-submit-button").data("save"));
                     $("#login-form input").removeAttr("disabled");
+                }
+                else
+                {
+                    //Tout est OK, on est refresh.
+                    document.location.reload(true);
+                }
+            }
+        });
+    });
+    $("#login-form-remember-password").click(function () {
+        //Serialization du formulaire
+        var form_values = $("#login-form").serializeArray();
+        //Blocage du formulaire
+        $("#login-form input").attr("disabled", true);
+        $("#login-form-remember-password").data("save", $("#login-form-remember-password").html()).html("<i class='icon-spin6'></i> Renvoi du pass en cours...");
+        //Appel au controller
+        $.ajax({
+            type: "POST",
+            url: ajaxUrl + "/auth/forgot_password",
+            data: form_values,
+            dataType: "JSON",
+            success: function (response) {
+                $("#login-form-sid").val(response.sid);
+                if (response.result == 'KO') 
+                {
+                    showKOMessage("login-ko-message", response.message);
+                    $("#login-form-remember-password").html($("#login-form-remember-password").data("save"));
+                    $("#login-form input").removeAttr("disabled");
+                }
+                else
+                {
+                    //Tout est OK, on est refresh.
+                    document.location.reload(true);
                 }
             }
         });

@@ -25,7 +25,7 @@ $lang['error_csrf'] = 'La validation de ce formulaire a échoué.';
 // Login
 $lang['login_heading']         = 'Se connecter';
 $lang['login_subheading']      = 'Veuillez vous connecter avec votre nom d\'utilisateur et votre mot de passe.';
-$lang['login_identity_label']  = 'E-mail/Nom d\'utilisateur :';
+$lang['login_identity_label']  = 'E-mail :';
 $lang['login_password_label']  = 'Mot de passe :';
 $lang['login_remember_label']  = 'Rester connecté :';
 $lang['login_submit_btn']      = 'Se connecter';
