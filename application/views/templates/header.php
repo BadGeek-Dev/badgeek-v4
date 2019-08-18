@@ -33,7 +33,7 @@
                         </h1>
                 </div>
                 <div class="col-md-8 text-right">
-                        <?php if ($user) : ?>
+                        <?php if ($this->ion_auth->logged_in()) : ?>
                         <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#loginModal">
                                 <i class='icon-user'></i>
                                 Profil
@@ -61,6 +61,7 @@
         </div>
         <!-- MODAL MESSAGE -->
         <?php
+        $flashdata = $this->session->flashdata();
         if (is_array($flashdata) && count($flashdata)) {
                 if (key_exists("message-title", $flashdata)) $flashdata_message_title = $flashdata["message-title"];
                 if (key_exists("message", $flashdata))       $flashdata_message = $flashdata["message"];
@@ -118,7 +119,7 @@
                                                                 <input type="password" class="form-control" name="password_confirm" id="register-form-password-confirmation" placeholder="Votre mot de passe">
                                                         </div>
                                                 </div>
-                                                <input type="hidden" name="sid" id="register-form-sid" value="<?= $sid ?>" />
+                                                <input type="hidden" name="sid" class='sid' id="register-form-sid" value="<?= $sid ?>" />
                                         </form>
                                 </div>
                                 <div class="modal-footer">
@@ -159,12 +160,12 @@
                                                                 <input type="checkbox" class="margin-top-15" id="login-form-remember" name="remember">
                                                         </div>
                                                 </div>
-                                                <input type="hidden" name="sid" id="login-form-sid" value="<?= $sid ?>" />
+                                                <input type="hidden" name="sid" class='sid' id="login-form-sid" value="<?= $sid ?>" />
                                         </form>
                                 </div>
                                 <div class="modal-footer">
                                         <button id="login-form-remember-password" class="btn btn-info"><i class='icon-help-circled'></i> J'ai oublié mon mot de passe</button>
-                                        <button type="button" class="btn btn-danger" id=' login-submit-button'><i class='icon-login'></i>Me connecter</button>
+                                        <button type="button" class="btn btn-danger" id='login-submit-button'><i class='icon-login'></i>Me connecter</button>
                                 </div>
                         </div>
                 </div>

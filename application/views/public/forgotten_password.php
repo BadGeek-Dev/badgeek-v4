@@ -19,26 +19,55 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="password" class="col-md-5 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Votre nouveau mot de passe :</label>
+                        <label for="password" class="col-md-5 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Nouveau mot de passe :</label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control" id="remember-password-form-password" name="password" placeholder="Votre nouveau mot de passe">
+                            <input type="password" class="form-control" id="remember-password-form-password" name="new" placeholder="Votre nouveau mot de passe">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="password" class="col-md-5 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Répeter nouveau mot de passe :</label>
+                        <label for="password" class="col-md-5 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Confirmer le nouveau mot de passe :</label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control" id="remember-password-form-password" name="password" placeholder="Votre nouveau mot de passe">
+                            <input type="password" class="form-control" id="remember-password-form-password" name="new_confirm" placeholder="Votre nouveau mot de passe">
                         </div>
                     </div>
-                    <input type="hidden" name="csrfkey" id="remember-password-form-sid" value="<?php echo $flashdata['csrfkey'] ?>" />
+                    <input type="hidden" name="user_id" id="remember-password-form-user-id" value="<?php echo $user_id ?>" />
+                    <input type="hidden" name="code" id="remember-password-form-code" value="<?php echo $code ?>" />
+                    <input type="hidden" name="<?php echo $this->session->csrfkey?>" id="remember-password-form-csrf" value="<?php echo $this->session->csrfvalue ?>" />
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id=' remember-password-submit-button'><i class='icon-edit'></i>Changer mot de passe</button>
+                <button type="button" class="btn btn-danger" id='remember-password-submit-button'><i class='icon-edit'></i>Changer mot de passe</button>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
-        $('#rememberPasswordModal').modal('show');
+        $(document).ready(function () {
+            $('#rememberPasswordModal').modal('show');
+            $("#remember-password-submit-button").click(function () { 
+                //Serialization du formulaire
+                var form_values = $("#remember-password-form").serializeArray();
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrl + "/auth/reset_password/" + $("#remember-password-form-code").val(),
+                    data: form_values,
+                    dataType: "JSON",
+                    success: function (response) 
+                    {
+                        if(response.result == 'KO')
+                        {
+                            showKOMessage("remember-password-ko-message", response.message);
+                            $("#remember-password-form-csrf").attr("name", response.csrfkey).val(response.csrfvalue);
+                        }
+                        else
+                        {
+                            //Le PHP gère le message en session, on recharge pour l'afficher
+                            document.location = "/";
+                        }
+                    }
+                });
+            });
+            
+        });
+
 </script>

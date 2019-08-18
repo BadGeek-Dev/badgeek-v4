@@ -13,7 +13,7 @@ $(document).ready(function () {
         //Vérification du password
         if($("#register-form-password").val() != $("#register-form-password-confirmation").val())
         {
-            showKOMessage("Les 2 mots de passe ne sont pas identiques.");
+            showKOMessage("register-ko-message", "Les 2 mots de passe ne sont pas identiques.");
             return;
         }
         //Serialization du formulaire
@@ -29,7 +29,7 @@ $(document).ready(function () {
             dataType: "JSON",
             success: function (response) 
             {
-                $("#register-form-sid").val(response.sid);
+                $("input[class='sid']").val(response.sid);
                 if(response.result == 'OK')
                 {
                     $("#register-form").hide();
@@ -60,7 +60,7 @@ $(document).ready(function () {
             data: form_values,
             dataType: "JSON",
             success: function (response) {
-                $("#login-form-sid").val(response.sid);
+                $("input[class='sid']").val(response.sid);
                 if (response.result == 'KO') 
                 {
                     showKOMessage("login-ko-message", response.message);
@@ -88,7 +88,7 @@ $(document).ready(function () {
             data: form_values,
             dataType: "JSON",
             success: function (response) {
-                $("#login-form-sid").val(response.sid);
+                $("input[class='sid']").val(response.sid);
                 if (response.result == 'KO') 
                 {
                     showKOMessage("login-ko-message", response.message);
