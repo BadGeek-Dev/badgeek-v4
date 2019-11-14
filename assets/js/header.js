@@ -4,6 +4,10 @@ function showKOMessage(id_message, message)
 }
 
 $(document).ready(function () {
+    //Activer les tooltip
+    $('[data-toggle="tooltip"]').tooltip()
+    
+    //Activer les toasts
     if($("#toast-message").length > 0) 
     {
         $("#toast-message").toast("show");

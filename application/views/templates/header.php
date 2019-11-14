@@ -25,7 +25,7 @@
         ?>
 </head>
 
-<body>
+<body class="container-fluid">
         <div class="page-header row padding-10">
                 <div class="col-md-4">
                         <h1 style='font-family:BGFont;'>
@@ -69,7 +69,7 @@
         ?>
         <?php if (isset($flashdata_message)) : ?>
         <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
-                <div class="toast" role="alert" aria-live="polite" aria-atomic="true" id="toast-message" data-autohide="false">
+                <div class="toast" role="alert" aria-live="polite" aria-atomic="true" id="toast-message" data-autohide="true" data-delay="5000" style="position: absolute; top: 55; right: 20;">
                         <div class="toast-header">
                                 <i class="icon-info-circled"></i>
                                 <strong class="mr-auto"><?= isset($flashdata_message_title) ? $flashdata_message_title : "Message de BadGeek" ?></strong>
@@ -108,9 +108,16 @@
                                                         </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                        <label for="password" class="col-md-4 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Mot de passe :</label>
+                                                        <label for="password" class="col-md-4 col-form-label text-right"><i class='icon-key' ></i>&nbsp;Mot de passe :</label>
                                                         <div class="col-md-6">
-                                                                <input type="password" class="form-control" id="register-form-password" name="password" placeholder="Votre mot de passe">
+                                                                <p style="width:90%;float:left;margin-bottom:0em !important;">
+                                                                        <input type="password" class="form-control" id="register-form-password" name="password" placeholder="Votre mot de passe">
+                                                                </p>
+                                                                <p style="width:10%;float:right;margin-bottom:0em !important;">
+                                                                        <button class='btn' data-toggle="tooltip" data-placement="top" title="8 caractères minimum">
+                                                                                <i class='icon-info-circled'></i>
+                                                                        </button>
+                                                                </p>
                                                         </div>
                                                 </div>
                                                 <div class="form-group row">
