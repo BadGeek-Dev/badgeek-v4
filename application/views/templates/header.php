@@ -10,11 +10,18 @@
         <title>BadGeek</title>
 
         <link href="<?php echo base_url('assets/node_modules/bootstrap/dist/css/bootstrap.min.css') ?>" rel="stylesheet">
+        <link href="<?php echo base_url('assets/node_modules/bootstrap-fileinput/css/fileinput.min.css') ?>" rel="stylesheet">
         <link href="<?php echo base_url('assets/css/animation.css') ?>" rel="stylesheet">
         <link href="<?php echo base_url('assets/css/fontello.css') ?>" rel="stylesheet">
         <link href="<?php echo base_url('assets/css/badgeek.css') ?>" rel="stylesheet">
         <script src="<?php echo base_url('assets/node_modules/jquery/dist/jquery.min.js') ?>"></script>
+        <script src="<?php echo base_url('assets/node_modules/popper.js/dist/umd/popper.js') ?>"></script>
+        <script src="<?php echo base_url('assets/node_modules/piexifjs/piexif.js') ?>"></script>
+        <script src="<?php echo base_url('assets/node_modules/sortablejs/Sortable.min.js') ?>"></script>
+        <script src="<?php echo base_url('assets/node_modules/dompurify/dist/purify.min.js') ?>"></script>
         <script src="<?php echo base_url('assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>
+        <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/fileinput.min.js') ?>"></script>
+        <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/locales/fr.js') ?>"></script>
         <script src="<?php echo base_url('assets/js/badgeek.js') ?>"></script>
         <?php
         if (isset($extras) && is_array($extras) && is_array($extras["js"])) {
@@ -34,7 +41,7 @@
                 </div>
                 <div class="col-md-8 text-right">
                         <?php if ($this->ion_auth->logged_in()) : ?>
-                        <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#loginModal">
+                        <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#profilModal">
                                 <i class='icon-user'></i>
                                 Profil
                         </button>
@@ -59,121 +66,12 @@
 
                 </div>
         </div>
-        <!-- MODAL MESSAGE -->
-        <?php
-        $flashdata = $this->session->flashdata();
-        if (is_array($flashdata) && count($flashdata)) {
-                if (key_exists("message-title", $flashdata)) $flashdata_message_title = $flashdata["message-title"];
-                if (key_exists("message", $flashdata))       $flashdata_message = $flashdata["message"];
-        }
-        ?>
-        <?php if (isset($flashdata_message)) : ?>
-        <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
-                <div class="toast" role="alert" aria-live="polite" aria-atomic="true" id="toast-message" data-autohide="true" data-delay="5000" style="position: absolute; top: 55; right: 20;">
-                        <div class="toast-header">
-                                <i class="icon-info-circled"></i>
-                                <strong class="mr-auto"><?= isset($flashdata_message_title) ? $flashdata_message_title : "Message de BadGeek" ?></strong>
-                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                </button>
-                        </div>
-                        <div class="toast-body">
-                                <?= $flashdata_message ?>
-                        </div>
-                </div>
-        </div>
-        <?php endif; ?>
+        <!-- TOAST -->
+        <?php include(__DIR__."/toast/toast.php"); ?>
         <!-- MODAL REGISTER -->
-        <div class="modal fade modal-black" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModal" aria-hidden="true">
-                <div class="modal-dialog  modal-lg" role="document">
-                        <div class="modal-content">
-                                <div class="modal-header">
-                                        <h5 class="modal-title">M'inscrire sur BadGeek</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                        </button>
-                                </div>
-                                <div class="modal-body">
-                                        <div class="alert alert-success d-none" role="alert" id="register-ok-message">
-                                        </div>
-                                        <div class="alert alert-danger d-none" role="alert" id="register-ko-message">
-                                        </div>
-                                        <div class="d-none" id="register-successful">
-                                        </div>
-                                        <form id="register-form">
-                                                <div class="form-group row">
-                                                        <label for="email" class="col-md-4 col-form-label text-right"><i class='icon-mail' data-toggle="tooltip"></i>&nbsp;Email : </label>
-                                                        <div class="col-md-6">
-                                                                <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelpId" placeholder="Votre email" value="">
-                                                        </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                        <label for="password" class="col-md-4 col-form-label text-right"><i class='icon-key' ></i>&nbsp;Mot de passe :</label>
-                                                        <div class="col-md-6">
-                                                                <p style="width:90%;float:left;margin-bottom:0em !important;">
-                                                                        <input type="password" class="form-control" id="register-form-password" name="password" placeholder="Votre mot de passe">
-                                                                </p>
-                                                                <p style="width:10%;float:right;margin-bottom:0em !important;">
-                                                                        <button class='btn' data-toggle="tooltip" data-placement="top" title="8 caractères minimum">
-                                                                                <i class='icon-info-circled'></i>
-                                                                        </button>
-                                                                </p>
-                                                        </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                        <label for="password_confirmation" class="col-md-4 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Confirmation mot de passe :</label>
-                                                        <div class="col-md-6">
-                                                                <input type="password" class="form-control" name="password_confirm" id="register-form-password-confirmation" placeholder="Votre mot de passe">
-                                                        </div>
-                                                </div>
-                                                <input type="hidden" name="sid" class='sid' id="register-form-sid" value="<?= $sid ?>" />
-                                        </form>
-                                </div>
-                                <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" id='register-submit-button'><i class='icon-edit'></i>Créer mon compte</button>
-                                </div>
-                        </div>
-                </div>
-        </div>
+        <?php include(__DIR__."/modal/modal_register.php"); ?>
         <!-- MODAL CONNEXION -->
-        <div class="modal fade modal-black" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
-                <div class="modal-dialog  modal-lg" role="document">
-                        <div class="modal-content">
-                                <div class="modal-header">
-                                        <h5 class="modal-title">Se connecter sur BadGeek</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                        </button>
-                                </div>
-                                <div class="modal-body">
-                                        <div class="alert alert-danger d-none" role="alert" id="login-ko-message">
-                                        </div>
-                                        <form id="login-form">
-                                                <div class="form-group row">
-                                                        <label for="identity" class="col-md-4 col-form-label text-right"><i class='icon-mail' data-toggle="tooltip"></i>&nbsp;Email : </label>
-                                                        <div class="col-md-6">
-                                                                <input type="email" class="form-control" name="identity" id="login-form-email" aria-describedby="emailHelpId" placeholder="Votre email" value="">
-                                                        </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                        <label for="password" class="col-md-4 col-form-label text-right"><i class='icon-key' data-toggle="tooltip"></i>&nbsp;Mot de passe :</label>
-                                                        <div class="col-md-6">
-                                                                <input type="password" class="form-control" id="login-form-password" name="password" placeholder="Votre mot de passe">
-                                                        </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                        <label for="remember" class="col-md-4 col-form-label text-right"><i class='icon-info-circled' data-toggle="tooltip"></i>&nbsp;Se rappeler de moi :</label>
-                                                        <div class="col-md-6">
-                                                                <input type="checkbox" class="margin-top-15" id="login-form-remember" name="remember">
-                                                        </div>
-                                                </div>
-                                                <input type="hidden" name="sid" class='sid' id="login-form-sid" value="<?= $sid ?>" />
-                                        </form>
-                                </div>
-                                <div class="modal-footer">
-                                        <button id="login-form-remember-password" class="btn btn-info"><i class='icon-help-circled'></i> J'ai oublié mon mot de passe</button>
-                                        <button type="button" class="btn btn-danger" id='login-submit-button'><i class='icon-login'></i>Me connecter</button>
-                                </div>
-                        </div>
-                </div>
-        </div>
+        <?php include(__DIR__."/modal/modal_connexion.php"); ?>
+        <!-- MODAL PROFIL -->
+        <?php include(__DIR__."/modal/modal_profil.php"); ?>
+        

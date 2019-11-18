@@ -79,7 +79,10 @@ class Auth extends CI_Controller
 			{
 				//if the login is successful
 				//redirect them back to the home page
-				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				// $this->session->set_flashdata('message', $this->ion_auth->messages());
+				// $this->session->set_flashdata('message-position', 'top-right');
+				// $this->session->set_flashdata('message-timeout', 2000);
+				setFlashdataMessage($this->session, $this->ion_auth->messages(), '', 'top-right', 2000);
 				$result = "";
 				$message = "";
 			}
@@ -110,7 +113,7 @@ class Auth extends CI_Controller
 		$this->ion_auth->logout();
 
 		// redirect them to the login page
-		$this->session->set_flashdata('message', $this->ion_auth->messages());
+		setFlashdataMessage($this->session, $this->ion_auth->messages(), '', 'top-right');
 		redirect('/', 'refresh');
 	}
 
@@ -353,6 +356,8 @@ class Auth extends CI_Controller
 		{
 			// redirect them to the auth page
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
+			$this->session->set_flashdata('message-title', $this->lang->line("activation_successful_title"));
+			$this->session->set_flashdata('message-position', "top-center");
 		}
 		else
 		{

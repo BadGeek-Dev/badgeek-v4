@@ -39,7 +39,7 @@ $(document).ready(function () {
                     $("#register-form").hide();
                     $("#register-submit-button").hide();
                     $("#register-ko-message").addClass("d-none");
-                    $("#register-successful").html("<h3><i class='icon-mail'></i> Il ne vous reste plus qu'à valider votre inscription dans <a href='http://"+ response.mailwebsite+"'>votre boîte mail</a>.</h3>").removeClass("d-none");
+                    $("#register-successful").html("<h3><i class='icon-mail'></i> Terminer votre inscription dans <a href='http://"+ response.mailwebsite+"'>votre boîte mail</a>.</h3>").removeClass("d-none");
                     $("#register-ok-message").html("<i class='icon-ok'></i>" + response.message).removeClass("d-none");
                 }
                 else
