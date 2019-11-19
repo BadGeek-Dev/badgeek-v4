@@ -55,6 +55,10 @@ body
 {
     margin-top: 30px;
 }
+.margin-auto
+{
+    margin: auto;
+}
 .cache
 {
     display: none;

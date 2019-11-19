@@ -8,18 +8,25 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger d-none" role="alert" id="profil-ko-message">
+                <div class="alert alert-danger" role="alert" id="profil-ko-message" style="display:none">
                 </div>
                 <div class="alert alert-success d-none" role="alert" id="profil-ok-message">
                 </div>
-                    <div class="kv-avatar">
-                        <div class="file-loading">
-                            <input id="profilAvatarInput" type="file">
+                <div class="row">
+                    <div class="col-sm-4 text-center">
+                        <div class="margin-auto kv-div">
+                            <div class="kv-avatar">
+                                <div class="file-loading">
+                                    <input id="profilAvatarInput" type="file">
+                                </div>
+                            </div>
+                            <div class="kv-avatar-hint">
+                                <small>Taille maximum : 500 KB</small><br/>
+                                <small>Seuls les fichiers jpg et les png sont acceptés.</small>
+                            </div>
                         </div>
                     </div>
-                    <div class="kv-avatar-hint">
-                        <small>Select file < 500 KB</small>
-                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id='profil-submit-button'><i class='icon-edit'></i>Mettre à jour mon profil</button>
@@ -27,17 +34,60 @@
         </div>
     </div>
 </div>
+<!-- some CSS styling changes and overrides -->
+<style>
+.kv-div
+{
+    width:200px;
+    height:250px;
+}
+.kv-avatar .krajee-default.file-preview-frame,.kv-avatar .krajee-default.file-preview-frame:hover {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+}
+.kv-avatar {
+    display: inline-block;
+    margin: auto;
+}
+.kv-avatar .file-input {
+    display: table-cell;
+    width: 200px;
+    height:200px;
+}
+.kv-reqd {
+    color: red;
+    font-family: monospace;
+    font-weight: normal;
+}
+.file-preview 
+{
+    height:200px;
+    width:200px;
+}
+.file-drop-zone
+{
+    margin : 0 !important;
+    border : 0px;
+}
+</style>
 <script>
     $(document).ready(function () {
         $("#profilAvatarInput").fileinput({
             overwriteInitial: true,
+            maxFileCount:1,
             maxFileSize: 500,
             language:'fr',
-            allowedFileExtensions: ["jpg", "png", "gif"],
+            theme:'fas',
+            allowedFileExtensions: ["jpg", "png"],
             browseOnZoneClick: true,
             showClose: false,
             showCaption: false,
             showBrowse: false,
+            elErrorContainer: '#profil-ko-message',
+            msgErrorClass: 'alert alert-block alert-danger',
             defaultPreviewContent: '<img src="<?=base_url('assets/pictures/avatar.png')?>" alt="Your Avatar">',
 
         });
