@@ -926,4 +926,26 @@ class Auth extends CI_Controller
 		}
 		$this->returnAjax($result, $message, $new_sid, array("mailwebsite" => $mailwebsite));
 	}
+
+	public function uploadAvatar()
+	{
+		$id_user = $this->ion_auth->get_user_id();
+		$avatar_data = $_FILES["file_data"];
+		if ($id_user)
+		{
+			$filename = explode(".",$avatar_data["name"]);
+			$extension = array_pop($filename);
+			$config = array();
+			$config['source_image'] = realpath($avatar_data["tmp_name"]);
+			$config['new_image'] = realpath("assets")."/".$id_user.".".$extension;
+			$config['width']         = 200;
+			$config['height']       = 200;
+			$this->load->library('image_lib', $config);
+			echo json_encode(array());
+		}
+		else
+		{
+			//Pas de user connecté
+		}
+	}
 }

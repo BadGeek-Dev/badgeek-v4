@@ -20,10 +20,7 @@
                                     <input id="profilAvatarInput" type="file">
                                 </div>
                             </div>
-                            <div class="kv-avatar-hint">
-                                <small>Taille maximum : 500 KB</small><br/>
-                                <small>Seuls les fichiers jpg et les png sont acceptés.</small>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -36,11 +33,7 @@
 </div>
 <!-- some CSS styling changes and overrides -->
 <style>
-.kv-div
-{
-    width:200px;
-    height:250px;
-}
+
 .kv-avatar .krajee-default.file-preview-frame,.kv-avatar .krajee-default.file-preview-frame:hover {
     margin: 0;
     padding: 0;
@@ -54,8 +47,6 @@
 }
 .kv-avatar .file-input {
     display: table-cell;
-    width: 200px;
-    height:200px;
 }
 .kv-reqd {
     color: red;
@@ -64,23 +55,40 @@
 }
 .file-preview 
 {
-    height:200px;
-    width:200px;
+    height:auto;
+    width:220px;
 }
 .file-drop-zone
 {
     margin : 0 !important;
     border : 0px;
 }
+.krajee-default.file-preview-frame .kv-file-content
+{
+    height: 180px;
+    width: 180px;
+}
+.file-drop-zone .file-preview-thumbnails
+{
+    height:230px;
+}
+.krajee-default .file-footer-caption
+{
+    background-color: lightgray;
+    margin-bottom: 0px;
+}
+
 </style>
 <script>
     $(document).ready(function () {
         $("#profilAvatarInput").fileinput({
             overwriteInitial: true,
+            uploadUrl: '<?=base_url('index.php/Auth/uploadAvatar')?>',
             maxFileCount:1,
             maxFileSize: 500,
             language:'fr',
             theme:'fas',
+            autoReplace: true,
             allowedFileExtensions: ["jpg", "png"],
             browseOnZoneClick: true,
             showClose: false,
@@ -88,7 +96,18 @@
             showBrowse: false,
             elErrorContainer: '#profil-ko-message',
             msgErrorClass: 'alert alert-block alert-danger',
-            defaultPreviewContent: '<img src="<?=base_url('assets/pictures/avatar.png')?>" alt="Your Avatar">',
+            defaultPreviewContent: '<h3> Avatar</h3><img src="<?=base_url('assets/pictures/avatar.png')?>" alt="Your Avatar"><div class="kv-avatar-hint">\
+                                <small>Taille maximum : 500 KB</small><br/>\
+                                <small>Seuls les fichiers jpg et les png sont acceptés.</small>\
+                            </div>',
+            layoutTemplates: {
+                actions: '', 
+                preview: '<div class="file-preview {class} clickable">\n' +
+        '    <div class="{dropClass}">\n' +
+        '    <div class="file-preview-thumbnails ">\n' +
+        '    </div>\n' +
+        '</div></div>',
+            }
 
         });
     });

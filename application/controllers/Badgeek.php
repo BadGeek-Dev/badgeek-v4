@@ -28,4 +28,9 @@ class Badgeek extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function phpinfo()
+    {
+        phpinfo();
+    }
+
 }
