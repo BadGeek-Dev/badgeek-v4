@@ -1,0 +1,40 @@
+version: '3.1'
+
+services:
+    nginx:
+        build: docker/nginx
+        volumes:
+            - "./:/badgeek"
+        links:
+            - php
+        ports:
+            - "80:80"
+    
+    mysql:
+        build: docker/mysql
+        volumes:
+            - "./:/badgeek"
+            - "bg_mysql/:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: badgeek
+            MYSQL_PASSWORD: badgeek
+            MYSQL_DATABASE: badgeek
+        ports:
+            - "3306:3306"
+
+    php:
+        build: docker/php
+        volumes:
+            - "./:/badgeek"
+        links:
+            - mysql
+            - maildev
+
+    maildev:
+        image: djfarrelly/maildev
+        ports:
+            - "1080:80"
+
+volumes:
+  bg_mysql: ~

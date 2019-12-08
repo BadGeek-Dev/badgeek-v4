@@ -10,9 +10,9 @@ application/logs/*
 
 application/vendor/*
 
-assets/node_modules/*
+application/sessions/*
 
-composer.lock
+assets/node_modules/*
 
 user_guide/*
 user_guide_src/build/*
