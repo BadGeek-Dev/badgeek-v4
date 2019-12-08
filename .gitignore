@@ -10,6 +10,8 @@ application/logs/*
 
 application/vendor/*
 
+application/sessions/*
+
 assets/node_modules/*
 
 user_guide/*

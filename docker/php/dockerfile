@@ -1,0 +1,46 @@
+FROM php:7.1.9-fpm
+
+ENV NODE_VERSION=6.2.2
+
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libfontconfig1 \
+    libxrender1 \
+    libzip-dev
+
+# Set timezone
+RUN rm /etc/localtime
+RUN ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
+RUN "date"
+
+# Install APCU
+RUN pecl install apcu
+RUN echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apcu.ini
+
+RUN docker-php-ext-install opcache pdo pdo_mysql mysqli
+
+# Install COMPOSER
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && composer --version
+
+# Install NODEJS
+RUN apt-get install build-essential curl -y && \
+    curl -L -o /tmp/nodejs.tar.gz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz && \
+    tar xfvz /tmp/nodejs.tar.gz -C /usr/local --strip-components=1 && \
+    rm -f /tmp/nodejs.tar.gz
+
+# Install yarn
+RUN apt-get update && apt-get install -y apt-transport-https
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install yarn
+
+# user
+RUN useradd -ms /bin/bash badgeek
+USER badgeek
+
+WORKDIR /badgeek
+
+COPY conf/php-fpm.conf /etc/php-fpm.conf
+COPY conf/php.ini /usr/local/etc/php/conf.d/100-php.ini
