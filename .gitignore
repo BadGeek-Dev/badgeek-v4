@@ -12,8 +12,6 @@ application/vendor/*
 
 assets/node_modules/*
 
-composer.lock
-
 user_guide/*
 user_guide_src/build/*
 user_guide_src/cilexer/build/*
