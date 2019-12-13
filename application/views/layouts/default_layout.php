@@ -26,11 +26,11 @@
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/locales/fr.js') ?>"></script>
     <script src="<?php echo base_url('assets/js/badgeek.js') ?>"></script>
     <?php
-    if (isset($extras) && is_array($extras) && is_array($extras["js"])) {
-            foreach ($extras["js"] as $extra_js_file) {
-                    echo "<script src=\"" . base_url($extra_js_file) . "\"></script>";
-            }
-    }
+        if (isset($extras) && is_array($extras) && is_array($extras["js"])) {
+                foreach ($extras["js"] as $extra_js_file) {
+                echo "<script src=\"" . base_url($extra_js_file) . "\"></script>";
+                }
+        }
     ?>
 </head>
 

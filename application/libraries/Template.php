@@ -17,12 +17,11 @@ class Template {
 
     function load($view, $view_data = [], $layout = 'default_layout')
     {
-        $template_data['user'] = $this->CI->ion_auth->user()->row();
-        $template_data['sid'] = refreshSid();
-        $template_data['extras']['js'] = 'assets/js/header.js';
+        $this->set('user', $this->CI->ion_auth->user()->row());
+        $this->set('sid', $_SESSION["sid"] = rand(0, time()));
+        $this->set('extras', ['js' => ['assets/js/header.js']]);
+        $this->set('contents', $this->CI->load->view($view, $view_data, TRUE));
 
-        $this->set('contents' , $this->CI->load->view($view, $view_data, TRUE));
-        
         $this->CI->load->view('layouts/'.$layout, $this->template_data);
     }
                                
