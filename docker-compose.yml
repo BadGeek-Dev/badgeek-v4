@@ -30,6 +30,8 @@ services:
         links:
             - mysql
             - maildev
+        environment: 
+            XDEBUG_SESSION_START: VSCODE
 
     maildev:
         image: djfarrelly/maildev

@@ -9,6 +9,10 @@ RUN apt-get update && apt-get install -y \
     libxrender1 \
     libzip-dev
 
+# Install xdebug
+RUN pecl install xdebug \  
+    && docker-php-ext-enable xdebug
+
 # Set timezone
 RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
