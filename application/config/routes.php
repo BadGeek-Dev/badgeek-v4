@@ -53,3 +53,4 @@ $route['auth'] = 'auth';
 $route['default_controller'] = 'badgeek/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+$route['podcasts/create/(:num)'] = 'podcasts/createWaitingValidation/$1';

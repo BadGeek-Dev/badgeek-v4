@@ -14,11 +14,17 @@ class Podcasts_model extends CI_Model {
     public function insert()
     {
         $this->db->insert('podcasts', $this);
+        $this->id = $this->db->insert_id();
     }
 
     public function update()
     {
         $this->db->update('podcasts', $this, ['id' => $this->id]);
+    }
+
+    public function findOneById($id)
+    {
+        return $this->db->get_where('podcasts', ['id' => $id])->row();
     }
 
     /**
