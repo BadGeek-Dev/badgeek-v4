@@ -7,7 +7,15 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libfontconfig1 \
     libxrender1 \
-    libzip-dev
+    libzip-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd \
+    --enable-gd-native-ttf \
+    --with-jpeg-dir=/usr/lib \
+    --with-freetype-dir=/usr/include/freetype2 && \
+    docker-php-ext-install gd 
 
 # Install xdebug
 RUN pecl install xdebug \  
