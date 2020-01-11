@@ -93,4 +93,26 @@ class Podcasts extends Badgeek_Controller
 
         $this->template->load('podcasts/waiting_validation', ['podcast' => $podcast]);
     }
+
+    /**
+     * 
+     */
+    public function index()
+    {
+        $this->load->model('podcasts_model');
+        $podcasts = $this->podcasts_model->findByUser($this->user->id);
+
+        $this->template->load('podcasts/list', ['podcasts' => $podcasts]);
+    }
+
+    /**
+     * 
+     */
+    public function edit($id)
+    {
+        $this->load->model('podcasts_model');
+        $podcast = $this->podcasts_model->findOneById($id);
+
+        $this->template->load('podcasts/edit', ['podcast' => $podcast]);
+    }
 }

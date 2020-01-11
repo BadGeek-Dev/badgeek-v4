@@ -1,43 +1,64 @@
 <?php
 
-class Podcasts_model extends CI_Model {
+class Episodes_model extends CI_Model {
 
     public $id;
+    public $numero;
     public $titre;
     public $description;
-    public $lien;
-    public $image;
-    public $rss;
+    public $date_publication;
+    public $lien_mp3;
+    public $infos_mp3;
     public $tags;
-    public $id_createur;
+    public $id_podcast;
 
     public function insert()
     {
-        $this->db->insert('podcasts', $this);
+        $this->db->insert('episodes', $this);
         $this->id = $this->db->insert_id();
     }
 
     public function update()
     {
-        $this->db->update('podcasts', $this, ['id' => $this->id]);
+        $this->db->update('episodes', $this, ['id' => $this->id]);
     }
 
     public function findOneById($id)
     {
-        return $this->db->get_where('podcasts', ['id' => $id])->row();
+        return $this->db->get_where('episodes', ['id' => $id])->row();
     }
 
-    public function findByUser($userId)
+    public function findByPodcast($podcastId)
     {
-        return $this->db->get_where('podcasts', ['id_createur' => $userId])->result();
+        return $this->db->get_where('episodes', ['id_podcast' => $podcastId])->result();
     }
-
+    
     /**
      * Get the value of id
      */ 
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get the value of numero
+     */ 
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set the value of numero
+     *
+     * @return  self
+     */ 
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
     }
 
     /**
@@ -81,61 +102,61 @@ class Podcasts_model extends CI_Model {
     }
 
     /**
-     * Get the value of lien
+     * Get the value of date_publication
      */ 
-    public function getLien()
+    public function getDate_publication()
     {
-        return $this->lien;
+        return $this->date_publication;
     }
 
     /**
-     * Set the value of lien
+     * Set the value of date_publication
      *
      * @return  self
      */ 
-    public function setLien($lien)
+    public function setDate_publication($date_publication)
     {
-        $this->lien = $lien;
+        $this->date_publication = $date_publication;
 
         return $this;
     }
 
     /**
-     * Get the value of image
+     * Get the value of lien_mp3
      */ 
-    public function getImage()
+    public function getLien_mp3()
     {
-        return $this->image;
+        return $this->lien_mp3;
     }
 
     /**
-     * Set the value of image
+     * Set the value of lien_mp3
      *
      * @return  self
      */ 
-    public function setImage($image)
+    public function setLien_mp3($lien_mp3)
     {
-        $this->image = $image;
+        $this->lien_mp3 = $lien_mp3;
 
         return $this;
     }
 
     /**
-     * Get the value of rss
+     * Get the value of infos_mp3
      */ 
-    public function getRss()
+    public function getInfos_mp3()
     {
-        return $this->rss;
+        return $this->infos_mp3;
     }
 
     /**
-     * Set the value of rss
+     * Set the value of infos_mp3
      *
      * @return  self
      */ 
-    public function setRss($rss)
+    public function setInfos_mp3($infos_mp3)
     {
-        $this->rss = $rss;
+        $this->infos_mp3 = $infos_mp3;
 
         return $this;
     }
@@ -161,21 +182,21 @@ class Podcasts_model extends CI_Model {
     }
 
     /**
-     * Get the value of id_createur
+     * Get the value of id_podcast
      */ 
-    public function getId_createur()
+    public function getId_podcast()
     {
-        return $this->id_createur;
+        return $this->id_podcast;
     }
 
     /**
-     * Set the value of id_createur
+     * Set the value of id_podcast
      *
      * @return  self
      */ 
-    public function setId_createur($id_createur)
+    public function setId_podcast($id_podcast)
     {
-        $this->id_createur = $id_createur;
+        $this->id_podcast = $id_podcast;
 
         return $this;
     }
