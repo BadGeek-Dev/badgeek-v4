@@ -111,8 +111,13 @@ class Podcasts extends Badgeek_Controller
     public function edit($id)
     {
         $this->load->model('podcasts_model');
+        $this->load->model('episodes_model');
         $podcast = $this->podcasts_model->findOneById($id);
+        $episodes = $this->episodes_model->findByPodcast($podcast->id);
 
-        $this->template->load('podcasts/edit', ['podcast' => $podcast]);
+        $this->template->load('podcasts/edit', [
+            'podcast' => $podcast,
+            'episodes' => $episodes
+            ]);
     }
 }
