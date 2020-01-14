@@ -10,6 +10,7 @@ class Podcasts_model extends CI_Model {
     public $rss;
     public $tags;
     public $id_createur;
+    public $valid;
 
     public function insert()
     {
@@ -165,6 +166,26 @@ class Podcasts_model extends CI_Model {
     public function setId_createur($id_createur)
     {
         $this->id_createur = $id_createur;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of valid
+     */ 
+    public function getValid()
+    {
+        return $this->valid;
+    }
+
+    /**
+     * Set the value of valid
+     *
+     * @return  self
+     */ 
+    public function setValid($valid)
+    {
+        $this->valid = $valid;
 
         return $this;
     }

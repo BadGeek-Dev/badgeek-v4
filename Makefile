@@ -6,7 +6,7 @@ EXEC=$(FIG) exec
 
 start: build up
 
-install: start vendor database-import
+install: start vendor database-import db-migrate
 
 stop:
 	$(FIG) stop && $(FIG) rm -f
@@ -25,3 +25,6 @@ vendor:
 
 database-import:
 	$(RUN) mysql mysql -h mysql -u badgeek -pbadgeek badgeek < assets/dump-badgeek-201908151139.sql
+
+db-migrate:
+	$(RUN) -w /badgeek php php index.php migrate
