@@ -9,6 +9,7 @@
 <h2><?php echo $podcast->titre ?></h2>
 
 <a href="<?= site_url("episodes/create/".$podcast->id) ?>" class="btn btn-danger margin-right-10">Ajouter un épisode</a>
+<a href="<?= site_url("podcasts/sync/".$podcast->id) ?>" class="btn btn-danger margin-right-10">Synchroniser avec le flux RSS</a>
 
 <h3>Episodes</h3>
 

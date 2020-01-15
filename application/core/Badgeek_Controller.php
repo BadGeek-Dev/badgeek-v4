@@ -8,8 +8,7 @@ class Badgeek_Controller extends CI_Controller
     {
         parent::__construct();
         $this->user = false;
-        if($this->ion_auth->logged_in())
-        {
+        if ($this->ion_auth->logged_in()) {
             $this->user = $this->ion_auth->user()->row();
         }
        $this->load->helper(['badgeek']);

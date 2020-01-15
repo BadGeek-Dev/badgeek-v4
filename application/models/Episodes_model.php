@@ -12,6 +12,19 @@ class Episodes_model extends CI_Model {
     public $tags;
     public $id_podcast;
 
+    public function refresh()
+    {
+        $this->id = null;
+        $this->numero = null;
+        $this->titre = null;
+        $this->description = null;
+        $this->date_publication = null;
+        $this->lien_mp3 = null;
+        $this->infos_mp3 = null;
+        $this->tags = null;
+        $this->id_podcast = null;
+    }
+
     public function insert()
     {
         $this->db->insert('episodes', $this);

@@ -99,6 +99,7 @@ class Podcasts extends Badgeek_Controller
      */
     public function index()
     {
+        $this->load->library('rss_import');
         $this->load->model('podcasts_model');
         $podcasts = $this->podcasts_model->findByUser($this->user->id);
 
@@ -119,5 +120,18 @@ class Podcasts extends Badgeek_Controller
             'podcast' => $podcast,
             'episodes' => $episodes
             ]);
+    }
+
+    /**
+     * XHR
+     */
+    public function sync($id)
+    {
+        $this->load->model('podcasts_model');
+
+        $podcast = $this->podcasts_model->findOneById($id);
+
+        $this->load->library('rss_import');
+        $this->rss_import->sync($podcast);
     }
 }

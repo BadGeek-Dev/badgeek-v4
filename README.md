@@ -17,3 +17,6 @@ Ajouter une entrée dans votre fichier hosts
 
 Accès aux mails :
 > http://127.0.0.1:1080
+
+Effectuer les migrations :
+> make db-migrate
