@@ -88,3 +88,39 @@ body
     background-color: white;
     color: black;
 }
+
+
+.admin_card{
+    background-color: black;
+    border: red 2px solid;
+    /*border-radius: 2em;*/
+}
+
+.admin_card_header{
+    font-family: BGFont;
+    font-size: larger;
+    border: red 1px solid;
+}
+
+.admin_listgroup{
+    background-color: black;
+}
+.admin_listitem{
+    background-color: black;
+    border-top: #404040 1px solid;
+}
+
+.admin_listitem:hover{
+    background-color: red;
+    font-weight: bold;
+}
+
+
+.table_admin thead{
+    background-color: red;
+    border: none;
+}
+
+.table_admin td{
+    border: none;
+}
