@@ -4,41 +4,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Rss_import {
     private $CI;
 
+    private $podcast;
+
+    private $episodes;
+
+    private $titles = [];
+
     public function __construct() 
     {
         $this->CI =& get_instance();
         $this->CI->load->library('rss_parser', [$this, 'parseFile']);
+        $this->CI->load->model('episodes_model');
     }      
     
     public function sync($podcast)
     {
+        $this->podcast = $podcast;
+        $this->episodes = $this->CI->episodes_model->findByPodcast($podcast);
+
+        foreach ($this->episodes as $episode) {
+            $this->titles[] = $episode->titre;
+        }
+
         try {
-            $rss = $this->CI->rss_parser->set_feed_url('http://feeds.feedburner.com/lerendezvoustech')->set_cache_life(30)->getFeed(-1);
+            $rss = $this->CI->rss_parser->set_feed_url($this->podcast->rss)->set_cache_life(30)->getFeed(-1);
         } catch (\Throwable $th) {
             return 'RSS error';
         }
 
         foreach ($rss as $item)
         {
-            $this->importEpisode($item, $podcast);
+            $this->importEpisode($item);
         }
 
         return true;
     }
 
-    private function importEpisode($item, $podcast)
+    /**
+     * 
+     */
+    private function importEpisode($item)
     {
-        //exist or add
-        $this->CI->load->model('episodes_model');
-
-        //create
-        $this->createEpisode($item, $podcast);
+        if (!in_array($item['title'], $this->titles)) {
+            $this->createEpisode($item);
+        }   
     }
 
     /**
      * 
      */
-    private function createEpisode($item, $podcast)
+    private function createEpisode($item)
     {
         $this->CI->episodes_model->refresh();
         
@@ -49,7 +64,7 @@ class Rss_import {
         $this->CI->episodes_model->setLien_mp3($item['media']);
         $this->CI->episodes_model->setInfos_mp3('');
         $this->CI->episodes_model->setTags('');
-        $this->CI->episodes_model->setId_podcast($podcast->id);
+        $this->CI->episodes_model->setId_podcast($this->podcast->id);
 
         $this->CI->episodes_model->insert();
     }

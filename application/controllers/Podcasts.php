@@ -4,6 +4,11 @@ require_once APPPATH . 'core/Badgeek_Controller.php';
 
 class Podcasts extends Badgeek_Controller 
 {
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('podcasts_model');
+    }
+
     /**
      * 
      */
@@ -22,7 +27,6 @@ class Podcasts extends Badgeek_Controller
         if (false === $this->form_validation->run()) {
             
         } else {
-            $this->load->model('podcasts_model');
             $this->podcasts_model->setTitre($this->input->post('titre'));
             $this->podcasts_model->setDescription($this->input->post('description'));
             $this->podcasts_model->setLien($this->input->post('lien'));
@@ -88,7 +92,6 @@ class Podcasts extends Badgeek_Controller
      */
     public function createWaitingValidation($id)
     {
-        $this->load->model('podcasts_model');
         $podcast = $this->podcasts_model->findOneById($id);
 
         $this->template->load('podcasts/waiting_validation', ['podcast' => $podcast]);
@@ -100,7 +103,6 @@ class Podcasts extends Badgeek_Controller
     public function index()
     {
         $this->load->library('rss_import');
-        $this->load->model('podcasts_model');
         $podcasts = $this->podcasts_model->findByUser($this->user->id);
 
         $this->template->load('podcasts/list', ['podcasts' => $podcasts]);
@@ -111,10 +113,9 @@ class Podcasts extends Badgeek_Controller
      */
     public function edit($id)
     {
-        $this->load->model('podcasts_model');
         $this->load->model('episodes_model');
         $podcast = $this->podcasts_model->findOneById($id);
-        $episodes = $this->episodes_model->findByPodcast($podcast->id);
+        $episodes = $this->episodes_model->findByPodcast($podcast);
 
         $this->template->load('podcasts/edit', [
             'podcast' => $podcast,
@@ -122,16 +123,31 @@ class Podcasts extends Badgeek_Controller
             ]);
     }
 
+    public function delete($id)
+    {
+        $podcast = $this->podcasts_model->findOneById($id);
+
+        if ($this->user->id == $podcast->id_createur) {
+            $this->load->model('episodes_model');
+            $this->episodes_model->deleteByPodcast($podcast);
+            $this->podcasts_model->delete($podcast);
+        }
+
+        redirect('/podcasts');
+    }
+
     /**
-     * XHR
+     *
      */
     public function sync($id)
     {
-        $this->load->model('podcasts_model');
+        
 
         $podcast = $this->podcasts_model->findOneById($id);
 
         $this->load->library('rss_import');
         $this->rss_import->sync($podcast);
+
+        redirect('/podcasts/edit/'.$podcast->id);
     }
 }

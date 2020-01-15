@@ -31,9 +31,20 @@ class Episodes_model extends CI_Model {
         $this->id = $this->db->insert_id();
     }
 
-    public function update()
+    public function update($episode)
     {
-        $this->db->update('episodes', $this, ['id' => $this->id]);
+        $this->db->update('episodes', $episodes, ['id' => $episode->id]);
+    }
+
+    public function deleteByPodcast($podcast)
+    {
+        $this->db->where('id_podcast', $podcast->id);
+        $this->db->delete('episodes');
+    }
+
+    public function delete($episode)
+    {
+        $this->db->delete('episodes', ['id' => $episode->id]);
     }
 
     public function findOneById($id)
@@ -41,9 +52,9 @@ class Episodes_model extends CI_Model {
         return $this->db->get_where('episodes', ['id' => $id])->row();
     }
 
-    public function findByPodcast($podcastId)
+    public function findByPodcast($podcast)
     {
-        return $this->db->get_where('episodes', ['id_podcast' => $podcastId])->result();
+        return $this->db->get_where('episodes', ['id_podcast' => $podcast->id])->result();
     }
     
     /**

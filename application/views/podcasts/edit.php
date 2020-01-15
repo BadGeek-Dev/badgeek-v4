@@ -10,6 +10,7 @@
 
 <a href="<?= site_url("episodes/create/".$podcast->id) ?>" class="btn btn-danger margin-right-10">Ajouter un épisode</a>
 <a href="<?= site_url("podcasts/sync/".$podcast->id) ?>" class="btn btn-danger margin-right-10">Synchroniser avec le flux RSS</a>
+<a href="<?= site_url("podcasts/delete/".$podcast->id) ?>" class="btn btn-danger margin-right-10">Supprimer le podcast</a>
 
 <h3>Episodes</h3>
 

@@ -11,6 +11,6 @@ class Badgeek_Controller extends CI_Controller
         if ($this->ion_auth->logged_in()) {
             $this->user = $this->ion_auth->user()->row();
         }
-       $this->load->helper(['badgeek']);
+        $this->load->helper(['badgeek']);
     }
 }

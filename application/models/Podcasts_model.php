@@ -18,9 +18,14 @@ class Podcasts_model extends CI_Model {
         $this->id = $this->db->insert_id();
     }
 
-    public function update()
+    public function update($podcast)
     {
-        $this->db->update('podcasts', $this, ['id' => $this->id]);
+        $this->db->update('podcasts', $podcast, ['id' => $podcast->id]);
+    }
+
+    public function delete($podcast)
+    {
+        $this->db->delete('podcasts', ['id' => $podcast->id]);
     }
 
     public function findOneById($id)

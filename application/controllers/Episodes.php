@@ -4,12 +4,19 @@ require_once APPPATH . 'core/Badgeek_Controller.php';
 
 class Episodes extends Badgeek_Controller 
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->load->model('podcasts_model');
+        $this->load->model('episodes_model');
+    }
+
     /**
      * 
      */
     public function create($id)
     {
-        $this->load->model('podcasts_model');
         $podcast = $this->podcasts_model->findOneById($id);
 
         if (!$this->ion_auth->logged_in()) {
@@ -25,7 +32,6 @@ class Episodes extends Badgeek_Controller
         if (false === $this->form_validation->run()) {
             
         } else {
-            $this->load->model('episodes_model');
             $this->episodes_model->setNumero($this->input->post('numero'));
             $this->episodes_model->setTitre($this->input->post('titre'));
             $this->episodes_model->setDescription($this->input->post('description'));
@@ -102,14 +108,26 @@ class Episodes extends Badgeek_Controller
      */
     public function edit($id)
     {
-        $this->load->model('episodes_model');
-        $this->load->model('podcasts_model');
-
         $episode = $this->episodes_model->findOneById($id);
         $podcast = $this->podcasts_model->findOneById($episode->id_podcast);
 
         $this->template->load('episodes/edit', [
             'episode' => $episode, 'podcast' => $podcast
             ]);
+    }
+
+    /**
+     * 
+     */
+    public function delete($id)
+    {
+        $episode = $this->episodes_model->findOneById($id);
+        $podcast = $this->podcasts_model->findOneById($episode->id_podcast);
+
+        if ($this->user->id == $podcast->id_createur) {
+            $this->episodes_model->delete($episode);
+        }
+
+        redirect('/podcasts/edit/'.$podcast->id);
     }
 }
