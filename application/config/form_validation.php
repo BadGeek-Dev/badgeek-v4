@@ -13,5 +13,17 @@ $config = array(
             'label' => 'Contenu',
             'rules' => 'required'
         )
+    ),
+    'admin/editArticle' => array(
+        array(
+            'field' => 'title',
+            'label' => 'Titre',
+            'rules' => 'required'
+        ),
+        array(
+            'field' => 'content',
+            'label' => 'Contenu',
+            'rules' => 'required'
+        )
     )
 );

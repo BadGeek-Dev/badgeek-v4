@@ -136,3 +136,7 @@ body
     background-color: gray;
     font-weight: bold;
 }
+
+.help-block{
+    color : red;
+}

@@ -44,7 +44,6 @@ class Admin extends Badgeek_Controller
             //ajouter message flash pour indiquer à l'utilisateur que l'article a été ajouté en bdd
         } else {
             //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
-            echo "validtion nook";
             $this->template->load('public/admin_newArticle');
         }
     }
@@ -59,22 +58,25 @@ class Admin extends Badgeek_Controller
         $result = $this->db->query($sql,array($id));
 //        $result = $this->db->query("SELECT * FROM badgeek.articles WHERE id = 2");
         $article = (array)$result->result()[0];
+
+        $article['id'] = $id;
         if ($this->form_validation->run()) {
+            echo"good";
             // validation ok, ajouter l'article en BDD
-            $this->template->load('public/admin_editArticle');
+
 
             $status = 1; //etat de l'article (visible / non visible). PAr défaut 1 pour visible
 
             //mise a jour de l'article => SQL Update
-//            $sql = "Insert into badgeek.articles(content,status,title,created_at) values (?,?,?,NOW())";
-//            $this->db->query($sql, array($this->input->post('content'), $idauthor, $status, $this->input->post('title')));
+           $sql = "UPDATE badgeek.articles SET `content` = ?, title = ?, `created_at` = NOW() WHERE (`id` = ?);";
+            $this->db->query($sql, array($this->input->post('content'), $this->input->post('title'), $id));
 
+
+            $this->index();
             //ajouter message flash pour indiquer à l'utilisateur que l'article a été ajouté en bdd
         } else {
             //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
-//            echo "validation nook";
-//            var_dump($result);
-//            var_dump('public/admin_editArticle/'.$id);
+echo"no good";
             $this->template->load('public/admin_editArticle', array("article" => $article));
         }
 

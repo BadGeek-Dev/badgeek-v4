@@ -18,7 +18,7 @@
                     <h2>Editer un Article</h2>
                 </div>
                 <div class="row">
-                    <?= form_open('admin/addArticle', ['class' => 'form-horizontal']); ?>
+                    <?= form_open('admin/editArticle/'.$article['id'], ['class' => 'form-horizontal']); ?>
                     <div class="form-group">
                         <?= form_label("Titre&nbsp:", "title", ['class' => "col-md-2 control-label "]) ?>
                         <div class="col-md-10">
@@ -35,7 +35,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <?= form_submit("send", "Envoyer", ['class' => "btn btn-sucess"]); ?>
+                            <?= form_submit("send", "Envoyer", ['class' => "btn btn-success"]); ?>
                         </div>
                     </div>
                     <?= form_close() ?>
