@@ -6,10 +6,10 @@
                     Menu d'Administation
                 </div>
                 <ul class="list-group admin_listgroup">
-                    <li class="list-group-item admin_listitem"> Articles</li>
-                    <li class="list-group-item admin_listitem"> Ajouter un article</li>
-                </ul>
-            </div>
+                    <li class="list-group-item admin_listitem"> <a href="<?= base_url("admin"); ?>">Articles</a></li>
+                    <li class="list-group-item admin_listitem"> <a href="<?= base_url("admin/addArticle"); ?>">Ajouter un article</a></li>
+            </ul>
+        </div>
 
         </div>
         <div class="col-md-8">
@@ -32,11 +32,11 @@
                     <tr>
                         <td><?php echo $item['title'];?></td>
                         <td><?php echo $item['content'];?></td>
-                        <td><?php echo $item['id_author'];?></td>
+                        <td><?php echo $item['username'];?></td>
                         <td><?php echo $item['created_at'];?></td>
                         <td>
-                            <button class="btn btn-success"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                            <a href="<?= base_url("admin/editArticle/".$item['id']); ?>" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                            <a href="<?= base_url("admin/removeArticle/".$item['id']); ?>" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
 

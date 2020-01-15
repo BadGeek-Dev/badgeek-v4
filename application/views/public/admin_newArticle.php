@@ -6,8 +6,8 @@
                     Menu d'Administation
                 </div>
                 <ul class="list-group admin_listgroup">
-                    <li class="list-group-item admin_listitem"> Articles</li>
-                    <li class="list-group-item admin_listitem"> Ajouter un article</li>
+                    <li class="list-group-item admin_listitem"> <a href="<?= base_url("admin"); ?>">Articles</a></li>
+                    <li class="list-group-item admin_listitem"> <a href="<?= base_url("admin/addArticle"); ?>">Ajouter un article</a></li>
                 </ul>
             </div>
 
@@ -35,7 +35,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <?= form_submit("send", "Envoyer", ['class' => "btn btn-default"]); ?>
+                            <?= form_submit("send", "Envoyer", ['class' => "btn btn-success"]); ?>
                         </div>
                     </div>
                     <?= form_close() ?>

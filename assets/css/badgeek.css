@@ -93,9 +93,11 @@ body
 .admin_card{
     background-color: black;
     border: red 2px solid;
-    /*border-radius: 2em;*/
 }
 
+.admin_card a{
+    color : white !important;
+}
 .admin_card_header{
     font-family: BGFont;
     font-size: larger;
@@ -123,4 +125,14 @@ body
 
 .table_admin td{
     border: none;
+}
+
+.table_admin tr{
+    color: white;
+    border-bottom:#404040 1px solid;
+}
+
+.table_admin tbody tr:hover{
+    background-color: gray;
+    font-weight: bold;
 }
