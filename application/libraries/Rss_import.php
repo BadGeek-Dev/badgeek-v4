@@ -32,12 +32,14 @@ class Rss_import {
             return 'RSS error';
         }
 
+        $added = 0;
+
         foreach ($rss as $item)
         {
-            $this->importEpisode($item);
+            $this->importEpisode($item) and ++$added;
         }
 
-        return true;
+        return $added;
     }
 
     /**
@@ -47,7 +49,9 @@ class Rss_import {
     {
         if (!in_array($item['title'], $this->titles)) {
             $this->createEpisode($item);
-        }   
+            return true;
+        }
+        return false;
     }
 
     /**

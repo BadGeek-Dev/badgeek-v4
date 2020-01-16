@@ -141,8 +141,6 @@ class Podcasts extends Badgeek_Controller
      */
     public function sync($id)
     {
-        
-
         $podcast = $this->podcasts_model->findOneById($id);
 
         $this->load->library('rss_import');

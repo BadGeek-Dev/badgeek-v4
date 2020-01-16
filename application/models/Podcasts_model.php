@@ -38,6 +38,15 @@ class Podcasts_model extends CI_Model {
         return $this->db->get_where('podcasts', ['id_createur' => $userId])->result();
     }
 
+    public function findByContainRss()
+    {
+        return $this->db->select('*')
+            ->from('podcasts')
+            ->where('rss !=', null)
+            ->get()
+            ->result();
+    }
+
     /**
      * Get the value of id
      */ 

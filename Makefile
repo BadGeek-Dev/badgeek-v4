@@ -28,3 +28,6 @@ database-import:
 
 db-migrate:
 	$(RUN) -w /badgeek php php index.php migrate
+
+podcast_sync:
+	$(RUN) -w /badgeek php php index.php task podcast_sync
