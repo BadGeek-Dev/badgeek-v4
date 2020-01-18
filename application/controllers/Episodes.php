@@ -23,6 +23,13 @@ class Episodes extends Badgeek_Controller
             redirect('badgeek/index');
         }
 
+        $config['upload_path'] = './uploads/podcasts/'.$podcast->id.'/';
+        if (!is_dir($config['upload_path'])) {
+            mkdir($config['upload_path'], 0777, TRUE);
+        }
+        $config['allowed_types'] = 'mp3';
+
+        $this->load->library('upload', $config);
         $this->load->helper('form');
         $this->load->library('form_validation');
 
@@ -32,10 +39,15 @@ class Episodes extends Badgeek_Controller
         if (false === $this->form_validation->run()) {
             
         } else {
+            if (!$this->upload->do_upload('lien_mp3')) {
+                dump(array('error' => $this->upload->display_errors()));
+            } else {
+                $this->episodes_model->setLien_mp3($this->upload->data()['full_path']);
+            }
+
             $this->episodes_model->setNumero($this->input->post('numero'));
             $this->episodes_model->setTitre($this->input->post('titre'));
             $this->episodes_model->setDescription($this->input->post('description'));
-            $this->episodes_model->setLien_mp3($this->input->post('lien_mp3'));
             $this->episodes_model->setInfos_mp3($this->input->post('infos_mp3'));
             $this->episodes_model->setTags($this->input->post('tags'));
 
@@ -76,7 +88,7 @@ class Episodes extends Badgeek_Controller
                 'class' => 'form-control',
             ],
             [        
-                'type' => 'text',
+                'type' => 'file',
                 'name' => 'lien_mp3',
                 'id' => 'lien_mp3',
                 'label' => 'Lien vers le mp3',

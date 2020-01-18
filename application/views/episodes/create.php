@@ -1,7 +1,7 @@
 <?php 
     echo validation_errors();
 
-    echo form_open('episodes/create/'.$podcast->id);
+    echo form_open_multipart('episodes/create/'.$podcast->id);
 
     foreach ($attributes as $attribute) {
         echo '<div class="form-group row">';
