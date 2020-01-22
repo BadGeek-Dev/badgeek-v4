@@ -33,14 +33,22 @@ class Admin extends Badgeek_Controller
         $this->load->library('form_validation');
         if ($this->form_validation->run()) {
             // validation ok, ajouter l'article en BDD
-            $this->template->load('public/admin_newArticle');
+//            $this->template->load('public/admin_newArticle');
 
             $this->load->database();
             $idauthor = $this->session->userdata('user_id'); // id auteur = id utilisateur courrant
-            $status = 1; //etat de l'article (visible / non visible). PAr défaut 1 pour visible
+
+            if (null !== $this->input->post('status')) {
+                $status = 1; //etat de l'article (visible / non visible). PAr défaut 1 pour visible
+            } else {
+                $status = 0;
+            }
             $sql = "Insert into badgeek.articles(content,id_author,status,title,created_at) values (?,?,?,?,NOW())";
             $this->db->query($sql, array($this->input->post('content'), $idauthor, $status, $this->input->post('title')));
 
+//            $flashMessage["message"] = ;
+            $this->session->set_flashdata('message', "article ajouté en base de données");
+            $this->session->set_flashdata('message-timeout', 10000);
             //ajouter message flash pour indiquer à l'utilisateur que l'article a été ajouté en bdd
             $this->index();
         } else {
@@ -60,14 +68,19 @@ class Admin extends Badgeek_Controller
         $article = (array)$result->result()[0];
         $article['id'] = $id;
         if ($this->form_validation->run()) {
-            echo "good";
             // validation ok, editer l'article en BDD
-            $status = 1; //etat de l'article (visible / non visible). PAr défaut 1 pour visible
+            if (null !== $this->input->post('status')) {
+                $status = 1; //etat de l'article (visible / non visible). Par défaut 1 pour visible
+            } else {
+                $status = 0;
+            }
             //mise a jour de l'article => SQL Update
-            $sql = "UPDATE badgeek.articles SET `content` = ?, title = ?, `created_at` = NOW() WHERE (`id` = ?);";
-            $this->db->query($sql, array($this->input->post('content'), $this->input->post('title'), $id));
+            $sql = "UPDATE badgeek.articles SET `content` = ?,stauts = ?, title = ?, `created_at` = NOW() WHERE (`id` = ?);";
+            $this->db->query($sql, array($this->input->post('content'), $status, $this->input->post('title'), $id));
             $this->index();
-            //ajouter message flash pour indiquer à l'utilisateur que l'article a été ajouté en bdd
+            //ajouter message flash pour indiquer à l'utilisateur que l'article a été modifié en bdd
+            $this->session->set_flashdata('message', "article mis à jour");
+            $this->session->set_flashdata('message-timeout', 10000);
         } else {
             //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
             $this->template->load('public/admin_editArticle', array("article" => $article));
@@ -81,12 +94,17 @@ class Admin extends Badgeek_Controller
         $sql = "DELETE FROM badgeek.articles WHERE id =?";
         $this->db->query($sql, array($id));
         // ajouter message flash indiquant que la suppression d'article s'est bien passée
+        $this->session->set_flashdata('message', "article supprimé");
+        $this->session->set_flashdata('message-timeout', 10000);
+
         $this->index();
     }
 
     private function checkAdminRights()
     {
         if (!$this->ion_auth->is_admin(($this->session->userdata('user_id')))) {
+            $this->session->set_flashdata('message', "Vous n'avez pas les droits d'accès");
+            $this->session->set_flashdata('message-timeout', 10000);
             redirect('/', 'refresh');
         }
     }

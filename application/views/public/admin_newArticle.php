@@ -6,8 +6,9 @@
                     Menu d'Administation
                 </div>
                 <ul class="list-group admin_listgroup">
-                    <li class="list-group-item admin_listitem"> <a href="<?= base_url("admin"); ?>">Articles</a></li>
-                    <li class="list-group-item admin_listitem"> <a href="<?= base_url("admin/addArticle"); ?>">Ajouter un article</a></li>
+                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin"); ?>">Articles</a></li>
+                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/addArticle"); ?>">Ajouter un
+                            article</a></li>
                 </ul>
             </div>
 
@@ -31,6 +32,12 @@
                         <div class="col-md-10">
                             <?= form_textarea(['name' => "content", 'id' => "content", 'class' => 'form-control']) ?>
                             <span class="help-block"><?= form_error('content'); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <?= form_label("Visible&nbsp:", "status", ['class' => "col-md-2 control-label "]) ?>
+                        <div class="col-md-10">
+                            <?= form_checkbox("status", "status", FALSE) ?>
                         </div>
                     </div>
                     <div class="form-group">

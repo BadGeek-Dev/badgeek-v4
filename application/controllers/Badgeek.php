@@ -8,7 +8,7 @@ class Badgeek extends Badgeek_Controller
     {
 
         $this->load->database();
-        $query = $this->db->query('SELECT badgeek.articles.id,badgeek.articles.title,badgeek.articles.content,badgeek.articles.created_at, badgeek.users.username FROM badgeek.articles INNER JOIN badgeek.users ON badgeek.articles.id_author = badgeek.users.id WHERE badgeek.articles.id > 0');
+        $query = $this->db->query('SELECT badgeek.articles.id,badgeek.articles.title,badgeek.articles.content,badgeek.articles.created_at, badgeek.users.username FROM badgeek.articles INNER JOIN badgeek.users ON badgeek.articles.id_author = badgeek.users.id WHERE badgeek.articles.status = 1');
         foreach ($query->result() as $row) {
             $data[] = (array)$row;
         }
