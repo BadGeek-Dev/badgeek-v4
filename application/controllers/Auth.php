@@ -1,20 +1,19 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-
+require_once APPPATH . 'core/Badgeek_Controller.php'; 
 /**
  * Class Auth
  * @property Ion_auth|Ion_auth_model $ion_auth        The ION Auth spark
  * @property CI_Form_validation      $form_validation The form validation library
  */
-class Auth extends CI_Controller
+class Auth extends Badgeek_Controller
 {
 	public $data = [];
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->database();
-		$this->load->library(['ion_auth', 'form_validation']);
-		$this->load->helper(['url', 'language', 'badgeek']);
+		$this->load->library('form_validation');
+		$this->load->helper(['url', 'language']);
 
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -65,48 +64,52 @@ class Auth extends CI_Controller
 	public function login()
 	{
 		$new_sid = $this->checkSid();
-		// validate form input
-		$this->form_validation->set_rules('identity', str_replace(':', '', $this->lang->line('login_identity_label')), 'required');
-		$this->form_validation->set_rules('password', str_replace(':', '', $this->lang->line('login_password_label')), 'required');
-
-		if ($this->form_validation->run() === TRUE)
+		if($new_sid)
 		{
-			// check to see if the user is logging in
-			// check for "remember me"
-			$remember = (bool)$this->input->post('remember');
 
-			if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
+			// validate form input
+			$this->form_validation->set_rules('identity', str_replace(':', '', $this->lang->line('login_identity_label')), 'required');
+			$this->form_validation->set_rules('password', str_replace(':', '', $this->lang->line('login_password_label')), 'required');
+			
+			if ($this->form_validation->run() === TRUE)
 			{
-				//if the login is successful
-				//redirect them back to the home page
-				// $this->session->set_flashdata('message', $this->ion_auth->messages());
-				// $this->session->set_flashdata('message-position', 'top-right');
-				// $this->session->set_flashdata('message-timeout', 2000);
-				setFlashdataMessage($this->session, $this->ion_auth->messages(), '', 'top-right', 2000);
-				$result = "";
-				$message = "";
+				// check to see if the user is logging in
+				// check for "remember me"
+				$remember = (bool)$this->input->post('remember');
+				
+				if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
+				{
+					//if the login is successful
+					//redirect them back to the home page
+					// $this->session->set_flashdata('message', $this->ion_auth->messages());
+					// $this->session->set_flashdata('message-position', 'top-right');
+					// $this->session->set_flashdata('message-timeout', 2000);
+					setFlashdataMessage($this->session, $this->ion_auth->messages(), '', 'top-right', 2000);
+					$result = "";
+					$message = "";
+				}
+				else
+				{
+					// if the login was un-successful
+					// redirect them back to the login page
+					$result = "KO";
+					$message = $this->ion_auth->errors();
+				}
 			}
 			else
 			{
-				// if the login was un-successful
-				// redirect them back to the login page
+				// the user is not logging in so display the login page
+				// set the flash data error message if there is one
 				$result = "KO";
-				$message = $this->ion_auth->errors();
+				$message = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 			}
+			$this->returnAjax($result, $message, $new_sid);
 		}
-		else
-		{
-			// the user is not logging in so display the login page
-			// set the flash data error message if there is one
-			$result = "KO";
-			$message = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-		}
-		$this->returnAjax($result, $message, $new_sid);
 	}
-
-	/**
-	 * Log the user out
-	 */
+		
+		/**
+		 * Log the user out
+		 */
 	public function logout()
 	{
 		// log the user out
@@ -192,66 +195,70 @@ class Auth extends CI_Controller
 	 */
 	public function forgot_password()
 	{
-		$new_sid = $this->checkSid(); 
-		// setting validation rules by checking whether identity is username or email
-		if ($this->config->item('identity', 'ion_auth') != 'email')
+		$new_sid = $this->checkSid();
+		if($new_sid)
 		{
-			$this->form_validation->set_rules('identity', $this->lang->line('forgot_password_identity_label'), 'required');
-		}
-		else
-		{
-			$this->form_validation->set_rules('identity', $this->lang->line('forgot_password_validation_email_label'), 'required|valid_email');
-		}
-		$result = "OK";
-		$message = "";
-		if ($this->form_validation->run() === FALSE)
-		{
-			// set any errors and display the form
-			$result = "KO";
-			$message = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-		}
-		else
-		{
-			$identity_column = $this->config->item('identity', 'ion_auth');
-			$identity = $this->ion_auth->where($identity_column, $this->input->post('identity'))->users()->row();
 
-			if (empty($identity))
+			// setting validation rules by checking whether identity is username or email
+			if ($this->config->item('identity', 'ion_auth') != 'email')
 			{
-				$result = "KO";
-				if ($this->config->item('identity', 'ion_auth') == 'email')
-				{
-					$this->ion_auth->set_error('forgot_password_email_not_found');
-				}
-				else
-				{
-					$this->ion_auth->set_error('forgot_password_identity_not_found');
-				}
-
-				$message = $this->ion_auth->errors();
+				$this->form_validation->set_rules('identity', $this->lang->line('forgot_password_identity_label'), 'required');
 			}
-
-			if($result == "OK")
+			else
 			{
-				// run the forgotten password method to email an activation code to the user
-				$forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
-				if ($forgotten)
-				{
-					// if there were no errors
-					$this->session->set_flashdata("message", $this->ion_auth->messages());
-				}
-				else
+				$this->form_validation->set_rules('identity', $this->lang->line('forgot_password_validation_email_label'), 'required|valid_email');
+			}
+			$result = "OK";
+			$message = "";
+			if ($this->form_validation->run() === FALSE)
+			{
+				// set any errors and display the form
+				$result = "KO";
+				$message = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+			}
+			else
+			{
+				$identity_column = $this->config->item('identity', 'ion_auth');
+				$identity = $this->ion_auth->where($identity_column, $this->input->post('identity'))->users()->row();
+				
+				if (empty($identity))
 				{
 					$result = "KO";
+					if ($this->config->item('identity', 'ion_auth') == 'email')
+					{
+						$this->ion_auth->set_error('forgot_password_email_not_found');
+					}
+					else
+					{
+						$this->ion_auth->set_error('forgot_password_identity_not_found');
+					}
+					
 					$message = $this->ion_auth->errors();
 				}
+				
+				if($result == "OK")
+				{
+					// run the forgotten password method to email an activation code to the user
+					$forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
+					if ($forgotten)
+					{
+						// if there were no errors
+						$this->session->set_flashdata("message", $this->ion_auth->messages());
+					}
+					else
+					{
+						$result = "KO";
+						$message = $this->ion_auth->errors();
+					}
+				}
 			}
+			$this->returnAjax($result, $message, $new_sid);
 		}
-		$this->returnAjax($result, $message, $new_sid);
 	}
-
-	/**
-	 * Reset password - final step for forgotten password
-	 *
+		
+		/**
+		 * Reset password - final step for forgotten password
+		 *
 	 * @param string|null $code The reset code
 	 */
 	public function reset_password($code = NULL)
@@ -284,13 +291,9 @@ class Auth extends CI_Controller
 				{
 					
 					// Premier passage, affichage du formulaire
-					$this->load->view('templates/header', array(
-						"sid" => refreshSid(),
-						"extras" => array("js" => array("assets/js/header.js"))));
-						$this->load->view("public/forgotten_password", array("email"=> $user->email, 
+					$this->template->load("public/forgotten_password", array("email"=> $user->email, 
 							"code"=> $code,
 							"user_id" => $user->id));
-						$this->load->view('templates/footer');
 				}
 			}
 			else
@@ -871,14 +874,18 @@ class Auth extends CI_Controller
 		$session_sid = $this->session->sid;
 		if($form_sid != $session_sid)
 		{
-			echo "Error";
-			redirect('', 'refresh');
+			$this->returnAjax("KO", "Erreur de check SID", refreshSid());
+			return false;
 		}
 		return refreshSid();
 	}
 
 	public function returnAjax($result = "OK", $message = "", $new_sid = 0, $extras = array())
 	{
+		if(!$new_sid)
+		{
+			$new_sid = refreshSid();
+		}
 		$message = str_replace($this->form_validation->get_error_prefix(), "", $message);
 		$message = str_replace($this->form_validation->get_error_suffix(), "<br/>", $message);
 		$tableau_retour = array("result" => $result, "message" => $message, "sid" => $new_sid);
@@ -894,54 +901,107 @@ class Auth extends CI_Controller
 	{
 		//Sécurité SID
 		$new_sid = $this->checkSid();
-		$tables = $this->config->item('tables', 'ion_auth');
-		$identity_column = $this->config->item('identity', 'ion_auth');
-		$this->data['identity_column'] = $identity_column;
-
-		// validate form input
-		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
-		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[password_confirm]');
-		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
-
-		if ($this->form_validation->run() === TRUE)
+		if($new_sid)
 		{
-			$email = strtolower($this->input->post('email'));
-			$identity = ($identity_column === 'email') ? $email : $this->input->post('identity');
-			$password = $this->input->post('password');
+			$tables = $this->config->item('tables', 'ion_auth');
+			$identity_column = $this->config->item('identity', 'ion_auth');
+			$this->data['identity_column'] = $identity_column;
+			
+			// validate form input
+			$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
+			$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[password_confirm]');
+			$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+			
+			if ($this->form_validation->run() === TRUE)
+			{
+				$email = strtolower($this->input->post('email'));
+				$identity = ($identity_column === 'email') ? $email : $this->input->post('identity');
+				$password = $this->input->post('password');
+			}
+			
+			if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $email))
+			{
+				//Tout est OK
+				$result = "OK";
+				$message = $this->ion_auth->messages();
+				$mailwebsite = substr($email, strpos($email, "@") + 1);
+			}
+			else
+			{
+				//Il y a des erreurs
+				$result = "KO";
+				$message = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+				$mailwebsite = null;
+			}
+			$this->returnAjax($result, $message, $new_sid, array("mailwebsite" => $mailwebsite));
 		}
-
-		if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $email))
-		{
-			//Tout est OK
-			$result = "OK";
-			$message = $this->ion_auth->messages();
-			$mailwebsite = substr($email, strpos($email, "@") + 1);
-		}
-		else
-		{
-			//Il y a des erreurs
-			$result = "KO";
-			$message = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-			$mailwebsite = null;
-		}
-		$this->returnAjax($result, $message, $new_sid, array("mailwebsite" => $mailwebsite));
 	}
 
+	public function updateProfile()
+	{
+		$new_sid = $this->checkSid();
+		if($new_sid)
+		{
+			$this->load->model(array('users_model', 'usersgroups_model'), "", true);
+			$this->users_model->updateUsername();
+			$post_filtered_on_groups = array_filter(array_keys($this->input->post()), function(&$element) {
+				return(substr($element, 0,6) == "group_");
+			});
+			foreach($post_filtered_on_groups as $libelle_post_group)
+			{
+				$checked = $this->input->post($libelle_post_group) == "true";
+				$id_group = substr($libelle_post_group, 6);
+				if($checked)
+				{
+					$this->usersgroups_model->insertUserInGroup($this->input->post("id"), $id_group);
+				}
+				else
+				{
+					$this->usersgroups_model->removeUserFromGroup($this->input->post("id"), $id_group);
+				}
+				
+			}
+			$this->session->reload = true;
+			setFlashdataMessage($this->session, "Profil mis à jour");
+			$this->returnAjax("OK","", $new_sid);
+		}
+	}
+		
 	public function uploadAvatar()
 	{
 		$id_user = $this->ion_auth->get_user_id();
 		$avatar_data = $_FILES["file_data"];
 		if ($id_user)
 		{
+			$current_avatar_extension = false;
+			$current_avatar = getAvatar($id_user);
+			if($current_avatar)
+			{
+				$explosion_current_avatar = explode(".", $current_avatar);
+				$current_avatar_extension = array_pop($explosion_current_avatar);
+			}
 			$filename = explode(".",$avatar_data["name"]);
 			$extension = array_pop($filename);
 			$config = array();
 			$config['source_image'] = realpath($avatar_data["tmp_name"]);
-			$config['new_image'] = realpath("assets")."/".$id_user.".".$extension;
+			$config['new_image'] = realpath("assets")."/pictures/avatars/".$id_user.".".$extension;
 			$config['width']         = 200;
 			$config['height']       = 200;
+			$config['maintain_ratio'] = FALSE;
 			$this->load->library('image_lib', $config);
-			echo json_encode(array());
+			if($this->image_lib->resize())
+			{
+				if($current_avatar_extension && $current_avatar_extension != $extension)
+				{
+					unlink(realpath("assets")."/pictures/avatars/".$id_user.".".$current_avatar_extension);
+				}
+				$this->returnAjax("OK", "/assets/pictures/avatars/".$id_user.".".$extension);
+			}
+			else
+			{
+				
+				$this->returnAjax("KO", "Problème lors de l'upload de l'avatar");
+			}
 		}
 		else
 		{
