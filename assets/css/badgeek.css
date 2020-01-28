@@ -4,24 +4,24 @@ body
     color:white;
 }
 
-
+	
 /* Général - Fonts */
 @font-face {
     font-family: 'BGFont';
     src: url('../font/BRLNSR.eot');
     src: url('../font/BRLNSR.eot?#iefix') format('embedded-opentype'),
-    url('../font/BRLNSR.TTF') format('truetype');
+         url('../font/BRLNSR.TTF') format('truetype');
 }
 @font-face {
     font-family: 'BTTFFont';
     src: url('../font/BTTF.eot');
     src: url('../font/BTTF.eot?#iefix') format('embedded-opentype'),
-    url('../font/BTTF.ttf') format('truetype');
+         url('../font/BTTF.ttf') format('truetype');
 }
 
 .animate-spin[class^="icon-"]:before, .animate-spin[class*=" icon-"]:before {
     display:block;
-}
+  }
 
 .padding-5
 {
@@ -67,7 +67,7 @@ body
 {
     display: none;
 }
-.carousel-indicators
+.carousel-indicators 
 {
     bottom:-35px;
     padding-bottom: 10px ;
@@ -97,6 +97,8 @@ body
 {
     background-color: black;
 }
+
+
 
 .admin_card{
     background-color: black;
@@ -157,4 +159,3 @@ body
     border-top: 1px solid white;
     margin: 1em 0;
     padding: 0;
-}
