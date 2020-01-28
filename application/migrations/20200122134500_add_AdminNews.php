@@ -7,13 +7,23 @@ class Migration_Add_AdminNews extends CI_Migration {
     public function up()
     {
         $fields = array(
-            'valid' => array('type' => 'BOOL')
+            'id' => array('type' => 'INT',
+                'auto_increment' => TRUE,
+                'unique'=> TRUE),
+            'id_author' => array('type' => 'INT'),
+            'title' => array('type' => 'VARCHAR'),
+            'content' => array('content' => 'VARCHAR',
+                'null' => TRUE),
+            'created_at' => array('type' => 'DATETIME'),
+            'status' =>array('type' => 'BOOL')
         );
 
-        $this->dbforge->add_column('podcasts', $fields);
+        $this->dbforge->add_field('articles', $fields);
+        $this->dbforge->create_table('articles');
     }
 
     public function down()
     {
+        $this->dbforge->drop_table('articles');
     }
 }
