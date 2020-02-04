@@ -102,7 +102,6 @@ class Podcasts extends Badgeek_Controller
      */
     public function index()
     {
-        $this->load->library('rss_import');
         $podcasts = $this->podcasts_model->findByUser($this->user->id);
 
         $this->template->load('podcasts/list', ['podcasts' => $podcasts]);

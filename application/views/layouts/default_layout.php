@@ -42,6 +42,10 @@
             </h1>
         </div>
         <div class="col-md-8 text-right">
+        <a href="<?= site_url("medias") ?>" class="btn btn-danger margin-right-10">
+            <i class='icon-user'></i>
+            Les podcasts
+        </a>
         <?php if ($this->ion_auth->logged_in()) : ?>
                 <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#profilModal">
                     <i class='icon-user'></i>
