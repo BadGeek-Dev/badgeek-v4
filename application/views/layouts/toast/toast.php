@@ -19,7 +19,6 @@
     }
 ?>
 <?php if (isset($flashdata_message)) : ?>
-<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
         <div class="toast" role="alert" aria-live="polite" aria-atomic="true" id="toast-message" data-autohide="true" data-delay="<?=$flashdata_timeout?>" style="<?=$flashdata_position?>">
                 <div class="toast-header">
                         <i class="icon-info-circled"></i>
@@ -32,5 +31,4 @@
                         <?= $flashdata_message ?>
                 </div>
         </div>
-</div>
 <?php endif; ?>

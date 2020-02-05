@@ -107,4 +107,34 @@ $(document).ready(function () {
             }
         });
     });
+    //Maj profil
+    $("#profil-submit-button").click(function () {
+        //Serialization du formulaire
+        var form_values = $("#profil-form").serializeArray();
+        $("#profil-form input[type=checkbox]").each(function (i, e) { form_values.push({name : e.name, value :e.checked})});
+        //Blocage du formulaire
+        $("#profil-form input").attr("disabled", true);
+        $("#profil-submit-button").data("save", $("#profil-submit-button").html()).html("<i class='icon-spin6'></i> Enregistrement en cours...");
+        //Appel au controller
+        $.ajax({
+            type: "POST",
+            url: ajaxUrl + "/auth/updateProfile",
+            data: form_values,
+            dataType: "JSON",
+            success: function (response) {
+                $("input[class='sid']").val(response.sid);
+                if (response.result == 'KO') 
+                {
+                    showKOMessage("profil-ko-message", response.message);
+                    $("#profil-submit-button").html($("#profil-submit-button").data("save"));
+                    $("#profil-form input").removeAttr("disabled");
+                }
+                else
+                {
+                    //Tout est OK, on est refresh.
+                    document.location.reload(true);
+                }
+            }
+        });
+    });
 });

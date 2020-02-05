@@ -7,11 +7,31 @@ class Badgeek_Controller extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->helper(['badgeek']);
+        $this->load->library('session');
+        $this->load->database();
+
+        
         $this->user = false;
         if($this->ion_auth->logged_in())
         {
-            $this->user = $this->ion_auth->user()->row();
+            if(empty($this->session->user) || key_exists("force_init", $_GET)  || !empty($this->session->reload))
+            {
+                $user = $this->ion_auth->user()->row();
+                $user->avatar = getAvatar($user->id);
+                $user->groups = $this->ion_auth->get_users_groups($user->id)->result();
+                $user->groups_id = $user->groups;
+                array_walk($user->groups_id, function(&$element){ $element = $element->id;});
+                $this->session->user = $user;
+                $this->session->unset_userdata("reload");
+            }
+            $this->user = $this->session->user;
         }
-       $this->load->helper(['badgeek']);
+
+        if(empty($this->session->groups) || key_exists("force_init", $_GET ))
+        {
+            $this->session->groups = $this->db->select()->where("id > 1")->get($this->ion_auth_model->tables['groups'])->result_array();
+        }
+        $this->groups = $this->session->groups;
     }
 }

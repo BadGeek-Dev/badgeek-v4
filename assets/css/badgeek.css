@@ -159,4 +159,103 @@ body
     border-top: 1px solid white;
     margin: 1em 0;
     padding: 0;
+=======
+body
+{
+    background: black;
+    color:white;
+}
+
+	
+/* Général - Fonts */
+@font-face {
+    font-family: 'BGFont';
+    src: url('../font/BRLNSR.eot');
+    src: url('../font/BRLNSR.eot?#iefix') format('embedded-opentype'),
+         url('../font/BRLNSR.TTF') format('truetype');
+}
+@font-face {
+    font-family: 'BTTFFont';
+    src: url('../font/BTTF.eot');
+    src: url('../font/BTTF.eot?#iefix') format('embedded-opentype'),
+         url('../font/BTTF.ttf') format('truetype');
+}
+
+.animate-spin[class^="icon-"]:before, .animate-spin[class*=" icon-"]:before {
+    display:block;
+  }
+
+.padding-5
+{
+    padding: 5px 5px 5px 5px;
+}
+.padding-10
+{
+    padding: 10px 10px 10px 10px;
+}
+.margin-top-10
+{
+    margin-top: 10px;
+}
+.margin-top-15
+{
+    margin-top: 15px;
+}
+.margin-left-10
+{
+    margin-left: 10px;
+}
+.marginright-10
+{
+    margin-right: 10px;
+}
+.margin-bottom-10
+{
+    margin-bottom: 10px;
+}
+.margin-10
+{
+    margin: 10px;
+}
+.margin-top-30
+{
+    margin-top: 30px;
+}
+.margin-auto
+{
+    margin: auto;
+}
+.cache
+{
+    display: none;
+}
+.carousel-indicators 
+{
+    bottom:-35px;
+    padding-bottom: 10px ;
+}
+
+.modal-black div
+{
+    color: black;
+}
+#toast-message
+{
+    width: 350px !important;
+}
+#toast-message .toast-header, .modal-header
+{
+    color: white !important;
+    background-color:red !important;
+}
+
+#toast-message .toast-body
+{
+    background-color: white;
+    color: black;
+}
+
+.background-black
+{
+    background-color: black;
 }
