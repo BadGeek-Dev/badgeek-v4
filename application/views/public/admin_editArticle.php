@@ -1,19 +1,4 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card rounded-lg admin_card">
-                <div class="card-header rounded-bottom admin_card_header">
-                    Menu d'Administation
-                </div>
-                <ul class="list-group admin_listgroup">
-                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin"); ?>">Articles</a></li>
-                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/addArticle"); ?>">Ajouter un
-                            article</a></li>
-                </ul>
-            </div>
 
-        </div>
-        <div class="col-md-8">
             <div class="container">
                 <div class="row">
                     <h2>Editer un Article</h2>
@@ -48,6 +33,3 @@
                     <?= form_close() ?>
                 </div>
             </div>
-        </div>
-    </div>
-</div>

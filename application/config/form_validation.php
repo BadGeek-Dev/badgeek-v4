@@ -6,24 +6,24 @@ $config = array(
         array(
             'field' => 'title',
             'label' => 'Titre',
-            'rules' => 'required'
+            'rules' => 'required|htmlspecialchars'
         ),
         array(
             'field' => 'content',
             'label' => 'Contenu',
-            'rules' => 'required'
+            'rules' => 'required|htmlspecialchars'
         )
     ),
     'admin/editArticle' => array(
         array(
             'field' => 'title',
             'label' => 'Titre',
-            'rules' => 'required'
+            'rules' => 'required|htmlspecialchars'
         ),
         array(
             'field' => 'content',
             'label' => 'Contenu',
-            'rules' => 'required'
+            'rules' => 'required|htmlspecialchars'
         )
     )
 );
