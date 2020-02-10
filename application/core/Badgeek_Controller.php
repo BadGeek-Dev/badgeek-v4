@@ -11,7 +11,6 @@ class Badgeek_Controller extends CI_Controller
         $this->load->library('session');
         $this->load->database();
 
-        
         $this->user = false;
         if($this->ion_auth->logged_in())
         {
@@ -33,5 +32,13 @@ class Badgeek_Controller extends CI_Controller
             $this->session->groups = $this->db->select()->where("id > 1")->get($this->ion_auth_model->tables['groups'])->result_array();
         }
         $this->groups = $this->session->groups;
+    }
+
+    public function checkAdminRights()
+    {
+        if (!$this->ion_auth->is_admin(($this->session->userdata('user_id')))) {
+            setFlashdataMessage($this->session,'Vous n\'avez pas les droits d\'accès','','top-right');
+            redirect('/', 'refresh');
+        }
     }
 }
