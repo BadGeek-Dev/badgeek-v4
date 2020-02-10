@@ -9,10 +9,7 @@ class Badgeek extends Badgeek_Controller
         $this->load->database();
         $this->load->model('Articles_model');
         $result = $this->Articles_model->getAllArticlesVisible();
-        $data = [];
-        foreach ($result as $row) {
-            $data[] = (array)$row;
-        }
-        $this->template->load('public/index', array("result" => $data));
+
+        $this->template->load('public/index', array("result" => $result));
     }
 }
