@@ -21,7 +21,7 @@
     <script src="<?php echo base_url('assets/node_modules/sortablejs/Sortable.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/dompurify/dist/purify.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>
-    <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/fileinput.min.js') ?>"></script>
+    <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/fileinput.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/themes/fas/theme.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/locales/fr.js') ?>"></script>
     <script src="<?php echo base_url('assets/js/badgeek.js') ?>"></script>
@@ -49,7 +49,7 @@
         <?php if ($this->ion_auth->logged_in()) : ?>
                 <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#profilModal">
                     <i class='icon-user'></i>
-                    Profil
+                   <?=$this->user->username ?: "Profil"?>
             </button>
             <a href="<?= site_url("podcasts") ?>" class="btn btn-danger margin-right-10">
                 <i class='icon-user'></i>
@@ -82,7 +82,7 @@
     <!-- MODAL CONNEXION -->
     <?php include(__DIR__."/modal/modal_connexion.php"); ?>
     <!-- MODAL PROFIL -->
-    <?php include(__DIR__."/modal/modal_profil.php"); ?>
+    <?php if($this->ion_auth->logged_in()) include(__DIR__."/modal/modal_profil.php"); ?>
 
     <?php echo $contents;?>
 
