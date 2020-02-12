@@ -36,26 +36,27 @@ class Episodes extends Badgeek_Controller
         $this->form_validation->set_rules('titre', 'Nom du podcast', 'required');
         $this->form_validation->set_rules('description', 'Description', 'required');
 
+        $errors = '';
+
         if (false === $this->form_validation->run()) {
             
         } else {
             if (!$this->upload->do_upload('lien_mp3')) {
-                dump(array('error' => $this->upload->display_errors()));
+                $errors = $this->upload->display_errors();
             } else {
                 $this->episodes_model->setLien_mp3($this->upload->data()['full_path']);
+                $this->episodes_model->setNumero($this->input->post('numero'));
+                $this->episodes_model->setTitre($this->input->post('titre'));
+                $this->episodes_model->setDescription($this->input->post('description'));
+                $this->episodes_model->setInfos_mp3($this->input->post('infos_mp3'));
+                $this->episodes_model->setTags($this->input->post('tags'));
+    
+                $this->episodes_model->setDate_publication($this->input->post('date_publication'));
+                $this->episodes_model->setId_podcast($podcast->id);
+    
+                $this->episodes_model->insert();
+                redirect('episodes/edit/'.$this->episodes_model->getId());
             }
-
-            $this->episodes_model->setNumero($this->input->post('numero'));
-            $this->episodes_model->setTitre($this->input->post('titre'));
-            $this->episodes_model->setDescription($this->input->post('description'));
-            $this->episodes_model->setInfos_mp3($this->input->post('infos_mp3'));
-            $this->episodes_model->setTags($this->input->post('tags'));
-
-            $this->episodes_model->setDate_publication($this->input->post('date_publication'));
-            $this->episodes_model->setId_podcast($podcast->id);
-
-            $this->episodes_model->insert();
-            redirect('episodes/edit/'.$this->episodes_model->getId());
         }
 
         $attributes = [
@@ -65,13 +66,16 @@ class Episodes extends Badgeek_Controller
                 'id' => 'numero',
                 'label' => 'Numéro',
                 'class' => 'form-control',
+                'value' => $this->input->post('numero'),
             ],
             [        
                 'type' => 'text',
                 'name' => 'titre',
                 'id' => 'titre',
-                'label' => 'Titre',
+                'label' => 'Titre *',
                 'class' => 'form-control',
+                'value' => $this->input->post('titre'),
+                'required' => true,
             ],
             [        
                 'type' => 'date',
@@ -79,13 +83,16 @@ class Episodes extends Badgeek_Controller
                 'id' => 'date_publication',
                 'label' => 'Date de publication',
                 'class' => 'form-control',
+                'value' => $this->input->post('date_publication'),
             ],
             [        
                 'type' => 'text',
                 'name' => 'description',
                 'id' => 'description',
-                'label' => 'Description',
+                'label' => 'Description *',
                 'class' => 'form-control',
+                'value' => $this->input->post('description'),
+                'required' => true,
             ],
             [        
                 'type' => 'file',
@@ -100,6 +107,7 @@ class Episodes extends Badgeek_Controller
                 'id' => 'infos_mp3',
                 'label' => 'Infos du mp3',
                 'class' => 'form-control',
+                'value' => $this->input->post('infos_mp3'),
             ],
             [        
                 'type' => 'text',
@@ -107,11 +115,13 @@ class Episodes extends Badgeek_Controller
                 'id' => 'tags',
                 'label' => 'Tags',
                 'class' => 'form-control',
+                'value' => $this->input->post('tags')
             ],
         ];
 
         $this->template->load('episodes/create', [
-            'podcast' => $podcast, 'attributes' => $attributes
+            'podcast' => $podcast, 'attributes' => $attributes,
+            'errors' => $errors,
             ]);
     }
 

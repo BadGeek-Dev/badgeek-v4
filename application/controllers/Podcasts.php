@@ -18,11 +18,39 @@ class Podcasts extends Badgeek_Controller
             redirect('badgeek/index');
         }
 
-        $this->load->helper('form');
+        $this->load->helper(['form', 'url']);
         $this->load->library('form_validation');
 
-        $this->form_validation->set_rules('titre', 'Nom du podcast', 'required');
-        $this->form_validation->set_rules('description', 'Description', 'required');
+        $config = [
+            [
+                'field' => 'titre',
+                'label' => 'Nom du podcast',
+                'rules' => 'required',
+            ],
+            [
+                'field' => 'description',
+                'label' => 'Description',
+                'rules' => 'required',
+            ],
+            [
+                'field' => 'lien',
+                'label' => 'Lien',
+                'rules' => 'callback_real_url',
+                'errors' => [
+                    'real_url' => 'Lien non accessible',
+                ],
+            ],
+            [
+                'field' => 'rss',
+                'label' => 'Rss',
+                'rules' => 'callback_real_url',
+                'errors' => [
+                    'real_url' => 'Rss non accessible',
+                ],
+            ],
+        ];
+
+        $this->form_validation->set_rules($config);
 
         if (false === $this->form_validation->run()) {
             
@@ -44,15 +72,21 @@ class Podcasts extends Badgeek_Controller
                 'type' => 'text',
                 'name' => 'titre',
                 'id' => 'titre',
-                'label' => 'Nom du podcast',
+                'label' => 'Nom du podcast *',
                 'class' => 'form-control',
+                'required' => true,
+                'value' => $this->input->post('titre'),
+                'maxlength' => 100,
             ],
             [        
                 'type' => 'text',
                 'name' => 'description',
                 'id' => 'description',
-                'label' => 'Description',
+                'label' => 'Description *',
                 'class' => 'form-control',
+                'required' => true,
+                'value' => $this->input->post('description'),
+                'maxlength' => 100,
             ],
             [        
                 'type' => 'text',
@@ -60,6 +94,8 @@ class Podcasts extends Badgeek_Controller
                 'id' => 'lien',
                 'label' => 'Site internet',
                 'class' => 'form-control',
+                'value' => $this->input->post('lien'),
+                'maxlength' => 100,
             ],
             [        
                 'type' => 'text',
@@ -67,6 +103,8 @@ class Podcasts extends Badgeek_Controller
                 'id' => 'image',
                 'label' => 'Logo',
                 'class' => 'form-control',
+                'value' => $this->input->post('image'),
+                'maxlength' => 100,
             ],
             [        
                 'type' => 'text',
@@ -74,6 +112,8 @@ class Podcasts extends Badgeek_Controller
                 'id' => 'rss',
                 'label' => 'Flux rss',
                 'class' => 'form-control',
+                'value' => $this->input->post('rss'),
+                'maxlength' => 100,
             ],
             [        
                 'type' => 'text',
@@ -81,6 +121,8 @@ class Podcasts extends Badgeek_Controller
                 'id' => 'tags',
                 'label' => 'Nuage de tags',
                 'class' => 'form-control',
+                'value' => $this->input->post('tags'),
+                'maxlength' => 100,
             ],
         ];
 

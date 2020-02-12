@@ -1,6 +1,10 @@
 <?php 
     echo validation_errors();
 
+    if ($errors) {
+        echo $errors;
+    }
+
     echo form_open_multipart('episodes/create/'.$podcast->id);
 
     foreach ($attributes as $attribute) {
