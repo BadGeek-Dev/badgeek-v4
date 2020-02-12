@@ -6,6 +6,11 @@ class Podcasts extends Badgeek_Controller
 {
     public function __construct() {
         parent::__construct();
+        //Check : on controle à chaque passage que l'utilisateur est connecté
+        //et qu'il s'agit d'un podcasteur.
+        if (!isPodcasteur()) {
+            redirect('/');
+        }
         $this->load->model('podcasts_model');
     }
 

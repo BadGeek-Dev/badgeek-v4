@@ -1,1 +1,1 @@
-Bienvenue
+Bienvenue <?=$this->ion_auth->logged_in() ? $this->user->username : ""?>
