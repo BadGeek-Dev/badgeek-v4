@@ -33,3 +33,25 @@ if ( ! function_exists('getAvatar'))
 		return FALSE;
 	}
 }
+
+if ( ! function_exists('isInGroupe'))
+{
+	function isAdmin()
+	{
+		return isInGroupe(1);
+	}
+	function isPoditeur()
+	{
+		return isInGroupe(2);
+	}
+	function isPodcasteur()
+	{
+		return isInGroupe(3);
+	}
+	function isInGroupe($group_id)
+	{
+		if(!key_exists("user", $_SESSION)) return false; // False si l'utilisateur n'est pas connecté
+		$user = $_SESSION['user'];
+		return in_array($group_id,  $user->groups_id);
+	}
+}
