@@ -14,8 +14,7 @@ class Medias extends Badgeek_Controller
      */
     public function index()
     {
-        $podcasts = $this->podcasts_model->findAll($this->user->id);
-
+        $podcasts = $this->podcasts_model->findAll();
         $this->template->load('medias/list', ['podcasts' => $podcasts]);
     }
 
@@ -41,5 +40,11 @@ class Medias extends Badgeek_Controller
             'episode' => $episode, 
             'podcast' => $podcast
             ]);
+    }
+
+    public function search($query)
+    {
+        $podcasts = $this->podcasts_model->findByTitre($query);
+        $this->template->load('medias/search', ['podcasts' => $podcasts, 'query' => $query]);
     }
 }

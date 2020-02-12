@@ -58,3 +58,4 @@ $route['episodes/create/(:num)'] = 'episodes/create/$1';
 $route['episodes/edit/(:num)'] = 'episodes/edit/$1';
 $route['medias/podcast/(:num)'] = 'medias/podcast/$1';
 $route['medias/episode/(:num)'] = 'medias/episode/$1';
+$route['medias/search/(:any)'] = 'medias/search/$1';

@@ -52,6 +52,15 @@ class Podcasts_model extends CI_Model {
             ->result();
     }
 
+    public function findByTitre($query)
+    {
+        return $this->db->select('*')
+            ->from('podcasts')
+            ->like('titre', $query)
+            ->get()
+            ->result();   
+    }
+
     /**
      * Get the value of id
      */ 
