@@ -14,7 +14,7 @@ class Medias extends Badgeek_Controller
      */
     public function index()
     {
-        $podcasts = $this->podcasts_model->findAll($this->user->id);
+        $podcasts = $this->podcasts_model->findAll();
 
         $this->template->load('medias/list', ['podcasts' => $podcasts]);
     }
