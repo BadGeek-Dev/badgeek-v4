@@ -54,7 +54,11 @@ class Episodes_model extends CI_Model {
 
     public function findByPodcast($podcast)
     {
-        return $this->db->get_where('episodes', ['id_podcast' => $podcast->id])->result();
+        return $this->db
+            ->where('id_podcast', $podcast->id)
+            ->order_by('date_publication')
+            ->get('episodes')
+            ->result();
     }
     
     /**

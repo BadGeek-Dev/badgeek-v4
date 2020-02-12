@@ -64,7 +64,7 @@ class Rss_import {
         $this->CI->episodes_model->setNumero('');
         $this->CI->episodes_model->setTitre($item['title']);
         $this->CI->episodes_model->setDescription($item['description']);
-        $this->CI->episodes_model->setDate_publication($item['pubDate']);
+        $this->CI->episodes_model->setDate_publication(new \DateTime($item['pubDate']));
         $this->CI->episodes_model->setLien_mp3($item['media']);
         $this->CI->episodes_model->setInfos_mp3('');
         $this->CI->episodes_model->setTags('');
