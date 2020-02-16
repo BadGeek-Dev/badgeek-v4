@@ -34,8 +34,7 @@ class Rss_import {
 
         $added = 0;
 
-        foreach ($rss as $item)
-        {
+        foreach ($rss as $item) {
             $this->importEpisode($item) and ++$added;
         }
 
@@ -61,7 +60,7 @@ class Rss_import {
     {
         $this->CI->episodes_model->refresh();
         
-        $this->CI->episodes_model->setNumero('');
+        $this->CI->episodes_model->setNumero($item['saison'].'_'.$item['episode']);
         $this->CI->episodes_model->setTitre($item['title']);
         $this->CI->episodes_model->setDescription($item['description']);
         $this->CI->episodes_model->setDate_publication(new \DateTime($item['pubDate']));
@@ -76,6 +75,8 @@ class Rss_import {
 
     public static function parseFile($data, $item)
 	{
+        $data['episode'] = (string)$item->itunes_episode;
+        $data['saison'] = (string)$item->itunes_season;
         $data['media'] = (string)$item->enclosure->attributes()['url'];
 		return $data;
 	}

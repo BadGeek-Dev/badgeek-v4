@@ -70,7 +70,12 @@ class Rss_Parser {
 		{
 			$rawFeed = file_get_contents($this->feed_uri);
 		}
-		$xml = new SimpleXmlElement($rawFeed);
+
+		//fix for using itunes infos
+		$itunesFeed = str_replace("itunes:", "itunes_", $rawFeed);
+
+		$xml = new SimpleXmlElement($itunesFeed);
+
 		if ($xml->channel)
 		{
 			// Assign the channel data

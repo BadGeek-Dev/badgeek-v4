@@ -6,4 +6,4 @@
     }
 ?>
 
-<a href="<?= site_url("podcasts/create") ?>" class="btn btn-danger margin-right-10">Creer un podcast</a>
+<a href="<?= site_url("podcasts/create") ?>" class="btn btn-danger margin-right-10">Ajouter un podcast</a>

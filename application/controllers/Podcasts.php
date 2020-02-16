@@ -6,8 +6,6 @@ class Podcasts extends Badgeek_Controller
 {
     public function __construct() {
         parent::__construct();
-        //Check : on controle à chaque passage que l'utilisateur est connecté
-        //et qu'il s'agit d'un podcasteur.
         if (!isPodcasteur()) {
             redirect('/');
         }
@@ -48,7 +46,7 @@ class Podcasts extends Badgeek_Controller
             [
                 'field' => 'rss',
                 'label' => 'Rss',
-                'rules' => 'callback_real_url',
+                'rules' => 'required|callback_real_url',
                 'errors' => [
                     'real_url' => 'Rss non accessible',
                 ],
@@ -115,10 +113,11 @@ class Podcasts extends Badgeek_Controller
                 'type' => 'text',
                 'name' => 'rss',
                 'id' => 'rss',
-                'label' => 'Flux rss',
+                'label' => 'Flux rss *',
                 'class' => 'form-control',
                 'value' => $this->input->post('rss'),
                 'maxlength' => 100,
+                'required' => true,
             ],
             [        
                 'type' => 'text',
