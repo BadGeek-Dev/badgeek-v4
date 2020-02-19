@@ -10,9 +10,8 @@ class Badgeek_Controller extends CI_Controller
         $this->load->helper(['badgeek']);
         $this->load->library('session');
         $this->load->database();
-
-        
         $this->user = false;
+
         if($this->ion_auth->logged_in())
         {
             if(empty($this->session->user) || key_exists("force_init", $_GET)  || !empty($this->session->reload))
@@ -33,5 +32,10 @@ class Badgeek_Controller extends CI_Controller
             $this->session->groups = $this->db->select()->where("id > 1")->get($this->ion_auth_model->tables['groups'])->result_array();
         }
         $this->groups = $this->session->groups;
+    }
+
+    public function real_url($url)
+    {
+        return filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED) || empty($url) ? true : false;
     }
 }
