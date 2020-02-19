@@ -60,10 +60,11 @@ class Rss_import {
     {
         $this->CI->episodes_model->refresh();
         
-        $this->CI->episodes_model->setNumero($item['saison'].'_'.$item['episode']);
+        $this->CI->episodes_model->setNumero(str_pad($item['saison'], 5, "0", STR_PAD_LEFT).'_'.str_pad($item['episode'],5,"0", STR_PAD_LEFT));
         $this->CI->episodes_model->setTitre($item['title']);
         $this->CI->episodes_model->setDescription($item['description']);
-        $this->CI->episodes_model->setDate_publication(new \DateTime($item['pubDate']));
+        $date_publication = new \DateTime($item['pubDate']);
+        $this->CI->episodes_model->setDate_publication($date_publication->format("Y-m-d H:i:s"));
         $this->CI->episodes_model->setLien_mp3($item['media']);
         $this->CI->episodes_model->setInfos_mp3('');
         $this->CI->episodes_model->setTags('');
