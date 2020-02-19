@@ -10,40 +10,30 @@ class Admin extends Badgeek_Controller
     {
         parent::__construct();
         $this->load->library('ion_auth');
+        $this->checkAdminRights();
+        $this->load->model('Articles_model');
+        $this->load->library('form_validation');
     }
 
     public function index()
     {
-        $this->checkAdminRights();
-
-        // récupération des données des articles
-        $this->load->database();
-        $this->load->model('Articles_model');
-        $result = (array)$this->Articles_model->getAllArticles();
-        foreach ($result as $row) {
-            $data[] = (array)$row;
-        }
-    $this->template->load_admin('public/admin', array("result" => $data));
+        $result = $this->Articles_model->getAllArticles();
+        $this->template->load_admin('public/admin', array("result" => $result));
     }
 
     public function addArticle()
     {
-        $this->checkAdminRights();
         $this->load->helper("form");
-        $this->load->library('form_validation');
+        $this->form_validation->set_rules('title','Titre','required|htmlspecialchars');
+        $this->form_validation->set_rules('content','Contenu','required|htmlspecialchars');
+
         if ($this->form_validation->run()) {
-            // validation ok, ajouter l'article en BDD
             $idauthor = $this->session->userdata('user_id'); // id auteur = id utilisateur courrant
-            if (null !== $this->input->post('status')) {
-                $status = 1; //etat de l'article (visible / non visible). PAr défaut 1 pour visible
-            } else {
-                $status = 0;
-            }
-            $this->load->database();
+            $status = null !== $this->input->post('status') ? 1 :0;   //etat de l'article (visible / non visible). PAr défaut 1 pour visible
             $this->load->model('Articles_model');
             $this->Articles_model->addArticle($this->input->post('title'),$this->input->post('content'),$idauthor,$status);
             setFlashdataMessage($this->session,'article ajouté en base de données','','top-right');
-            $this->index();
+            redirect('/admin');
         } else {
             //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
             $this->template->load_admin('public/admin_newArticle');
@@ -52,12 +42,10 @@ class Admin extends Badgeek_Controller
 
     public function editArticle($id)
     {
-        $this->checkAdminRights();
         $this->load->helper("form");
-        $this->load->library('form_validation');
-        $this->load->database();
-        $this->load->model('Articles_model');
-        $article=(array)$this->Articles_model->getArticleByID($id);
+        $this->form_validation->set_rules('title','Titre','required|htmlspecialchars');
+        $this->form_validation->set_rules('content','Contenu','required|htmlspecialchars');
+        $article=$this->Articles_model->getArticleByID($id);
 
         if ($this->form_validation->run()) {
             // validation ok, editer l'article en BDD
@@ -68,7 +56,7 @@ class Admin extends Badgeek_Controller
             }
             $this->Articles_model->updateArticleByID($id, $this->input->post('title'), $this->input->post('content'), $status);
             setFlashdataMessage($this->session,'article mis à jour','','top-right');
-            $this->index();
+            redirect('/admin','refresh');
         } else {
             //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
             $this->template->load_admin('public/admin_editArticle', array("article" => $article));
@@ -77,19 +65,9 @@ class Admin extends Badgeek_Controller
 
     public function removeArticle($id)
     {
-        $this->checkAdminRights();
-        $this->load->database();
-        $this->load->model('Articles_model');
         $this->Articles_model->deleteArticleByID($id);
         setFlashdataMessage($this->session,'article supprimé','','top-right');
-        $this->index();
+        redirect('/admin','refresh');
     }
 
-    private function checkAdminRights()
-    {
-        if (!$this->ion_auth->is_admin(($this->session->userdata('user_id')))) {
-            setFlashdataMessage($this->session,'Vous n\'avez pas les droits d\'accès','','top-right');
-            redirect('/', 'refresh');
-        }
-    }
 }

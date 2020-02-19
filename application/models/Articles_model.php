@@ -2,7 +2,6 @@
 
 class  Articles_model extends CI_Model
 {
-
     public $id;
     public $title;
     public $content;
@@ -102,7 +101,7 @@ class  Articles_model extends CI_Model
         $this->db->select('articles.id,title,content,created_at,username');
         $this->db->from('articles');
         $this->db->join('users', 'articles.id_author = users.id', 'inner');
-        $query = $this->db->get();
+         $query = $this->db->get();
         return $query->result();
     }
 

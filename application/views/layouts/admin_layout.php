@@ -11,10 +11,9 @@
                             article</a></li>
                 </ul>
             </div>
-
         </div>
         <div class="col-md-8">
-<?php echo $contents_admin ?>
+            <?php echo $contents_admin ?>
         </div>
     </div>
 </div>
