@@ -6,6 +6,9 @@ class Badgeek extends Badgeek_Controller
 {
     public function index()
     {
-        $this->template->load('public/index');
+
+        $this->load->model('Articles_model');
+        $result = $this->Articles_model->getAllArticlesVisible();
+        $this->template->load('public/index', array("result" => $result));
     }
 }

@@ -34,8 +34,15 @@ class Badgeek_Controller extends CI_Controller
         $this->groups = $this->session->groups;
     }
 
-    public function real_url($url)
+    public function checkAdminRights()
+    {
+        if (!$this->ion_auth->is_admin(($this->session->userdata('user_id')))) {
+            setFlashdataMessage($this->session,'Vous n\'avez pas les droits d\'accès','','top-right');
+            redirect('/', 'refresh');
+        }
+   public function real_url($url)
     {
         return filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED) || empty($url) ? true : false;
+
     }
 }

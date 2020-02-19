@@ -7,9 +7,8 @@ class Migration_Add_validation_podcast extends CI_Migration {
     public function up()
     {
         $fields = array(
-                'valid' => array('type' => 'BOOL')
+            'valid' => array('type' => 'BOOL')
         );
-        
         $this->dbforge->add_column('podcasts', $fields);
     }
 

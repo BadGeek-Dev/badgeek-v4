@@ -24,5 +24,10 @@ class Template {
 
         $this->CI->load->view('layouts/'.$layout, $this->template_data);
     }
-                               
+
+    function load_admin($view, $view_data = [])
+    {
+        $this->set('contents_admin', $this->CI->load->view($view, $view_data, TRUE));
+        $this->load('layouts/admin_layout',$this->template_data);
+    }
 }
