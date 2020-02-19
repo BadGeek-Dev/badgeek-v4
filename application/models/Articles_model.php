@@ -98,7 +98,7 @@ class  Articles_model extends CI_Model
 
     public function getAllArticles()
     {
-        $this->db->select('articles.id,title,content,created_at,username');
+        $this->db->select('articles.id,title,content,created_at,status,username');
         $this->db->from('articles');
         $this->db->join('users', 'articles.id_author = users.id', 'inner');
          $query = $this->db->get();

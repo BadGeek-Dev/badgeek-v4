@@ -7,7 +7,7 @@
                 </div>
                 <ul class="list-group admin_listgroup">
                     <li class="list-group-item admin_listitem"><a href="<?= base_url("admin"); ?>">Articles</a></li>
-                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/addArticle"); ?>">Ajouter un
+                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin_articles/addArticle"); ?>">Ajouter un
                             article</a></li>
                 </ul>
             </div>
