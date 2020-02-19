@@ -38,15 +38,15 @@ if ( ! function_exists('isInGroupe'))
 {
 	function isAdmin()
 	{
-		return isInGroupe(1);
+		return isInGroupe(Badgeek_constantes::AUTH_GROUP_ADMIN);
 	}
 	function isPoditeur()
 	{
-		return isInGroupe(2);
+		return isInGroupe(Badgeek_constantes::AUTH_GROUP_PODITEUR);
 	}
 	function isPodcasteur()
 	{
-		return isInGroupe(3);
+		return isInGroupe(Badgeek_constantes::AUTH_GROUP_PODCASTEUR);
 	}
 	function isInGroupe($group_id)
 	{
@@ -55,3 +55,5 @@ if ( ! function_exists('isInGroupe'))
 		return in_array($group_id,  $user->groups_id);
 	}
 }
+
+
