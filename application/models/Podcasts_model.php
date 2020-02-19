@@ -15,11 +15,50 @@ class Podcasts_model extends CI_Model {
     public function insert()
     {
         $this->db->insert('podcasts', $this);
+        $this->id = $this->db->insert_id();
     }
 
-    public function update()
+    public function update($podcast)
     {
-        $this->db->update('podcasts', $this, ['id' => $this->id]);
+        $this->db->update('podcasts', $podcast, ['id' => $podcast->id]);
+    }
+
+    public function delete($podcast)
+    {
+        $this->db->delete('podcasts', ['id' => $podcast->id]);
+    }
+
+    public function findOneById($id)
+    {
+        return $this->db->get_where('podcasts', ['id' => $id])->row();
+    }
+
+    public function findByUser($userId)
+    {
+        return $this->db->get_where('podcasts', ['id_createur' => $userId])->result();
+    }
+
+    public function findAll()
+    {
+        return $this->db->get('podcasts')->result();
+    }
+
+    public function findByContainRss()
+    {
+        return $this->db->select('*')
+            ->from('podcasts')
+            ->where('rss !=', null)
+            ->get()
+            ->result();
+    }
+
+    public function findByTitre($query)
+    {
+        return $this->db->select('*')
+            ->from('podcasts')
+            ->like('titre', $query)
+            ->get()
+            ->result();   
     }
 
     /**

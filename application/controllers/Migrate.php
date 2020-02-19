@@ -8,7 +8,6 @@ class Migrate extends CI_Controller {
 
         $this->input->is_cli_request() 
             or exit("Execute via command line: php index.php migrate");
-
         $this->load->library('migration');
     }
 
