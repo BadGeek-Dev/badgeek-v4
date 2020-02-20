@@ -6,7 +6,7 @@
 
 namespace Badgeek;
 
-class BreadcrumItem
+class BreadcrumbItem
 {
     private $libelle;
     private $link;

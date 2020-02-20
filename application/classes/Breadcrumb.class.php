@@ -7,9 +7,8 @@
 namespace Badgeek;
 
 use Badgeek;
-use Exception;
 
-require_once __DIR__."/BreadcrumItem.class.php";
+require_once __DIR__."/BreadcrumbItem.class.php";
 
 class Breadcrumb 
 {
@@ -17,40 +16,39 @@ class Breadcrumb
 
     public function __construct($liste_items = array())
     {
-        //On filtre les objets de type non BreadcrumItem
+        //On filtre les objets de type non BreadcrumbItem
         $this->setListe_items($liste_items);
     }
 
     public function __toString()
     {
-        $return = "";
-        if(count($this->getListe_items()))
-        {
-            $return .= '
+        if(count($this->getListe_items()) == 0) return "";
+        
+        $return = '
             <nav aria-label="breadcrumb">aria-current="page"
                 <ol class="breadcrumb">';
-            foreach ($this->getListe_items() as $item) {
-                if($item->getActive())
-                {
-                    $return .= '<li class="breadcrumb-item active" aria-current="page">'.$item->getLibelle().'</li>';
-                }
-                else 
-                {
-                    $return .= '<li class="breadcrumb-item"><a href="'.$item->getLink().'">'.$item->getLibelle().'</a></li>';
-                }
+        foreach ($this->getListe_items() as $item) {
+            if($item->getActive())
+            {
+                $return .= '<li class="breadcrumb-item active" aria-current="page">'.$item->getLibelle().'</li>';
             }
-            $return .='
+            else 
+            {
+                $return .= '<li class="breadcrumb-item"><a href="'.$item->getLink().'">'.$item->getLibelle().'</a></li>';
+            }
+        }
+        $return .='
                 </ol>
             </nav>';
-        }
+        return $return;
     }
     /**
-     * Ajoute un item à la liste
+     * Ajoute un item ï¿½ la liste
      *
-     * @param BreadcrumItem $item
+     * @param BreadcrumbItem $item
      * @return void
      */
-    public function addItem(BreadcrumItem $item)
+    public function addItem(BreadcrumbItem $item)
     {
         array_push($this->getListe_items(), $item);
     }
@@ -58,7 +56,7 @@ class Breadcrumb
     /**
      * Liste d'items
      *
-     * @return Badgeek\BreadcrumItem[]
+     * @return Badgeek\BreadcrumbItem[]
      */
     public function getListe_items()
     {
@@ -74,7 +72,7 @@ class Breadcrumb
     public function setListe_items(array $liste_items)
     {
         $this->liste_items = array_filter($liste_items, function ($item) {
-            return is_a($item, "BreadcrumItem");
+            return is_a($item, "BreadcrumbItem");
         });
 
         return $this;
