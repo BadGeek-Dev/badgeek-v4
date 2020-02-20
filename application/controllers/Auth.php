@@ -111,7 +111,7 @@ class Auth extends Badgeek_Controller
 				if($group->id == Badgeek_constantes::AUTH_GROUP_ADMIN) 
 				{
 					$is_admin = true;
-					continue;
+					break;
 				}
 			}
 			//Page de retour spếcifique pour les admins
