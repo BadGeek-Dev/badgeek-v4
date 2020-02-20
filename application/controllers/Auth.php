@@ -103,7 +103,19 @@ class Auth extends Badgeek_Controller
 				$result = "KO";
 				$message = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 			}
-			$this->returnAjax($result, $message, $new_sid);
+			$id_user = $this->ion_auth->user()->row()->id;
+			$groups = $this->ion_auth->get_users_groups($id_user)->result();
+			$is_admin = false;
+			foreach($groups as $group)
+			{
+				if($group->id == Badgeek_constantes::AUTH_GROUP_ADMIN) 
+				{
+					$is_admin = true;
+					break;
+				}
+			}
+			//Page de retour spếcifique pour les admins
+			$this->returnAjax($result, $message, $new_sid, array("redirect" => base_url().($is_admin ? "/admin" : "")));
 		}
 	}
 		

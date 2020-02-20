@@ -19,7 +19,8 @@ class Template {
     {
         $this->set('user', $this->CI->ion_auth->user()->row());
         $this->set('sid', $_SESSION["sid"] = rand(0, time()));
-        $this->set('extras', ['js' => ['assets/js/header.js']]);
+        $header_js_file = 'assets/js/header.js';
+        $this->set('extras', ['js' => [$header_js_file.'?'.filemtime($header_js_file)]]);
         $this->set('contents', $this->CI->load->view($view, $view_data, TRUE));
 
         $this->CI->load->view('layouts/'.$layout, $this->template_data);

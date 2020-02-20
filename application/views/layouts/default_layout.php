@@ -47,15 +47,17 @@
             Les podcasts
         </a>
         <?php if ($this->ion_auth->logged_in()) : ?>
-                <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#profilModal">
-                    <i class='icon-user'></i>
-                   <?=$this->user->username ?: "Profil"?>
-            </button>
-            <a href="<?= site_url("podcasts") ?>" class="btn btn-danger margin-right-10">
+            <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#profilModal">
                 <i class='icon-user'></i>
-                Mes podcasts
-            </a>
-            &nbsp;&nbsp;&nbsp;
+                <?=$this->user->username ?: "Profil"?>
+            </button>
+            <?php if (isPodcasteur()) : ?>
+                <a href="<?= site_url("podcasts") ?>" class="btn btn-danger margin-right-10">
+                    <i class='icon-user'></i>
+                    Mes podcasts
+                </a>
+                &nbsp;&nbsp;&nbsp;
+            <?php endif; ?>
             <a href="<?= site_url("auth/logout") ?>">
                 <button class="btn btn-dark margin-right-10">
                         <i class="icon-logout"></i>
