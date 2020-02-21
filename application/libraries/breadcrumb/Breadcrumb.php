@@ -4,10 +4,6 @@
  * Gestion du fil d'Ariane
  */
 
-namespace Badgeek;
-
-use Badgeek;
-
 require_once __DIR__."/BreadcrumbItem.class.php";
 
 class Breadcrumb 
@@ -25,7 +21,7 @@ class Breadcrumb
         if(count($this->getListe_items()) == 0) return "";
         
         $return = '
-            <nav aria-label="breadcrumb">aria-current="page"
+            <nav aria-label="breadcrumb" aria-current="page">
                 <ol class="breadcrumb">';
         foreach ($this->getListe_items() as $item) {
             if($item->getActive())
@@ -56,7 +52,7 @@ class Breadcrumb
     /**
      * Liste d'items
      *
-     * @return Badgeek\BreadcrumbItem[]
+     * @return BreadcrumbItem[]
      */
     public function getListe_items()
     {
@@ -67,14 +63,13 @@ class Breadcrumb
      * Met la liste d'items à jour.
      *
      * @param array $liste_items
-     * @return Badgeek\Breadcrum
+     * @return Breadcrum
      */
     public function setListe_items(array $liste_items)
     {
         $this->liste_items = array_filter($liste_items, function ($item) {
             return is_a($item, "BreadcrumbItem");
         });
-
         return $this;
     }
 

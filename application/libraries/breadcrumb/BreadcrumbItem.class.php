@@ -4,7 +4,6 @@
  * Gestion des items du fil d'Ariane
  */
 
-namespace Badgeek;
 
 class BreadcrumbItem
 {
@@ -12,7 +11,7 @@ class BreadcrumbItem
     private $link;
     private $active;
 
-    public function __construct($libelle, $link, $active)
+    public function __construct($libelle, $link, $active = false)
     {
         $this->libelle = $libelle;
         $this->link = $link;

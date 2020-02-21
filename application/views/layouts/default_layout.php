@@ -76,6 +76,9 @@
     <!-- MODAL PROFIL -->
     <?php if($this->ion_auth->logged_in()) include(__DIR__."/modal/modal_profil.php"); ?>
 
+    <!--FIL D'ARIANE-->
+    <?php if($breadcrumb) echo $breadcrumb; ?>
+
     <?php echo $contents;?>
 
     <br/><br/>
