@@ -74,7 +74,7 @@ $(document).ready(function () {
                 else
                 {
                     //Tout est OK, on est refresh.
-                    document.location.reload(true);
+                    window.location.href = response.redirect;   
                 }
             }
         });

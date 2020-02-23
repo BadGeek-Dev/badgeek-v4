@@ -17,10 +17,10 @@ class Template {
 
     function load($view, $view_data = [], $layout = 'default_layout')
     {
-        $_SESSION["sid"] = rand(0, time());
         $this->set('user', $this->CI->ion_auth->user()->row());
-        $this->set('sid', $_SESSION["sid"]);
-        $this->set('extras', ['js' => ['assets/js/header.js']]);
+        $this->set('sid', $_SESSION["sid"] = rand(0, time()));
+        $header_js_file = 'assets/js/header.js';
+        $this->set('extras', ['js' => [$header_js_file.'?'.filemtime($header_js_file)]]);
         $this->set('contents', $this->CI->load->view($view, $view_data, TRUE));
         //Gestion fil d'ariane
         $trace = debug_backtrace();
@@ -29,5 +29,10 @@ class Template {
         //Chargement du layout
         $this->CI->load->view('layouts/'.$layout, $this->template_data);
     }
-                               
+
+    function load_admin($view, $view_data = [])
+    {
+        $this->set('contents_admin', $this->CI->load->view($view, $view_data, TRUE));
+        $this->load('layouts/admin_layout',$this->template_data);
+    }
 }
