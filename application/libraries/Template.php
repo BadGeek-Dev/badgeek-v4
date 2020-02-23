@@ -22,7 +22,11 @@ class Template {
         $this->set('sid', $_SESSION["sid"]);
         $this->set('extras', ['js' => ['assets/js/header.js']]);
         $this->set('contents', $this->CI->load->view($view, $view_data, TRUE));
-        $this->set('breadcrumb', $_SESSION["breadcrumb"]);
+        //Gestion fil d'ariane
+        $trace = debug_backtrace();
+        $caller = $trace[1];
+        $this->set('breadcrumb', Breadcrumb::constructFromCaller($caller));
+        //Chargement du layout
         $this->CI->load->view('layouts/'.$layout, $this->template_data);
     }
                                

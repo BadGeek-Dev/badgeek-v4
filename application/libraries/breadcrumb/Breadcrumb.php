@@ -46,7 +46,9 @@ class Breadcrumb
      */
     public function addItem(BreadcrumbItem $item)
     {
-        array_push($this->getListe_items(), $item);
+        $liste_item = $this->getListe_items();
+        array_push($liste_item, $item);
+        $this->setListe_items($liste_item);
     }
 
     /**
@@ -73,8 +75,24 @@ class Breadcrumb
         return $this;
     }
 
-    public static function constructFromControllerFunction($controller, $function)
+    public static function constructFromCaller($caller)
+    {
+        return self::constructFromControllerFunction($caller['class'],$caller['function']);
+    }
+
+    public static function constructFromControllerFunction($controller, $function = "")
     {
         $breadcrumb = new self();
+        $item_accueil = new BreadcrumbItem("Accueil","/");
+        switch ($controller) {
+            case 'Badgeek':
+                $breadcrumb->addItem($item_accueil->setActive(true));
+                break;
+            
+            default:
+                $breadcrumb->addItem($item_accueil->setActive(true));
+                break;
+        }
+        return $breadcrumb;
     }
 }
