@@ -11,11 +11,11 @@ class BreadcrumbItem
     private $link;
     private $active;
 
-    public function __construct($libelle, $link, $active = false)
+    public function __construct($libelle, $link = false, $active = false)
     {
         $this->libelle = $libelle;
         $this->link = $link;
-        $this->active = $active;
+        $this->active = $active ?: ($link ? false : true);
     }
 
     /**

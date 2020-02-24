@@ -49,7 +49,18 @@ class Breadcrumb
         $liste_item = $this->getListe_items();
         array_push($liste_item, $item);
         $this->setListe_items($liste_item);
+        return $this;
     }
+
+    public function addItems(array $items)
+    {
+        $items = array_filter($items, function ($item) {
+            return is_a($item, "BreadcrumbItem");
+        });
+        foreach($items as $item) $this->addItem($item);
+        return $this;
+    }
+    
 
     /**
      * Liste d'items
@@ -88,7 +99,19 @@ class Breadcrumb
             case 'Badgeek':
                 $breadcrumb->addItem($item_accueil->setActive(true));
                 break;
-            
+            case 'Podcasts':
+                $breadcrumb->addItems(array($item_accueil, new BreadcrumbItem("Mes podcasts", "/".$controller, $function == "index")));
+                switch ($function) {
+                    case 'create':
+                        $breadcrumb->addItem(new BreadcrumbItem("Ajouter un podcast"));
+                        break;
+                    case 'edit':
+                        $breadcrumb->addItem(new BreadcrumbItem("Gérer le podcast"));
+                        break;
+                    default:
+                        break;
+                }
+                break;
             default:
                 $breadcrumb->addItem($item_accueil->setActive(true));
                 break;
