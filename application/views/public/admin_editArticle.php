@@ -1,9 +1,6 @@
 
             <div class="container">
                 <div class="row">
-                    <h2>Editer un Article</h2>
-                </div>
-                <div class="row">
                     <?= form_open('admin/editArticle/' . $article->id, ['class' => 'form-horizontal']); ?>
                     <div class="form-group">
                         <?= form_label("Titre&nbsp:", "title", ['class' => "col-md-2 control-label "]) ?>

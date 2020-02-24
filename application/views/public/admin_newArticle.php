@@ -1,9 +1,6 @@
 
             <div class="container">
                 <div class="row">
-                    <h2>Créer un nouvel Article</h2>
-                </div>
-                <div class="row">
                     <?= form_open('admin/addArticle', ['class' => 'form-horizontal']); ?>
                     <div class="form-group">
                         <?= form_label("Titre&nbsp:", "title", ['class' => "col-md-2 control-label "]) ?>

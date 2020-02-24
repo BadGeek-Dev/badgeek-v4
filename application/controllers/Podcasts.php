@@ -164,7 +164,8 @@ class Podcasts extends Badgeek_Controller
 
         $this->template->load('podcasts/edit', [
             'podcast' => $podcast,
-            'episodes' => $episodes
+            'episodes' => $episodes,
+            'breadcrumb' => array("podcast_name" => $podcast->titre)
             ]);
     }
 
