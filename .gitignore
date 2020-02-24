@@ -40,3 +40,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 .vscode/*
 !.vscode/launch.json
 assets/yarn-error.log
+assets/*.txt
+assets/pictures/avatars/
