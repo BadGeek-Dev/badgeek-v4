@@ -81,9 +81,6 @@ class Auth extends Badgeek_Controller
 				{
 					//if the login is successful
 					//redirect them back to the home page
-					// $this->session->set_flashdata('message', $this->ion_auth->messages());
-					// $this->session->set_flashdata('message-position', 'top-right');
-					// $this->session->set_flashdata('message-timeout', 2000);
 					setFlashdataMessage($this->session, $this->ion_auth->messages(), '', 'top-right', 2000);
 					$result = "";
 					$message = "";
@@ -103,15 +100,19 @@ class Auth extends Badgeek_Controller
 				$result = "KO";
 				$message = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 			}
-			$id_user = $this->ion_auth->user()->row()->id;
-			$groups = $this->ion_auth->get_users_groups($id_user)->result();
 			$is_admin = false;
-			foreach($groups as $group)
+			if(empty($message))
 			{
-				if($group->id == Badgeek_constantes::AUTH_GROUP_ADMIN) 
+				//Gestion du post login si celui ci est réussi
+				$id_user = $this->ion_auth->user()->row()->id;
+				$groups = $this->ion_auth->get_users_groups($id_user)->result();
+				foreach($groups as $group)
 				{
-					$is_admin = true;
-					break;
+					if($group->id == Badgeek_constantes::AUTH_GROUP_ADMIN) 
+					{
+						$is_admin = true;
+						break;
+					}
 				}
 			}
 			//Page de retour spếcifique pour les admins
