@@ -65,6 +65,7 @@ class Podcasts extends Badgeek_Controller
             $this->podcasts_model->setRss($this->input->post('rss'));
             $this->podcasts_model->setTags($this->input->post('tags'));
             $this->podcasts_model->setId_createur($this->user->id);
+            $this->podcasts_model->setValid(0);
 
             $this->podcasts_model->insert();
             redirect('podcasts/create/'.$this->podcasts_model->getId());

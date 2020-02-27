@@ -35,12 +35,22 @@ class Podcasts_model extends CI_Model {
 
     public function findByUser($userId)
     {
-        return $this->db->get_where('podcasts', ['id_createur' => $userId])->result();
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => 1])->result();
+    }
+
+    public function findByValid($valid)
+    {
+        $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, users.username, users.email');
+        $this->db->from('podcasts');
+        $this->db->where(['podcasts.valid' => $valid]);
+        $this->db->join('users', 'podcasts.id_createur = users.id', 'inner');
+        $query = $this->db->get();
+        return $query->result();
     }
 
     public function findAll()
     {
-        return $this->db->get('podcasts')->result();
+        return $this->db->get_where('podcasts', ['valid' => 1])->result();
     }
 
     public function findByContainRss()
