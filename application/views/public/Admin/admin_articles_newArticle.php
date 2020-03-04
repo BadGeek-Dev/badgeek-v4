@@ -1,6 +1,6 @@
             <div class="container">
                     <h2>Créer un nouvel Article</h2>
-                    <?= form_open('admin_articles/addArticle'); ?>
+                    <?= form_open_multipart('admin_articles/addArticle'); ?>
                     <div class="form-group">
                         <?= form_label("Titre&nbsp:", "title", ['class' => "control-label "]) ?>
                         <div >
@@ -15,6 +15,13 @@
                             <span class="help-block"><?= form_error('content'); ?>
                         </div>
                     </div>
+                <div class="form-group">
+                    <?= form_label("Illustration&nbsp:", "picture", ['class' => "control-label "]) ?>
+                    <div>
+                        <?= form_upload(['name' => "picture", 'id' => "picture", 'class' => 'form-control']) ?>
+                        <span class="help-block"><?php if(isset($error)){echo $error;} ?> </span>
+                    </div>
+                </div>
                     <div class="form-group">
                         <?= form_label("Visible&nbsp:", "status", ['class' => "control-label "]) ?>
                             <?= form_checkbox("status", "status", FALSE) ?>

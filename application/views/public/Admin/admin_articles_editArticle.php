@@ -1,6 +1,6 @@
                 <div class="container">
                     <h2>Editer un Article</h2>
-                    <?= form_open('admin_articles/editArticle/' . $article->id); ?>
+                    <?= form_open_multipart('admin_articles/editArticle/' . $article->id); ?>
                     <div class="form-group">
                         <?= form_label("Titre&nbsp:", "title", ['class' => "control-label "]) ?>
                         <div>
@@ -16,6 +16,16 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <?= form_label("Illustration&nbsp:", "picture", ['class' => "control-label "]) ?>
+                        <?php if($article->picture != null){ ?>
+                            <img class="ml-4 mb-4"src="<?php echo base_url('assets/pictures/news/'.$article->picture);?>"></img>
+                        <?php } ?>
+                        <div>
+                         <?= form_upload(['name' => "picture", 'id' => "picture", 'class' => 'form-control']) ?>
+                        <span class="help-block"><?php if(isset($error)){echo $error;} ?> </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <?= form_label("Visible&nbsp:", "status", ['class' => "control-label "]) ?>
                             <?= form_checkbox("status", "status", $article->status) ?>
                     </div>
@@ -26,4 +36,3 @@
                     </div>
                     <?= form_close() ?>
                 </div>
- 
