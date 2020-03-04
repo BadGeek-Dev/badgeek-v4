@@ -11,19 +11,19 @@ class BreadcrumbItem
     private $link;
     private $active;
 
-    public function __construct($libelle, $link = false, $active = false)
+    public function __construct($libelle, $link = false, $current = false)
     {
         $this->libelle = $libelle;
         $this->link = $link;
-        $this->active = $active ?: ($link ? false : true);
+        $this->current = $current || !$link;
     }
 
     /**
      * Get the value of active
      */
-    public function getActive()
+    public function getCurrent()
     {
-        return $this->active ?: false;
+        return $this->current ?: false;
     }
 
     /**
@@ -31,9 +31,9 @@ class BreadcrumbItem
      *
      * @return  self
      */
-    public function setActive($active)
+    public function setActive($current)
     {
-        $this->active = $active;
+        $this->current = $current;
 
         return $this;
     }
@@ -76,5 +76,15 @@ class BreadcrumbItem
         $this->libelle = $libelle;
 
         return $this;
+    }
+
+    public static function getBreadcrumbItemAccueil($current = false)
+    {
+        return new BreadcrumbItem("Accueil","/", $current);
+    }
+
+    public static function getBreadcrumbItemAccueilAdmin($current = false)
+    {
+        return new BreadcrumbItem("Administration", "/admin", $current);
     }
 }

@@ -33,11 +33,9 @@ class Template {
         $this->set('extras', ['js' => [$header_js_file.'?'.filemtime($header_js_file)]]);
         $this->set('contents', $this->CI->load->view($view, $view_data, TRUE));
         //Gestion fil d'ariane
-        if($this->isEmpty('breadcrumb'))
+        if($this->isEmpty('breadcrumb') && key_exists('liste_BreadcrumbItems', $view_data) && is_array($view_data['liste_BreadcrumbItems']))
         {
-            $trace = debug_backtrace();
-            $caller = $trace[1];
-            $this->set('breadcrumb', Breadcrumb::constructFromCaller($caller, key_exists("breadcrumb", $view_data) ? $view_data["breadcrumb"] : []));
+            $this->set('breadcrumb', new Breadcrumb($view_data['liste_BreadcrumbItems']));
         }
         //Chargement du layout
         $this->CI->load->view('layouts/'.$layout, $this->template_data);
@@ -47,7 +45,10 @@ class Template {
     {
         $trace = debug_backtrace();
         $caller = $trace[1];
-        $this->set('breadcrumb', Breadcrumb::constructFromCaller($caller, key_exists("breadcrumb", $view_data) ? $view_data["breadcrumb"] : []));
+        if(key_exists('liste_BreadcrumbItems', $view_data) && is_array($view_data['liste_BreadcrumbItems']))
+        {
+            $this->set('breadcrumb', new Breadcrumb($view_data['liste_BreadcrumbItems']));
+        }
         $this->set('contents_admin', $this->CI->load->view($view, $view_data, TRUE));
         $this->load('layouts/admin_layout',$this->template_data);
     }

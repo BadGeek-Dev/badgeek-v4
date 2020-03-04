@@ -120,9 +120,14 @@ class Episodes extends Badgeek_Controller
         ];
 
         $this->template->load('episodes/create', [
-            'podcast' => $podcast, 'attributes' => $attributes,
+            'podcast' => $podcast, 
+            'attributes' => $attributes,
             'errors' => $errors,
-            ]);
+            "liste_BreadcrumbItems" => $this->getBreadcrumbItems([
+                new BreadcrumbItem($podcast->titre,"/podcasts/edit/".$podcast->id),
+                new BreadcrumbItem("Nouvel épisode")
+            ])
+        ]);
     }
 
     /**
@@ -134,8 +139,13 @@ class Episodes extends Badgeek_Controller
         $podcast = $this->podcasts_model->findOneById($episode->id_podcast);
 
         $this->template->load('episodes/edit', [
-            'episode' => $episode, 'podcast' => $podcast
-            ]);
+            'episode' => $episode, 
+            'podcast' => $podcast,
+            "liste_BreadcrumbItems" => $this->getBreadcrumbItems([
+                new BreadcrumbItem($podcast->titre,"/podcasts/edit/".$podcast->id),
+                new BreadcrumbItem($episode->titre)
+            ])
+        ]);
     }
 
     /**
@@ -151,5 +161,16 @@ class Episodes extends Badgeek_Controller
         }
 
         redirect('/podcasts/edit/'.$podcast->id);
+    }
+
+    private function initBreadcrumbItem($current = false)
+    {
+        return array(BreadcrumbItem::getBreadcrumbItemAccueil(), new BreadcrumbItem("Mes podcasts", "/podcasts", $current));
+    }
+
+    private function getBreadcrumbItems($extra_liste_items)
+    {
+        if(!is_array($extra_liste_items)) $extra_liste_items = [$extra_liste_items];
+        return array_merge($this->initBreadcrumbItem(), array_values($extra_liste_items));
     }
 }

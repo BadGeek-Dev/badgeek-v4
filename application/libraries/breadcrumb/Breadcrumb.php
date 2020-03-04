@@ -24,7 +24,7 @@ class Breadcrumb
             <nav aria-label="breadcrumb" aria-current="page">
                 <ol class="breadcrumb">';
         foreach ($this->getListe_items() as $item) {
-            if($item->getActive())
+            if($item->getCurrent())
             {
                 $return .= '<li class="breadcrumb-item active" aria-current="page">'.$item->getLibelle().'</li>';
             }
@@ -85,51 +85,5 @@ class Breadcrumb
         });
         return $this;
     }
-
-    public static function constructFromCaller($caller, $extras = array())
-    {
-        return self::constructFromControllerFunction($caller['class'],$caller['function'], $extras);
-    }
-
-    public static function constructFromControllerFunction($controller, $function = "", $extras = array())
-    {
-        $breadcrumb = new self();
-        $item_accueil = new BreadcrumbItem("Accueil","/");
-        switch ($controller) {
-            case 'Admin':
-                $breadcrumb->addItem(new BreadcrumbItem("Administration", "/admin", $function == 'index'));
-                switch ($function) {
-                    case 'addArticle':
-                        $breadcrumb->addItem(new BreadcrumbItem("Ecrire un nouvel article"));
-                        break;
-                    case 'editArticle':
-                        $breadcrumb->addItem(new BreadcrumbItem("Editer un article"));
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 'Badgeek':
-                $breadcrumb->addItem($item_accueil->setActive(true));
-                break;
-            case 'Podcasts':
-                $breadcrumb->addItems(array($item_accueil, new BreadcrumbItem("Mes podcasts", "/".$controller, $function == "index")));
-                switch ($function) {
-                    case 'create':
-                        $breadcrumb->addItem(new BreadcrumbItem("Ajouter un podcast"));
-                        break;
-                    case 'edit':
-                        $libelle_breadcrumb = key_exists("podcast_name", $extras) ? $extras["podcast_name"] : false;
-                        $breadcrumb->addItem(new BreadcrumbItem($libelle_breadcrumb ?: "Gérer le podcast"));
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            default:
-                $breadcrumb->addItem($item_accueil->setActive(true));
-                break;
-        }
-        return $breadcrumb;
-    }
+    
 }

@@ -15,10 +15,15 @@ class Admin extends Badgeek_Controller
         $this->load->library('form_validation');
     }
 
+
     public function index()
     {
         $result = $this->Articles_model->getAllArticles();
-        $this->template->load_admin('public/admin', array("result" => $result));
+        //Gestion fil d'Ariane
+        $this->template->load_admin('public/admin', array(
+            "result" => $result, 
+            "liste_BreadcrumbItems" => $this->initBreadcrumbItem(true)
+        ));
     }
 
     public function addArticle()
@@ -36,7 +41,9 @@ class Admin extends Badgeek_Controller
             redirect('/admin');
         } else {
             //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
-            $this->template->load_admin('public/admin_newArticle');
+            $this->template->load_admin('public/admin_newArticle', array(
+                "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem("Ecrire un nouvel article"))
+            ));
         }
     }
 
@@ -59,7 +66,10 @@ class Admin extends Badgeek_Controller
             redirect('/admin','refresh');
         } else {
             //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
-            $this->template->load_admin('public/admin_editArticle', array("article" => $article));
+            $this->template->load_admin('public/admin_editArticle', array(
+                "article" => $article,
+                "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem("Editer l'article '".$article->title."'"))
+            ));
         }
     }
 
@@ -68,6 +78,17 @@ class Admin extends Badgeek_Controller
         $this->Articles_model->deleteArticleByID($id);
         setFlashdataMessage($this->session,'article supprimé','','top-right');
         redirect('/admin','refresh');
+    }
+
+    private function initBreadcrumbItem($current = false)
+    {
+        return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin($current));
+    }
+
+    private function getBreadcrumbItems($extra_liste_items)
+    {
+        if(!is_array($extra_liste_items)) $extra_liste_items = [$extra_liste_items];
+        return array_merge($this->initBreadcrumbItem(), array_values($extra_liste_items));
     }
 
 }
