@@ -8,7 +8,7 @@ class Badgeek extends Badgeek_Controller
     {
         $this->load->model('Articles_model');
         $result = $this->Articles_model->getFirstArticleVisible();
-        if($this->Articles_model->multipleArticleVisible() ) {
+        if($this->Articles_model->isMultipleArticleVisible() ) {
             $nextID = $this->Articles_model->getNextArticleVisibleID(0);
         }
         $this->template->load('public/index', array("result" => $result, "nextID" => $nextID));
@@ -20,7 +20,9 @@ class Badgeek extends Badgeek_Controller
         $nextID = $this->Articles_model->getNextArticleVisibleID($id);
         $previousID = $this->Articles_model->getPreviousArticleVisibleID($id);
         $html=' <h3>'.$article->title.'</h3><p class="font-italic text-secondary"> par '.$article->username.' le '.$article->created_at.'</p><p>'.$article->content.'</p>';
-        echo json_encode(array('html' => $html, 'previousID' => $previousID, 'nextID' => $nextID));
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(array('html' => $html, 'previousID' => $previousID, 'nextID' => $nextID)));
 
     }
 }
