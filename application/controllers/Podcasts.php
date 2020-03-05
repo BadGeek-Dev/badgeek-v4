@@ -156,16 +156,127 @@ class Podcasts extends Badgeek_Controller
     /**
      * 
      */
-    public function edit($id)
+    public function display($id)
     {
         $this->load->model('episodes_model');
         $podcast = $this->podcasts_model->findOneById($id);
         $episodes = $this->episodes_model->findByPodcast($podcast);
 
-        $this->template->load('podcasts/edit', [
+        $this->template->load('podcasts/display', [
             'podcast' => $podcast,
             'episodes' => $episodes
             ]);
+    }
+
+    public function edit($id)
+    {
+        $this->load->model('episodes_model');
+        $podcast = $this->podcasts_model->findOneById($id);
+
+        //TODO: check user access, podcast exist
+
+        $this->load->helper(['form', 'url']);
+        $this->load->library('form_validation');
+
+        $config = [
+            [
+                'field' => 'titre',
+                'label' => 'Nom du podcast',
+                'rules' => 'required',
+            ],
+            [
+                'field' => 'description',
+                'label' => 'Description',
+                'rules' => 'required',
+            ],
+            [
+                'field' => 'lien',
+                'label' => 'Lien',
+                'rules' => 'callback_real_url',
+                'errors' => [
+                    'real_url' => 'Lien non accessible',
+                ],
+            ],
+            [
+                'field' => 'rss',
+                'label' => 'Rss',
+                'rules' => 'required|callback_real_url',
+                'errors' => [
+                    'real_url' => 'Rss non accessible',
+                ],
+            ],
+        ];
+
+        $this->form_validation->set_rules($config);
+
+        if (false === $this->form_validation->run()) {
+            
+        } else {
+            $podcast->titre = $this->input->post('titre');
+            $podcast->description = $this->input->post('description');
+            $podcast->lien = $this->input->post('lien');
+            $podcast->image = $this->input->post('image');
+            $podcast->tags = $this->input->post('tags');
+            $podcast->validate = 0;
+
+            $this->podcasts_model->update($podcast);
+            redirect('podcasts/create/'.$this->podcasts_model->getId());
+        }
+
+        $attributes = [
+            [        
+                'type' => 'text',
+                'name' => 'titre',
+                'id' => 'titre',
+                'label' => 'Nom du podcast *',
+                'class' => 'form-control',
+                'required' => true,
+                'value' => $this->podcast->titre,
+                'maxlength' => 100,
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'description',
+                'id' => 'description',
+                'label' => 'Description *',
+                'class' => 'form-control',
+                'required' => true,
+                'value' => $this->podcast->description,
+                'maxlength' => 100,
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'lien',
+                'id' => 'lien',
+                'label' => 'Site internet',
+                'class' => 'form-control',
+                'value' => $this->podcast->lien,
+                'maxlength' => 100,
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'image',
+                'id' => 'image',
+                'label' => 'Logo',
+                'class' => 'form-control',
+                'value' => $this->podcast->image,
+                'maxlength' => 100,
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'tags',
+                'id' => 'tags',
+                'label' => 'Nuage de tags',
+                'class' => 'form-control',
+                'value' => $this->podcast->tags,
+                'maxlength' => 100,
+            ],
+        ];
+
+        $this->template->load('podcasts/edit', [
+            'podcast' => $podcast,
+            'attributes' => $attributes
+        ]);
     }
 
     public function delete($id)

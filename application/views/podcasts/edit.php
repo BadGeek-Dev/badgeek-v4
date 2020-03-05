@@ -1,30 +1,19 @@
-<p><a href="<?php echo site_url("podcasts") ?>">
-    Podcasts
-    </a>/
-    <a href="<?php echo site_url("podcasts/edit/".$podcast->id) ?>">
-    <?php echo $podcast->titre ?>
-    </a>
-</p>
+<?php 
+    echo validation_errors();
 
-<h2><?php echo $podcast->titre ?></h2>
+    echo form_open('podcasts/edit');
 
-<?php if (!$podcast->rss) :?>
-    <a href="<?= site_url("episodes/create/".$podcast->id) ?>" class="btn btn-danger margin-right-10">Ajouter un épisode</a>
-<?php endif ?>
-<a href="<?= site_url("podcasts/sync/".$podcast->id) ?>" class="btn btn-danger margin-right-10">Synchroniser avec le flux RSS</a>
-<a 
-    href="<?= site_url("podcasts/delete/".$podcast->id) ?>" 
-    class="btn btn-danger margin-right-10" 
-    onclick="return confirm('Supprimer <?php echo $podcast->titre ?> ? cette action est définitive.')"
-    >
-    Supprimer le podcast
-</a>
-
-<h3>Episodes</h3>
-
-<?php
-    foreach ($episodes as $episode) {
-        echo '<a href="'.site_url("episodes/edit/".$episode->id).'">'.$episode->titre.'</a>';
-        echo "<br/>";
+    foreach ($attributes as $attribute) {
+        echo '<div class="form-group row">';
+            echo form_label($attribute['label'], null, ['class' => 'col-md-4 col-form-label text-right']);
+            echo '<div class="col-md-6">';
+            echo form_input($attribute);
+            echo '</div>';
+        echo '</div>';
     }
+    echo '<div class="row">';
+        echo '<div class="col-md-12 text-center">';
+            echo form_submit('submit', 'Créer', ['class' => 'btn btn-danger']);
+        echo '</div>';
+    echo '</div>';
 ?>
