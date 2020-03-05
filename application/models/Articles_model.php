@@ -90,7 +90,6 @@ class  Articles_model extends CI_Model
     public function setIdAuthor($idAuthor)
     {
         $this->title = $idAuthor;
-
         return $this;
     }
 
@@ -125,6 +124,16 @@ class  Articles_model extends CI_Model
         return $query->result()[0];
     }
 
+    public function getFirstArticleVisible()
+    {
+        $this->db->select('articles.id,title,content,created_at,username');
+        $this->db->from('articles');
+        $this->db->join('users', 'articles.id_author = users.id', 'inner');
+        $this->db->where('status = 1');
+        $query = $this->db->get();
+        return $query->row();
+    }
+
     public function addArticle($title, $content, $id_author, $status)
     {
         $date = new DateTime();
@@ -154,7 +163,43 @@ class  Articles_model extends CI_Model
     public function deleteArticleByID($id)
     {
         $this->db->delete('articles', array('id'=> $id));
+    }
 
+    public function isMultipleArticleVisible(){
+        $this->db->select('articles.id');
+        $this->db->from('articles');
+        $this->db->where('status = 1');
+        $query = $this->db->get();
+        return $query->num_rows()>0 ? true : false;
+    }
+
+    public function getNextArticleVisibleID($id){
+        $this->db->select('articles.id');
+        $this->db->limit(2);
+        $this->db->from('articles');
+        $this->db->where('status = 1');
+        $this->db->where('articles.id >=', $id);
+        $result = $this->db->get()->result();
+        if(count($result)==2){
+            return $result[1]->id;
+        }else{
+            return 0;
+        }
+    }
+
+    public function getPreviousArticleVisibleID($id){
+        $this->db->select('articles.id');
+        $this->db->limit(2);
+        $this->db->from('articles');
+        $this->db->order_by('id','DESC');
+        $this->db->where('status = 1');
+        $this->db->where('articles.id <=', $id);
+        $result = $this->db->get()->result();
+        if(count($result)==2){
+            return $result[1]->id;
+        }else{
+            return 0;
+        }
     }
 
 }
