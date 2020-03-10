@@ -149,7 +149,7 @@ class  Articles_model extends CI_Model
         return $query->result()[0];
     }
 
-    public function addArticleWithPicture($title, $content, $id_author, $status, $picture)
+    public function addArticle($title, $content, $id_author, $status, $picture = false)
     {
         $date = new DateTime();
         $date = $date->format('Y-m-d H:i:s');
@@ -159,55 +159,33 @@ class  Articles_model extends CI_Model
         $this->db->set('id_author', $id_author);
         $this->db->set('status', $status);
         $this->db->set('created_at', $date);
-        $this->db->set('picture', $picture);
+        if($picture) $this->db->set('picture', $picture);
         $this->db->insert('articles');
 
     }
 
-    public function addArticleWithoutPicture($title, $content, $id_author, $status)
+    public function updateArticle($id,$title, $content, $status, $picture = false)
     {
         $date = new DateTime();
         $date = $date->format('Y-m-d H:i:s');
 
         $this->db->set('title', $title);
         $this->db->set('content', $content);
-        $this->db->set('id_author', $id_author);
-        $this->db->set('status', $status);
+        $this->db->set('status', $status ? 1 : 0);
         $this->db->set('created_at', $date);
-        $this->db->insert('articles');
-
-    }
-
-    public function updateArticleByIDWithPicture($id,$title, $content, $status, $picture)
-    {
-        $date = new DateTime();
-        $date = $date->format('Y-m-d H:i:s');
-
-        $this->db->set('title', $title);
-        $this->db->set('content', $content);
-        $this->db->set('status', $status);
-        $this->db->set('created_at', $date);
-        $this->db->set('picture', $picture);
-        $this->db->where('id',$id);
-        $this->db->update('articles');
-    }
-
-    public function updateArticleByIDWithoutPicture($id,$title, $content, $status)
-    {
-        $date = new DateTime();
-        $date = $date->format('Y-m-d H:i:s');
-
-        $this->db->set('title', $title);
-        $this->db->set('content', $content);
-        $this->db->set('status', $status);
-        $this->db->set('created_at', $date);
+        if($picture) $this->db->set('picture', $picture);
         $this->db->where('id',$id);
         $this->db->update('articles');
     }
 
     public function deleteArticleByID($id)
     {
-        $this->db->delete('articles', array('id'=> $id));
+        $picture = $this->getArticleByID($id)->picture; 
+        if($picture)
+        {
+            unlink("assets/pictures/news/".$picture);
+        }
+        return $this->db->delete('articles', array('id'=> $id));
 
     }
 

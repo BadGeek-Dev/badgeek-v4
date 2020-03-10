@@ -24,7 +24,7 @@
                 </div>
                     <div class="form-group">
                         <?= form_label("Visible&nbsp:", "status", ['class' => "control-label "]) ?>
-                            <?= form_checkbox("status", "status", FALSE) ?>
+                            <?= form_checkbox("status", "status", TRUE) ?>
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
