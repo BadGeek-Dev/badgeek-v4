@@ -6,7 +6,7 @@
     </a>
 </p>
 
-<h2><?php echo $podcast->titre ?> (<a href="<?= site_url("episodes/edit/".$podcast->id) ?>">modifier</a>)</h2>
+<h2><?php echo $podcast->titre ?> (<a href="<?= site_url("podcasts/edit/".$podcast->id) ?>">modifier</a>)</h2>
 
 <?php if (!$podcast->rss) :?>
     <a href="<?= site_url("episodes/create/".$podcast->id) ?>" class="btn btn-danger margin-right-10">Ajouter un épisode</a>

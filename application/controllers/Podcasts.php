@@ -173,7 +173,9 @@ class Podcasts extends Badgeek_Controller
         $this->load->model('episodes_model');
         $podcast = $this->podcasts_model->findOneById($id);
 
-        //TODO: check user access, podcast exist
+        if ($podcast->id_createur != $this->user->id){
+            redirect('/');
+        }
 
         $this->load->helper(['form', 'url']);
         $this->load->library('form_validation');
@@ -197,14 +199,6 @@ class Podcasts extends Badgeek_Controller
                     'real_url' => 'Lien non accessible',
                 ],
             ],
-            [
-                'field' => 'rss',
-                'label' => 'Rss',
-                'rules' => 'required|callback_real_url',
-                'errors' => [
-                    'real_url' => 'Rss non accessible',
-                ],
-            ],
         ];
 
         $this->form_validation->set_rules($config);
@@ -217,10 +211,10 @@ class Podcasts extends Badgeek_Controller
             $podcast->lien = $this->input->post('lien');
             $podcast->image = $this->input->post('image');
             $podcast->tags = $this->input->post('tags');
-            $podcast->validate = 0;
+            $podcast->valid = 0;
 
             $this->podcasts_model->update($podcast);
-            redirect('podcasts/create/'.$this->podcasts_model->getId());
+            redirect('podcasts/create/'.$podcast->id);
         }
 
         $attributes = [
@@ -231,7 +225,7 @@ class Podcasts extends Badgeek_Controller
                 'label' => 'Nom du podcast *',
                 'class' => 'form-control',
                 'required' => true,
-                'value' => $this->podcast->titre,
+                'value' => $podcast->titre,
                 'maxlength' => 100,
             ],
             [        
@@ -241,7 +235,7 @@ class Podcasts extends Badgeek_Controller
                 'label' => 'Description *',
                 'class' => 'form-control',
                 'required' => true,
-                'value' => $this->podcast->description,
+                'value' => $podcast->description,
                 'maxlength' => 100,
             ],
             [        
@@ -250,7 +244,7 @@ class Podcasts extends Badgeek_Controller
                 'id' => 'lien',
                 'label' => 'Site internet',
                 'class' => 'form-control',
-                'value' => $this->podcast->lien,
+                'value' => $podcast->lien,
                 'maxlength' => 100,
             ],
             [        
@@ -259,7 +253,7 @@ class Podcasts extends Badgeek_Controller
                 'id' => 'image',
                 'label' => 'Logo',
                 'class' => 'form-control',
-                'value' => $this->podcast->image,
+                'value' => $podcast->image,
                 'maxlength' => 100,
             ],
             [        
@@ -268,7 +262,7 @@ class Podcasts extends Badgeek_Controller
                 'id' => 'tags',
                 'label' => 'Nuage de tags',
                 'class' => 'form-control',
-                'value' => $this->podcast->tags,
+                'value' => $podcast->tags,
                 'maxlength' => 100,
             ],
         ];

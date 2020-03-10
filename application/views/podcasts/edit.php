@@ -1,7 +1,7 @@
 <?php 
     echo validation_errors();
 
-    echo form_open('podcasts/edit');
+    echo form_open('podcasts/edit/'.$podcast->id);
 
     foreach ($attributes as $attribute) {
         echo '<div class="form-group row">';
@@ -13,7 +13,7 @@
     }
     echo '<div class="row">';
         echo '<div class="col-md-12 text-center">';
-            echo form_submit('submit', 'Créer', ['class' => 'btn btn-danger']);
+            echo form_submit('submit', 'Modifier', ['class' => 'btn btn-danger']);
         echo '</div>';
     echo '</div>';
 ?>
