@@ -5,7 +5,7 @@ function deleteArticle(id)
 
         $.ajax({
             type: "POST",
-            url: ajaxUrl + "/admin_articles/removeArticle/" + id.toString(),
+            url: ajaxUrl + "/admin/articles/delete/" + id.toString(),
             data: {},
             dataType: "JSON",
             success: function (response) 

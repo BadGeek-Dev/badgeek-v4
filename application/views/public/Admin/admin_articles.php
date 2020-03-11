@@ -1,5 +1,5 @@
             <div class='margin-bottom-10 text-right'>
-                <a href="<?=base_url("admin_articles/addArticle")?>" class="btn btn-success"> 
+                <a href="<?=base_url("admin/articles/add")?>" class="btn btn-success"> 
                     <i class="fas fa-edit"></i>&nbsp;Ajouter un article
                 </a>
             </div>
@@ -24,7 +24,7 @@
                         <td><?php echo $item->username; ?></td>
                         <td><?php echo $item->created_at; ?></td>
                         <td>
-                            <a href="<?= base_url("admin_articles/editArticle/" . $item->id); ?>" class="btn btn-success"><i
+                            <a href="<?= base_url("admin/articles/edit/" . $item->id); ?>" class="btn btn-success"><i
                                         class="fas fa-edit"></i></a>
                             <a href="#" onclick="deleteArticle(<?=$item->id?>);" class="btn btn-danger btnDeleteArticle"><i
                                         class="fas fa-trash-alt"></i></a>

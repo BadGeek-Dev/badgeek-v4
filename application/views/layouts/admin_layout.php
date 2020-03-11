@@ -6,7 +6,7 @@
                     <a href="<?= base_url("admin"); ?>">Menu d'Administration</a>
                 </div>
                 <ul class="list-group admin_listgroup">
-                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin_articles/index"); ?>">Gestion des Articles</a></li>
+                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/articles"); ?>">Gestion des Articles</a></li>
                 </ul>
             </div>
         </div>

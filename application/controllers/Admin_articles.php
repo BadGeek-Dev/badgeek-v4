@@ -16,9 +16,12 @@ class Admin_articles extends Badgeek_Controller
     public function index()
     {
         $result = $this->Articles_model->getAllArticles();
-        $this->template->load_admin('public/Admin/admin_articles', array("result" => $result));
+        $this->template->load_admin('public/Admin/admin_articles', array(
+            "result" => $result,
+            'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)
+        ));
     }
-    public function addArticle()
+    public function add()
     {
         $this->load->helper("form");
         $this->form_validation->set_rules('title', 'Titre', 'required|htmlspecialchars');
@@ -46,11 +49,13 @@ class Admin_articles extends Badgeek_Controller
             redirect('/admin_articles/index');
         } else {
             //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
-            $this->template->load_admin('public/Admin/admin_articles_newArticle',array('error'=> validation_errors()));
+            $this->template->load_admin('public/Admin/admin_articles_newArticle',array(
+                'error'=> validation_errors(), 
+                "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem("Nouvel article"))));
         }
     }
 
-    public function editArticle($id)
+    public function edit($id)
     {
         $this->load->helper("form");
         $this->form_validation->set_rules('title', 'Titre', 'required|htmlspecialchars');
@@ -79,11 +84,14 @@ class Admin_articles extends Badgeek_Controller
             redirect('/admin_articles/index', 'refresh');
         } else {
             //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
-            $this->template->load_admin('public/Admin/admin_articles_editArticle', array("article" => $article,"error"=> validation_errors()));
+            $this->template->load_admin('public/Admin/admin_articles_editArticle', array(
+                "article" => $article,
+                "error"=> validation_errors(),
+                "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem($article->title))));
         }
     }
 
-    public function removeArticle($id)
+    public function delete($id)
     {
         if($this->Articles_model->deleteArticleByID($id))
         {
@@ -118,4 +126,17 @@ class Admin_articles extends Badgeek_Controller
             return array('status'=>FALSE, 'error' =>$error['error']);
         }
     }
+
+    private function initBreadcrumbItem($current = false)
+    {
+        return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin(false), new BreadcrumbItem("Articles","/admin/articles", $current));
+    }
+
+    private function getBreadcrumbItems($extra_liste_items)
+    {
+        if(!is_array($extra_liste_items)) $extra_liste_items = [$extra_liste_items];
+        return array_merge($this->initBreadcrumbItem(), array_values($extra_liste_items));
+    }
+
+
 }
