@@ -1,6 +1,6 @@
             <div class="container">
                     <h2>Créer un nouvel Article</h2>
-                    <?= form_open_multipart('admin_articles/addArticle'); ?>
+                    <?= form_open_multipart('admin/articles/add'); ?>
                     <div class="form-group">
                         <?= form_label("Titre&nbsp:", "title", ['class' => "control-label "]) ?>
                         <div >

@@ -14,12 +14,26 @@ class Admin extends Badgeek_Controller
         $this->load->model('Articles_model');
     }
 
+
     public function index()
     {
         $result = $this->Articles_model->getAllArticles();
-        $this->template->load_admin('public/Admin/admin', array("result" => $result));
+        //Gestion fil d'Ariane
+        $this->template->load_admin('public/Admin/admin', array(
+            "result" => $result, 
+            "liste_BreadcrumbItems" => $this->initBreadcrumbItem(true)
+        ));
     }
 
+    private function initBreadcrumbItem($current = false)
+    {
+        return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin($current));
+    }
 
+    private function getBreadcrumbItems($extra_liste_items)
+    {
+        if(!is_array($extra_liste_items)) $extra_liste_items = [$extra_liste_items];
+        return array_merge($this->initBreadcrumbItem(), array_values($extra_liste_items));
+    }
 
 }

@@ -1,6 +1,6 @@
                 <div class="container">
                     <h2>Editer un Article</h2>
-                    <?= form_open_multipart('admin_articles/editArticle/' . $article->id); ?>
+                    <?= form_open_multipart('admin/articles/edit/' . $article->id); ?>
                     <div class="form-group">
                         <?= form_label("Titre&nbsp:", "title", ['class' => "control-label "]) ?>
                         <div>
