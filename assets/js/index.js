@@ -12,7 +12,6 @@ $('.previous_news').on('click', () => {
 
 function getNews(id,side) {
     let urlTarget = window.location.origin+"/badgeek/getnews/"+currentID+"/"+side;
-    console.log(urlTarget);
         jQuery.ajax({
             url: urlTarget,
             type: "POST",
@@ -20,13 +19,11 @@ function getNews(id,side) {
             success: function (data) {
                 $('#ajax-results').html(data.html);
                 currentID = data.currentID;
-
+                
                 if (data.btnStatus['previous']) {
-                    console.log("sup0");
                     $('.previous_news').prop("disabled", false);
                     $('.previous_news_item').removeClass("disabled");
                 } else {
-                    console.log("equal0");
                     $('.previous_news').prop("disabled", true);
                     $('.previous_news_item').addClass("disabled");
                 }
