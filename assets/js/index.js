@@ -1,28 +1,27 @@
 
 
-let previousNews = 0;
 
 $('.next_news').on('click', () => {
-    getNews(nextNews);
+    getNews(currentID,'next');
 });
 
 $('.previous_news').on('click', () => {
-    getNews(previousNews);
+    getNews(currentID,'previous');
 });
 
 
-function getNews(indexNews) {
-    let urlTarget = window.location.origin+"/badgeek/getnews/"+indexNews;-
+function getNews(id,side) {
+    let urlTarget = window.location.origin+"/badgeek/getnews/"+currentID+"/"+side;
+    console.log(urlTarget);
         jQuery.ajax({
             url: urlTarget,
             type: "POST",
             dataType: "json",
             success: function (data) {
                 $('#ajax-results').html(data.html);
-                previousNews = data.previousID;
-                nextNews = data.nextID;
+                currentID = data.currentID;
 
-                if (data.previousID > 0) {
+                if (data.btnStatus['previous']) {
                     console.log("sup0");
                     $('.previous_news').prop("disabled", false);
                     $('.previous_news_item').removeClass("disabled");
@@ -32,7 +31,7 @@ function getNews(indexNews) {
                     $('.previous_news_item').addClass("disabled");
                 }
 
-                if (data.nextID > 0) {
+                if (data.btnStatus['next']) {
                     $('.next_news').prop("disabled", false);
                     $('.next_news_item').removeClass("disabled");
                 } else {

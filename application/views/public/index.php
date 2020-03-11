@@ -18,14 +18,14 @@ if (isset($result) AND sizeof($result) > 0) {
     </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="btn page-item previous_news_item disabled p-0"><button class="page-link previous_news">Previous</button></li>
-            <li class="btn page-item next_news_item <?php if(!$nextID>0){ echo "disabled";}?> p-0"><button class="page-link next_news">Next</button></li>
+            <li class="btn page-item previous_news_item <?php if(!$btnStatus['previous']){ echo "disabled";}?> p-0"><button class="page-link previous_news">Previous</button></li>
+            <li class="btn page-item next_news_item <?php if(!$btnStatus['next']){ echo "disabled";}?> p-0"><button class="page-link next_news">Next</button></li>
         </ul>
     </nav>
 </div>
 <?php } ?>
 
 <script>
-    let nextNews = <?= $nextID ?>; //initialisation pour index.js
+    let currentID = <?= $result->id ?>; //initialisation pour index.js
 </script>
 <script src="<?php echo base_url('assets/js/index.js') ?>"></script>
