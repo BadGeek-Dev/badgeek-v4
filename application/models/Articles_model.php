@@ -7,6 +7,7 @@ class  Articles_model extends CI_Model
     public $content;
     public $id_author;
     public $created_at;
+    public $picture;
     public $status;
 
 
@@ -96,9 +97,32 @@ class  Articles_model extends CI_Model
 
 
 
+    /**
+     * Get the value of picture
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+
+    /**
+     * Set the value of picture
+     *
+     * @return  self
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+
+
     public function getAllArticles()
     {
-        $this->db->select('articles.id,title,content,created_at,username');
+        $this->db->select('articles.id,title,content,created_at,status,username');
         $this->db->from('articles');
         $this->db->join('users', 'articles.id_author = users.id', 'inner');
          $query = $this->db->get();
@@ -107,7 +131,7 @@ class  Articles_model extends CI_Model
 
     public function getAllArticlesVisible()
     {
-        $this->db->select('articles.id,title,content,created_at,username');
+        $this->db->select('articles.id,title,content,created_at,picture,username');
         $this->db->from('articles');
         $this->db->join('users', 'articles.id_author = users.id', 'inner');
         $this->db->where('status = 1');
@@ -117,7 +141,7 @@ class  Articles_model extends CI_Model
 
     public function getArticleByID($id)
     {
-        $this->db->select('articles.id,title,content,created_at,status,username');
+        $this->db->select('articles.id,title,content,created_at,status,picture,username');
         $this->db->from('articles');
         $this->db->join('users', 'articles.id_author = users.id', 'inner');
         $this->db->where('articles.id =', $id);
@@ -125,7 +149,7 @@ class  Articles_model extends CI_Model
         return $query->result()[0];
     }
 
-    public function addArticle($title, $content, $id_author, $status)
+    public function addArticle($title, $content, $id_author, $status, $picture = false)
     {
         $date = new DateTime();
         $date = $date->format('Y-m-d H:i:s');
@@ -135,25 +159,33 @@ class  Articles_model extends CI_Model
         $this->db->set('id_author', $id_author);
         $this->db->set('status', $status);
         $this->db->set('created_at', $date);
+        if($picture) $this->db->set('picture', $picture);
         $this->db->insert('articles');
 
     }
-    public function updateArticleByID($id,$title, $content, $status)
+
+    public function updateArticle($id,$title, $content, $status, $picture = false)
     {
         $date = new DateTime();
         $date = $date->format('Y-m-d H:i:s');
 
         $this->db->set('title', $title);
         $this->db->set('content', $content);
-        $this->db->set('status', $status);
+        $this->db->set('status', $status ? 1 : 0);
         $this->db->set('created_at', $date);
+        if($picture) $this->db->set('picture', $picture);
         $this->db->where('id',$id);
         $this->db->update('articles');
     }
 
     public function deleteArticleByID($id)
     {
-        $this->db->delete('articles', array('id'=> $id));
+        $picture = $this->getArticleByID($id)->picture; 
+        if($picture)
+        {
+            unlink("assets/pictures/news/".$picture);
+        }
+        return $this->db->delete('articles', array('id'=> $id));
 
     }
 
