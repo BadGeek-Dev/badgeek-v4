@@ -43,15 +43,18 @@ class Podcasts extends Badgeek_Controller
                     'real_url' => 'Lien non accessible',
                 ],
             ],
-            [
+        ];
+
+        if (!$this->input->post('hosted')) {
+            $config[] = [
                 'field' => 'rss',
                 'label' => 'Rss',
                 'rules' => 'required|callback_real_url',
                 'errors' => [
                     'real_url' => 'Rss non accessible',
                 ],
-            ],
-        ];
+            ];
+        }
 
         $this->form_validation->set_rules($config);
 
@@ -64,6 +67,7 @@ class Podcasts extends Badgeek_Controller
             $this->podcasts_model->setImage($this->input->post('image'));
             $this->podcasts_model->setRss($this->input->post('rss'));
             $this->podcasts_model->setTags($this->input->post('tags'));
+            $this->podcasts_model->setHosted($this->input->post('hosted'));
             $this->podcasts_model->setId_createur($this->user->id);
 
             $this->podcasts_model->insert();
@@ -71,6 +75,14 @@ class Podcasts extends Badgeek_Controller
         }
 
         $attributes = [
+            [
+                'type' => 'checkbox',
+                'name' => 'hosted',
+                'id' => 'hosted',
+                'label' => 'Podcast hébergé chez BadGeek ?',
+                'class' => 'form-control hosted',
+                'value' => true
+            ],
             [        
                 'type' => 'text',
                 'name' => 'titre',
@@ -114,10 +126,9 @@ class Podcasts extends Badgeek_Controller
                 'name' => 'rss',
                 'id' => 'rss',
                 'label' => 'Flux rss *',
-                'class' => 'form-control',
+                'class' => 'form-control rss',
                 'value' => $this->input->post('rss'),
                 'maxlength' => 100,
-                'required' => true,
             ],
             [        
                 'type' => 'text',
