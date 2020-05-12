@@ -11,6 +11,7 @@
             echo '</div>';
         echo '</div>';
     }
+    
     echo '<div class="row">';
         echo '<div class="col-md-12 text-center">';
             echo form_submit('submit', 'Modifier', ['class' => 'btn btn-danger']);
