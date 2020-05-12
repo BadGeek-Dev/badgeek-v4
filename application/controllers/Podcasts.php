@@ -131,7 +131,10 @@ class Podcasts extends Badgeek_Controller
             ],
         ];
 
-        $this->template->load('podcasts/create', ['attributes' => $attributes]);
+        $this->template->load('podcasts/create', [
+            'attributes' => $attributes, 
+            'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem("Ajouter un podcast"))
+        ]);
     }
 
     /**
@@ -141,7 +144,10 @@ class Podcasts extends Badgeek_Controller
     {
         $podcast = $this->podcasts_model->findOneById($id);
 
-        $this->template->load('podcasts/waiting_validation', ['podcast' => $podcast]);
+        $this->template->load('podcasts/waiting_validation', [
+            'podcast' => $podcast, 
+            'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem("Podcast en cours de validation"))
+        ]);
     }
 
     /**
@@ -151,7 +157,7 @@ class Podcasts extends Badgeek_Controller
     {
         $podcasts = $this->podcasts_model->findByUser($this->user->id);
 
-        $this->template->load('podcasts/list', ['podcasts' => $podcasts]);
+        $this->template->load('podcasts/list', ['podcasts' => $podcasts, 'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)]);
     }
 
     /**
@@ -165,8 +171,9 @@ class Podcasts extends Badgeek_Controller
 
         $this->template->load('podcasts/edit', [
             'podcast' => $podcast,
-            'episodes' => $episodes
-            ]);
+            'episodes' => $episodes,
+            'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem($podcast->titre))
+        ]);
     }
 
     public function delete($id)
@@ -193,5 +200,16 @@ class Podcasts extends Badgeek_Controller
         $this->rss_import->sync($podcast);
 
         redirect('/podcasts/edit/'.$podcast->id);
+    }
+
+    private function initBreadcrumbItem($current = false)
+    {
+        return array(BreadcrumbItem::getBreadcrumbItemAccueil(), new BreadcrumbItem("Mes podcasts", "/podcasts", $current));
+    }
+
+    private function getBreadcrumbItems($extra_liste_items)
+    {
+        if(!is_array($extra_liste_items)) $extra_liste_items = [$extra_liste_items];
+        return array_merge($this->initBreadcrumbItem(), array_values($extra_liste_items));
     }
 }

@@ -1,0 +1,1 @@
+Bienvenue dans l'administration de Badgeek.

@@ -13,7 +13,12 @@ if(isset($result) AND sizeof($result)>0) { ?>
                 <h3> <?= $item->title ?></h3>
                 <p class="font-italic text-secondary"> par <?= $item->username ?>
                     le <?= $item->created_at ?></p>
-                <p><?= $item->content ?></p>
+                <div class="row">
+                    <?php if($item->picture != null){ ?>
+                    <img class="mr-4"src="<?php echo base_url('assets/pictures/news/'.$item->picture);?>"></img>
+                    <?php } ?>
+                    <p><?= $item->content ?></p>
+                </div>
                 <hr class="hr_news">
             <?php }
             }?>

@@ -58,6 +58,13 @@
                 </a>
                 &nbsp;&nbsp;&nbsp;
             <?php endif; ?>
+            <?php if (isAdmin()) : ?>
+                <a href="<?= site_url("admin") ?>" class="btn btn-danger margin-right-10">
+                    <i class='icon-key'></i>
+                    Administration
+                </a>
+                &nbsp;&nbsp;&nbsp;
+            <?php endif; ?>
             <a href="<?= site_url("auth/logout") ?>">
                 <button class="btn btn-dark margin-right-10">
                         <i class="icon-logout"></i>
@@ -85,6 +92,9 @@
     <?php include(__DIR__."/modal/modal_connexion.php"); ?>
     <!-- MODAL PROFIL -->
     <?php if($this->ion_auth->logged_in()) include(__DIR__."/modal/modal_profil.php"); ?>
+
+    <!--FIL D'ARIANE-->
+    <?php if(isset($breadcrumb)) echo $breadcrumb; ?>
 
     <?php echo $contents;?>
 
