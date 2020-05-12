@@ -6,3 +6,15 @@
 ?>
 
 <a href="<?= site_url("podcasts/create") ?>" class="btn btn-danger margin-right-10">Ajouter un podcast</a>
+
+<br/>
+<br/>
+<?php 
+    if(count($podcasts_waiting)) {
+        echo '<h4>Mes podcasts en attente de validation :</h4>';
+    }
+
+    foreach ($podcasts_waiting as $podcast) {
+        echo $podcast->titre . "<br/>";
+    }
+?>

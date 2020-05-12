@@ -156,8 +156,13 @@ class Podcasts extends Badgeek_Controller
     public function index()
     {
         $podcasts = $this->podcasts_model->findByUser($this->user->id);
+        $podcasts_waiting = $this->podcasts_model->findByUserWaiting($this->user->id);
 
-        $this->template->load('podcasts/list', ['podcasts' => $podcasts, 'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)]);
+        $this->template->load('podcasts/list', [
+            'podcasts_waiting' => $podcasts_waiting,
+            'podcasts' => $podcasts, 
+            'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)
+            ]);
     }
 
     /**

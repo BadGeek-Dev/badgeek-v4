@@ -38,6 +38,11 @@ class Podcasts_model extends CI_Model {
         return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => 1])->result();
     }
 
+    public function findByUserWaiting($userId)
+    {
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => 0])->result();
+    }
+
     public function findByValid($valid)
     {
         $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, users.username, users.email');
