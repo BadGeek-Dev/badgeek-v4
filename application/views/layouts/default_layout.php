@@ -56,7 +56,10 @@
                     <i class='icon-user'></i>
                     Mes podcasts
                 </a>
-                &nbsp;&nbsp;&nbsp;
+                <a href="<?= site_url("Lives") ?>" class="btn btn-danger margin-right-10">
+                    <i class='icon-user'></i>
+                    Mes Lives
+                </a>&nbsp;&nbsp;&nbsp;
             <?php endif; ?>
             <?php if (isAdmin()) : ?>
                 <a href="<?= site_url("admin") ?>" class="btn btn-danger margin-right-10">
