@@ -6,6 +6,10 @@
                     <a href="<?= base_url("admin"); ?>">Menu d'Administration</a>
                 </div>
                 <ul class="list-group admin_listgroup">
+                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin"); ?>">Articles</a></li>
+                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/addArticle"); ?>">Ajouter un
+                            article</a></li>
+                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/podcasts/waiting"); ?>">Podcast en attente de validation (<?=$waiting_podcasts; ?>)</a></li>
                     <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/articles"); ?>">Gestion des Articles</a></li>
                 </ul>
             </div>

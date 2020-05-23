@@ -62,3 +62,8 @@ $route['episodes/edit/(:num)'] = 'episodes/edit/$1';
 $route['medias/podcast/(:num)'] = 'medias/podcast/$1';
 $route['medias/episode/(:num)'] = 'medias/episode/$1';
 $route['medias/search/(:any)'] = 'medias/search/$1';
+
+//Admin
+$route['admin/podcasts/waiting'] = 'admin_podcasts/waiting';
+$route['admin/podcasts/validate/(:num)'] = 'admin_podcasts/validate/$1';
+$route['admin/podcasts/delete/(:num)'] = 'admin_podcasts/delete/$1';
