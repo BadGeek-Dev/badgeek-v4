@@ -168,16 +168,121 @@ class Podcasts extends Badgeek_Controller
     /**
      * 
      */
-    public function edit($id)
+    public function display($id)
     {
         $this->load->model('episodes_model');
         $podcast = $this->podcasts_model->findOneById($id);
         $episodes = $this->episodes_model->findByPodcast($podcast);
 
-        $this->template->load('podcasts/edit', [
+        $this->template->load('podcasts/display', [
             'podcast' => $podcast,
             'episodes' => $episodes,
             'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem($podcast->titre))
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $this->load->model('episodes_model');
+        $podcast = $this->podcasts_model->findOneById($id);
+
+        if ($podcast->id_createur != $this->user->id){
+            redirect('/');
+        }
+
+        $this->load->helper(['form', 'url']);
+        $this->load->library('form_validation');
+
+        $config = [
+            [
+                'field' => 'titre',
+                'label' => 'Nom du podcast',
+                'rules' => 'required',
+            ],
+            [
+                'field' => 'description',
+                'label' => 'Description',
+                'rules' => 'required',
+            ],
+            [
+                'field' => 'lien',
+                'label' => 'Lien',
+                'rules' => 'callback_real_url',
+                'errors' => [
+                    'real_url' => 'Lien non accessible',
+                ],
+            ],
+        ];
+
+        $this->form_validation->set_rules($config);
+
+        if (false === $this->form_validation->run()) {
+            
+        } else {
+            $podcast->titre = $this->input->post('titre');
+            $podcast->description = $this->input->post('description');
+            $podcast->lien = $this->input->post('lien');
+            $podcast->image = $this->input->post('image');
+            $podcast->tags = $this->input->post('tags');
+            $podcast->valid = 0;
+
+            $this->podcasts_model->update($podcast);
+            redirect('podcasts/create/'.$podcast->id);
+        }
+
+        $attributes = [
+            [        
+                'type' => 'text',
+                'name' => 'titre',
+                'id' => 'titre',
+                'label' => 'Nom du podcast *',
+                'class' => 'form-control',
+                'required' => true,
+                'value' => $podcast->titre,
+                'maxlength' => 100,
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'description',
+                'id' => 'description',
+                'label' => 'Description *',
+                'class' => 'form-control',
+                'required' => true,
+                'value' => $podcast->description,
+                'maxlength' => 100,
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'lien',
+                'id' => 'lien',
+                'label' => 'Site internet',
+                'class' => 'form-control',
+                'value' => $podcast->lien,
+                'maxlength' => 100,
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'image',
+                'id' => 'image',
+                'label' => 'Logo',
+                'class' => 'form-control',
+                'value' => $podcast->image,
+                'maxlength' => 100,
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'tags',
+                'id' => 'tags',
+                'label' => 'Nuage de tags',
+                'class' => 'form-control',
+                'value' => $podcast->tags,
+                'maxlength' => 100,
+            ],
+        ];
+
+        $this->template->load('podcasts/edit', [
+            'podcast' => $podcast,
+            'attributes' => $attributes
         ]);
     }
 
