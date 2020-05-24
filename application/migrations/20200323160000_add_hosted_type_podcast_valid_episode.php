@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Add_hosted_type_podcast extends CI_Migration {
+class Migration_Add_hosted_type_podcast_valid_episode extends CI_Migration {
 
     public function up()
     {
@@ -10,6 +10,11 @@ class Migration_Add_hosted_type_podcast extends CI_Migration {
             'hosted' => array('type' => 'BOOL')
         );
         $this->dbforge->add_column('podcasts', $fields);
+
+        $fields = array(
+            'valid' => array('type' => 'BOOL')
+        );
+        $this->dbforge->add_column('episodes', $fields);
     }
 
     public function down()

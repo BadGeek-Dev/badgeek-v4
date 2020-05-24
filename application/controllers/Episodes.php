@@ -63,12 +63,13 @@ class Episodes extends Badgeek_Controller
                 $this->episodes_model->setDescription($this->input->post('description'));
                 $this->episodes_model->setInfos_mp3('time : ' . $mp3Info['playtime_string'] . ' size : ' . $mp3Size);
                 $this->episodes_model->setTags($this->input->post('tags'));
-    
+                $this->episodes_model->setValid(0);
+
                 $this->episodes_model->setDate_publication((new \DateTime())->format("Y-m-d H:i:s"));
                 $this->episodes_model->setId_podcast($podcast->id);
     
                 $this->episodes_model->insert();
-                redirect('episodes/edit/'.$this->episodes_model->getId());
+                redirect('episodes/validate/'.$this->episodes_model->getId());
             }
         }
 
@@ -98,14 +99,6 @@ class Episodes extends Badgeek_Controller
                 'value' => $this->input->post('titre'),
                 'required' => true,
             ],
-            // [        
-            //     'type' => 'date',
-            //     'name' => 'date_publication',
-            //     'id' => 'date_publication',
-            //     'label' => 'Date de publication',
-            //     'class' => 'form-control',
-            //     'value' => $this->input->post('date_publication'),
-            // ],
             [        
                 'type' => 'text',
                 'name' => 'description',
@@ -169,6 +162,28 @@ class Episodes extends Badgeek_Controller
         ]);
     }
 
+    public function validate($id)
+    {
+        $episode = $this->episodes_model->findOneById($id);
+        $podcast = $this->podcasts_model->findOneById($episode->id_podcast);
+
+        if ($this->input->get('valid')) {
+            $episode->valid = 1;
+            $this->episodes_model->update($episode);
+
+            redirect('/podcasts/display/'.$podcast->id);
+        }
+
+        $this->template->load('episodes/validate', [
+            'episode' => $episode, 
+            'podcast' => $podcast,
+            "liste_BreadcrumbItems" => $this->getBreadcrumbItems([
+                new BreadcrumbItem($podcast->titre,"/podcasts/display/".$podcast->id),
+                new BreadcrumbItem($episode->titre)
+            ])
+        ]);
+    }
+
     /**
      * 
      */
@@ -181,7 +196,7 @@ class Episodes extends Badgeek_Controller
             $this->episodes_model->delete($episode);
         }
 
-        redirect('/podcasts/edit/'.$podcast->id);
+        redirect('/podcasts/display/'.$podcast->id);
     }
 
     private function initBreadcrumbItem($current = false)

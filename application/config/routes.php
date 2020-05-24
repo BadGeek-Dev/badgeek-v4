@@ -59,6 +59,7 @@ $route['admin/articles/(:any)/(:any)'] = 'admin_articles/$1/$2';
 $route['podcasts/create/(:num)'] = 'podcasts/createWaitingValidation/$1';
 $route['episodes/create/(:num)'] = 'episodes/create/$1';
 $route['episodes/edit/(:num)'] = 'episodes/edit/$1';
+$route['episodes/validate/(:num)'] = 'episodes/validate/$1';
 $route['medias/podcast/(:num)'] = 'medias/podcast/$1';
 $route['medias/episode/(:num)'] = 'medias/episode/$1';
 $route['medias/search/(:any)'] = 'medias/search/$1';
