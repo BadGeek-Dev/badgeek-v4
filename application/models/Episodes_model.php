@@ -60,6 +60,15 @@ class Episodes_model extends CI_Model {
             ->get('episodes')
             ->result();
     }
+
+    public function findLastByPodcast($podcast)
+    {
+        return $this->db
+            ->where('id_podcast', $podcast->id)
+            ->order_by('id', 'DESC')
+            ->get('episodes')
+            ->row();
+    }
     
     /**
      * Get the value of id
