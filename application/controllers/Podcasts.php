@@ -309,7 +309,7 @@ class Podcasts extends Badgeek_Controller
         $this->load->library('rss_import');
         $this->rss_import->sync($podcast);
 
-        redirect('/podcasts/edit/'.$podcast->id);
+        redirect('/podcasts/display/'.$podcast->id);
     }
 
     private function initBreadcrumbItem($current = false)
