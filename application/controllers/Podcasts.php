@@ -68,10 +68,6 @@ class Podcasts extends Badgeek_Controller
             $this->podcasts_model->setValid(0);
 
             $this->podcasts_model->insert();
-
-            $this->load->library('email_manager');
-            $this->email_manager->sendValidationPodcastEmail($this->podcasts_model, $this->user);
-
             redirect('podcasts/create/'.$this->podcasts_model->getId());
         }
 

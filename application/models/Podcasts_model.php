@@ -10,12 +10,6 @@ class Podcasts_model extends CI_Model {
     public $rss;
     public $tags;
     public $id_createur;
-
-    /**
-     * 0 waiting validation
-     * 1 validated
-     * 2 refused 
-     */
     public $valid;
 
     public function insert()

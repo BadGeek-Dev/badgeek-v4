@@ -67,6 +67,3 @@ $route['medias/search/(:any)'] = 'medias/search/$1';
 $route['admin/podcasts/waiting'] = 'admin_podcasts/waiting';
 $route['admin/podcasts/validate/(:num)'] = 'admin_podcasts/validate/$1';
 $route['admin/podcasts/delete/(:num)'] = 'admin_podcasts/delete/$1';
-$route['admin/podcasts/view/(:num)'] = 'admin_podcasts/view/$1';
-$route['admin/podcasts/refuse/(:num)'] = 'admin_podcasts/refuse/$1';
-$route['admin/podcasts/waiting/(:num)'] = 'admin_podcasts/rewaiting/$1';
