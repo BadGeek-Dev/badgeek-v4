@@ -17,3 +17,13 @@
         echo '</div>';
     echo '</div>';
 ?>
+
+<script>
+    if (!$('.hosted').val()) {
+        $('.rss').parent().parent().hide();
+    }
+
+    $('.hosted').change(function() {
+        $('.rss').parent().parent().toggle();
+    });
+</script>

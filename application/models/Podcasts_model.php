@@ -17,6 +17,7 @@ class Podcasts_model extends CI_Model {
      * 2 refused 
      */
     public $valid;
+    public $hosted;
 
     public function insert()
     {
@@ -246,6 +247,26 @@ class Podcasts_model extends CI_Model {
     public function setValid($valid)
     {
         $this->valid = $valid;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of hosted
+     */ 
+    public function getHosted()
+    {
+        return $this->hosted;
+    }
+
+    /**
+     * Set the value of hosted
+     *
+     * @return  self
+     */ 
+    public function setHosted($hosted)
+    {
+        $this->hosted = $hosted;
 
         return $this;
     }
