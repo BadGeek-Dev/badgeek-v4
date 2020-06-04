@@ -23,10 +23,55 @@ class Admin_podcasts extends Badgeek_Controller
     public function validate($id)
     {
         $podcast = $this->podcasts_model->findOneById($id);
+        $this->load->model('users_model');
+        $creator = $this->users_model->findOneById($podcast->id_createur);
 
         if ($podcast) {
             $podcast->valid = 1;
             $this->podcasts_model->update($podcast);
+
+            $this->load->library('email_manager');
+            $this->email_manager->sendPodcastValidatedEmail($podcast, $creator);
+        }
+
+        redirect('/admin/podcasts/waiting');
+    }
+
+    public function rewaiting($id)
+    {
+        $podcast = $this->podcasts_model->findOneById($id);
+        $this->load->model('users_model');
+        $creator = $this->users_model->findOneById($podcast->id_createur);
+
+        if ($podcast) {
+            $podcast->valid = 0;
+            $this->podcasts_model->update($podcast);
+        }
+
+        redirect('/admin/podcasts/view/'.$id);
+    }
+
+    public function view($id)
+    {
+        $podcast = $this->podcasts_model->findOneById($id);
+        $this->load->model('users_model');
+        $creator = $this->users_model->findOneById($podcast->id_createur);
+
+        $this->template->load_admin('admin/podcasts_view', ['podcast' => $podcast, 'creator' => $creator]);
+    }
+
+    public function refuse($id)
+    {
+        $podcast = $this->podcasts_model->findOneById($id);
+        $this->load->model('users_model');
+        $creator = $this->users_model->findOneById($podcast->id_createur);
+
+        if ($podcast) {
+            $podcast->valid = 2;
+            $this->podcasts_model->update($podcast);
+
+            $this->load->library('email_manager');
+            $this->email_manager->sendPodcastRefusedEmail($podcast, $creator, $this->input->post('reason'));
         }
 
         redirect('/admin/podcasts/waiting');
