@@ -15,6 +15,6 @@
     }
 
     foreach ($podcasts_waiting as $podcast) {
-        echo $podcast->titre . "<br/>";
+        echo $podcast->titre . ' (<a href="'.site_url("podcasts/edit/".$podcast->id).'">modifier</a>)<br/>';
     }
 ?>
