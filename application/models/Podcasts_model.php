@@ -40,6 +40,11 @@ class Podcasts_model extends CI_Model {
         return $this->db->get_where('podcasts', ['id' => $id])->row();
     }
 
+    public function findByUserNotRefused($userId)
+    {
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid !=' => 2])->result();
+    }
+
     public function findByUser($userId)
     {
         return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => 1])->result();
