@@ -91,7 +91,13 @@
     <!-- MODAL CONNEXION -->
     <?php include(__DIR__."/modal/modal_connexion.php"); ?>
     <!-- MODAL PROFIL -->
-    <?php if($this->ion_auth->logged_in()) include(__DIR__."/modal/modal_profil.php"); ?>
+    <?php 
+    if($this->ion_auth->logged_in()) 
+    {
+        include(APPPATH."/models/Usersgroups_model.php");
+        include(__DIR__."/modal/modal_profil.php");
+    } 
+    ?>
 
     <!--FIL D'ARIANE-->
     <?php if(isset($breadcrumb)) echo $breadcrumb; ?>

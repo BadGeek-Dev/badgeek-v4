@@ -271,7 +271,7 @@
                                                 class="form-check-input" 
                                                 type="checkbox" value="<?=$group["id"]?>" 
                                                 name="group_<?=$group["id"]?>" <?= in_array($group["id"], $this->user->groups_id) ? "checked=\"checked\"" : ""?>
-                                                <?= ($group["id"] == 3 && count($this->user_podcasts)) ? "disabled=disabled" : "" ?>>
+                                                <?= ($group["id"] == Usersgroups_Model::GROUPE_PODCASTEURS && count($this->user_podcasts)) ? "disabled=disabled" : "" ?>>
                                             <label class="form-check-label" for="group_<?=$group["id"]?>">
                                                 <?=$group["description"]?>
                                             </label>
