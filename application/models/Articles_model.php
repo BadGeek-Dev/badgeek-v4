@@ -90,7 +90,7 @@ class  Articles_model extends CI_Model
      */
     public function setIdAuthor($idAuthor)
     {
-        $this->title = $idAuthor;
+        $this->id_author = $idAuthor;
 
         return $this;
     }

@@ -7,7 +7,9 @@
                 </div>
                 <ul class="list-group admin_listgroup">
                     <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/articles"); ?>">Gestion des Articles</a></li>
+                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/lives"); ?>">Modération des Lives</a></li>
                 </ul>
+
             </div>
         </div>
         <div class="col-md-8">

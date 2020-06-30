@@ -7,7 +7,6 @@ class  Lives_model extends CI_Model
     public $created_at;
     public $title;
     public $start_at;
-    public $end_at;
     public $id_member;
     public $status;// 0  : live refuse, 1 : live demandé, 2 : live autorisé
     public $content;
@@ -15,7 +14,7 @@ class  Lives_model extends CI_Model
 
     public function getLives()
     {
-        $this->db->select('lives.id,title,content,created_at,start_at,end_at,status,url','username');
+        $this->db->select('lives.id,title,content,created_at,start_at,status,url','username');
         $this->db->from('lives');
         $this->db->join('users', 'lives.id_member = users.id', 'inner');
         $query = $this->db->get();
@@ -24,7 +23,7 @@ class  Lives_model extends CI_Model
 
     public function getLiveByMember($id_member)
     {
-        $this->db->select('lives.id,title,content,created_at,start_at,end_at,status,url','username');
+        $this->db->select('lives.id,title,content,created_at,start_at,status,url','username');
         $this->db->from('lives');
         $this->db->join('users', 'lives.id_member = users.id', 'inner');
         $this->db->where('lives.id_member =', $id_member);
@@ -34,7 +33,7 @@ class  Lives_model extends CI_Model
 
     public function getLiveByStatus($Status)
     {
-        $this->db->select('lives.id,title,content,created_at,start_at,end_at,status,url','username');
+        $this->db->select('lives.id,title,content,created_at,start_at,status,url','username');
         $this->db->from('lives');
         $this->db->join('users', 'lives.id_member = users.id', 'inner');
         $this->db->where('lives.status =', $Status);
@@ -45,17 +44,29 @@ class  Lives_model extends CI_Model
 
     public function getLiveByID($id)
     {
-        $this->db->select('lives.id,title,content,created_at,start_at,end_at,status,url','username');
+        $this->db->select('lives.id,title,content,created_at,start_at,status,url, username');
         $this->db->from('lives');
         $this->db->join('users', 'lives.id_member = users.id', 'inner');
         $this->db->where('lives.id =', $id);
         $query = $this->db->get();
-        return $query->result();
+        return $query->result()[0];
     }
 
-    public function addLive($title,$start_at,$end_at,$id_member,$content){
-        $date = new DateTime();
-        $date = $date->format('Y-m-d H:i:s');
+
+    public function getUsernameByLiveId($id){
+
+        $this->db->select('lives.id,username');
+        $this->db->from('lives');
+        $this->db->join('users', 'lives.id_member = users.id', 'inner');
+        $this->db->where('lives.id =', $id);
+        $query = $this->db->get();
+        return $query->result()[0]->username;
+    }
+
+
+    public function addLive($title,$content,$start_at,$id_member){
+
+       $date = DateTime::createFromFormat('Y-m-d H:i:s',$start_at);
 
         $this->db->set('title', $title);
         $this->db->set('content', $content);
@@ -63,19 +74,44 @@ class  Lives_model extends CI_Model
         $this->db->set('status', 1);
         $this->db->set('created_at', $date);
         $this->db->set('start_at', $start_at);
-        $this->db->set('end_at', $end_at);
         $this->db->insert('lives');
 
     }
-    
+
+
+    public function updateLive($id,$title,$content,$start_at,$id_member,$created_at){
+
+        $date = DateTime::createFromFormat('Y-m-d H:i:s',$start_at);
+
+        $this->db->set('title', $title);
+        $this->db->set('content', $content);
+        $this->db->set('id_member', $id_member);
+        $this->db->set('status', 1);
+        $this->db->set('created_at', $date);
+        $this->db->set('start_at', $start_at);
+        $this->db->set('created_at',$created_at);
+        $this->db->where('id',$id);
+        $this->db->update('lives');
+
+    }
+
+    public function updateStatus($id,$status){
+
+        $this->db->set('status', (int)$status);
+        $this->db->where('id',$id);
+        $query = $this->db->update('lives');
+        return $query;
+    }
+
+
     public function insert()
     {
-        $this->db->insert('live', $this);
+        $this->db->insert('lives', $this);
     }
 
     public function update()
     {
-        $this->db->update('live', $this, ['id' => $this->id]);
+        $this->db->update('lives', $this, ['id' => $this->id]);
     }
 
 
@@ -119,7 +155,7 @@ class  Lives_model extends CI_Model
      */
     public function setStatus($Status)
     {
-        $this->title = $title;
+        $this->status = $Status;
 
         return $this;
     }
