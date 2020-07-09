@@ -6,6 +6,7 @@
                     <a href="<?= base_url("admin"); ?>">Menu d'Administration</a>
                 </div>
                 <ul class="list-group admin_listgroup">
+                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/users"); ?>">Utilisateurs</a></li>
                     <li class="list-group-item admin_listitem"><a href="<?= base_url("admin"); ?>">Articles</a></li>
                     <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/articles/add"); ?>">Ajouter un
                             article</a></li>

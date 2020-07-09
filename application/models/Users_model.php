@@ -16,4 +16,9 @@ class Users_Model extends CI_Model
     {
         return $this->db->get_where('users', ['id' => $id])->row();
     }
+
+    public function getAllUsers()
+    {
+        return $this->db->get('users')->result();;
+    }
 }
