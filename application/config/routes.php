@@ -78,3 +78,5 @@ $route['admin/podcasts/waiting/(:num)'] = 'admin_podcasts/rewaiting/$1';
 //Admin users
 $route['admin/users'] = 'admin_users/index';
 $route['admin/users/edit/(:num)'] = 'admin_users/edit/$1';
+$route['admin/users/activate/(:num)'] = 'admin_users/activate/$1';
+$route['admin/users/deactivate/(:num)'] = 'admin_users/deactivate/$1';

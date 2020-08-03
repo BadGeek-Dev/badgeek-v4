@@ -30,6 +30,25 @@ class Admin_users extends Badgeek_Controller
         ));
     }
 
+    public function activate($id)
+    {
+        $this->changeActiveState($id, 1);
+    }
+
+    public function deactivate($id)
+    {
+        $this->changeActiveState($id, 0);
+    }
+
+    private function changeActiveState($id, $state)
+    {
+        $user = $this->Users_model->bareFindOneById($id);
+        $user->active = $state;
+        $this->Users_model->update($user);
+
+        redirect('/admin/users/edit/'.$id);
+    }
+
     private function initBreadcrumbItem($current = false)
     {
         return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin(false), new BreadcrumbItem("Articles","/admin/users", $current));
