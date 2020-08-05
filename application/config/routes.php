@@ -64,6 +64,9 @@ $route['medias/podcast/(:num)'] = 'medias/podcast/$1';
 $route['medias/episode/(:num)'] = 'medias/episode/$1';
 $route['medias/search/(:any)'] = 'medias/search/$1';
 
+//hosted medias
+$route['badgeek/uploads/podcasts/(:num)/(:any)'] = 'medias/mp3/$1/$2';
+
 //Admin
 $route['admin/podcasts/waiting'] = 'admin_podcasts/waiting';
 $route['admin/podcasts/validate/(:num)'] = 'admin_podcasts/validate/$1';

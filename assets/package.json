@@ -11,6 +11,7 @@
     "bootstrap-fileinput": "^5.0.7",
     "dompurify": "^2.0.7",
     "jquery": "^3.5.0",
+    "mediaelement": "^4.2.16",
     "piexifjs": "^1.0.6",
     "popper.js": "^1.16.0",
     "purify": "^3.4.0",
