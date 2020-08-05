@@ -10,6 +10,7 @@ class Badgeek_Controller extends CI_Controller
         $this->load->helper(['badgeek']);
         $this->load->library('session');
         $this->load->database();
+        $this->load->model('podcasts_model');
         $this->user = false;
 
         if($this->ion_auth->logged_in())
@@ -25,6 +26,7 @@ class Badgeek_Controller extends CI_Controller
                 $this->session->unset_userdata("reload");
             }
             $this->user = $this->session->user;
+            $this->user_podcasts = $this->podcasts_model->findByUserNotRefused($this->user->id);
         }
 
         if(empty($this->session->groups) || key_exists("force_init", $_GET ))
