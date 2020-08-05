@@ -57,6 +57,15 @@ class Medias extends Badgeek_Controller
         ]);
     }
 
+    public function mp3($dir, $file)
+    {
+        $this->load->helper('file');
+
+        $mp3Path = APPPATH.'../uploads/podcasts/'.$dir.'/'.$file;
+        $this->output->set_content_type(get_mime_by_extension($mp3Path));
+        $this->output->set_output(file_get_contents($mp3Path));
+    }
+
     private function initBreadcrumbItem($current = false)
     {
         return array(BreadcrumbItem::getBreadcrumbItemAccueil(), new BreadcrumbItem("Les podcasts", "/medias", $current));

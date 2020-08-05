@@ -62,6 +62,9 @@ $route['medias/podcast/(:num)'] = 'medias/podcast/$1';
 $route['medias/episode/(:num)'] = 'medias/episode/$1';
 $route['medias/search/(:any)'] = 'medias/search/$1';
 
+//hosted medias
+$route['badgeek/uploads/podcasts/(:num)/(:any)'] = 'medias/mp3/$1/$2';
+
 //Admin articles
 $route['admin/articles'] = 'admin_articles/index';
 $route['admin/articles/(:any)'] = 'admin_articles/$1';
