@@ -1,6 +1,6 @@
 <h2>
     <?php echo $episode->titre ?>
-    <?php if($podcast->id_createur == $this->user->id): ?>
+    <?php if($this->user && $podcast->id_createur == $this->user->id): ?>
         (<a href="<?= site_url("episodes/edit/".$episode->id) ?>">modifier</a>)
     <?php endif; ?>
 </h2>

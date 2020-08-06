@@ -1,10 +1,10 @@
 <h2>
     <?php echo $podcast->titre ?> 
-    <?php if($podcast->id_createur == $this->user->id): ?>
+    <?php if($this->user && $podcast->id_createur == $this->user->id): ?>
         (<a href="<?= site_url("podcasts/edit/".$podcast->id) ?>">modifier</a>)
     <?php endif; ?>
 </h2>
-<?php if($podcast->id_createur == $this->user->id): ?>
+<?php if($this->user && $podcast->id_createur == $this->user->id): ?>
     <?php if ($podcast->hosted) :?>
         <a href="<?= site_url("episodes/create/".$podcast->id) ?>" class="btn btn-danger margin-right-10">Ajouter un épisode</a>
     <?php else :?>
