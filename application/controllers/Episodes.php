@@ -171,9 +171,76 @@ class Episodes extends Badgeek_Controller
             redirect('/');
         }
 
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('titre', 'Nom du podcast', 'required');
+        $this->form_validation->set_rules('description', 'Description', 'required');
+
+        $errors = '';
+
+        if (false === $this->form_validation->run()) {
+            
+        } else {
+            $episode->numero = $this->helper->numero($this->input->post('saison'), $this->input->post('numero'));
+            $episode->titre = $this->input->post('titre');
+            $episode->description = $this->input->post('description');
+            $episode->tags = $this->input->post('tags');
+
+            $this->episodes_model->update($episode);
+            redirect('episodes/view/'.$episode->id);
+        }
+
+        $attributes = [
+            [        
+                'type' => 'text',
+                'name' => 'saison',
+                'id' => 'saison',
+                'label' => 'Numéro de la saison',
+                'class' => 'form-control',
+                'value' => $this->input->post('saison') ?: $this->helper->numero_inverse($episode->numero)[0],
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'numero',
+                'id' => 'numero',
+                'label' => 'Numéro de l\'épisode',
+                'class' => 'form-control',
+                'value' => $this->input->post('numero') ?: $this->helper->numero_inverse($episode->numero)[1],
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'titre',
+                'id' => 'titre',
+                'label' => 'Titre *',
+                'class' => 'form-control',
+                'value' => $this->input->post('titre') ?: $episode->titre,
+                'required' => true,
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'description',
+                'id' => 'description',
+                'label' => 'Description *',
+                'class' => 'form-control',
+                'value' => $this->input->post('description') ?: $episode->description,
+                'required' => true,
+            ],
+            [        
+                'type' => 'text',
+                'name' => 'tags',
+                'id' => 'tags',
+                'label' => 'Tags',
+                'class' => 'form-control',
+                'value' => $this->input->post('tags') ?: $episode->tags
+            ],
+        ];
+
         $this->template->load('episodes/edit', [
             'episode' => $episode, 
             'podcast' => $podcast,
+            'attributes' => $attributes,
+            'errors' => $errors,
             "liste_BreadcrumbItems" => $this->getBreadcrumbItems([
                 new BreadcrumbItem($podcast->titre,"/podcasts/display/".$podcast->id),
                 new BreadcrumbItem($episode->titre)

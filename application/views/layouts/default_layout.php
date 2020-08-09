@@ -37,9 +37,11 @@
 <body class="container-fluid">
     <div class="page-header row padding-10">
         <div class="col-md-4">
-            <h1 style='font-family:BGFont;'>
-                    <font style='color:red;'>&</font>BadGeek
-            </h1>
+            <a href="<?= site_url() ?>" style="text-decoration: none; color: white;">
+                <h1 style='font-family:BGFont;'>
+                        <font style='color:red;'>&</font>BadGeek
+                </h1>
+            </a>
         </div>
         <div class="col-md-8 text-right">
         <a href="<?= site_url("podcasts") ?>" class="btn btn-danger margin-right-10">
