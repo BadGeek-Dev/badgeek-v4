@@ -7,6 +7,7 @@
   "license": "MIT",
   "private": null,
   "dependencies": {
+    "@yaireo/tagify": "^3.17.4",
     "bootstrap": "^4.3.1",
     "bootstrap-fileinput": "^5.0.7",
     "dompurify": "^2.0.7",

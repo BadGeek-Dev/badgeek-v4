@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.11.2.tgz#8644bc25b19475779a7b7c1fc104bc0a794f4465"
   integrity sha512-XiUPoS79r1G7PcpnNtq85TJ7inJWe0v+b5oZJZKb0pGHNIV6+UiNeQWiFGmuQ0aj7GEhnD/v9iqxIsjuRKtEnQ==
 
+"@yaireo/tagify@^3.17.4":
+  version "3.17.4"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-3.17.4.tgz#b76c6cdaba90d61be566a739f8440c2f810f3a0c"
+  integrity sha512-ZWRznbHWmREyFZz+CGsl5sxlCMpYyauiOEgCnpxrWOUToPzEIYhfhrcjdcBmf1AjZnQQdRDEv4HCahuqZiN+XA==
+
 bootstrap-fileinput@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/bootstrap-fileinput/-/bootstrap-fileinput-5.0.7.tgz#15288d057f87728fe9132c81baa8817780762a32"

@@ -26,4 +26,6 @@
     $('.hosted').change(function() {
         $('.rss').parent().parent().toggle();
     });
+
+    $('[name=tags]').tagify();
 </script>
