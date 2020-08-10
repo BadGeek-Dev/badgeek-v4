@@ -129,7 +129,7 @@ class Admin_articles extends Badgeek_Controller
 
     private function initBreadcrumbItem($current = false)
     {
-        return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin(false), new BreadcrumbItem("Articles","/admin/articles", $current));
+        return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin(false), new BreadcrumbItem("Gestion des articles","/admin/articles", $current));
     }
 
     private function getBreadcrumbItems($extra_liste_items)

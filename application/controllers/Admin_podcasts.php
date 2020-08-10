@@ -17,7 +17,7 @@ class Admin_podcasts extends Badgeek_Controller
     {
         $podcasts = $this->podcasts_model->findAll();
 
-        $this->template->load_admin('admin/podcasts', ['podcasts' => $podcasts]);
+        $this->template->load_admin('admin/podcasts', ['podcasts' => $podcasts, 'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)]);
     }
 
     public function validate($id)
@@ -60,7 +60,8 @@ class Admin_podcasts extends Badgeek_Controller
         $this->load->model('users_model');
         $creator = $this->users_model->findOneById($podcast->id_createur);
 
-        $this->template->load_admin('admin/podcasts_view', ['podcast' => $podcast, 'creator' => $creator]);
+        $this->template->load_admin('admin/podcasts_view', ['podcast' => $podcast, 'creator' => $creator, 
+        'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem($podcast->titre))]);
     }
 
     public function refuse($id)
@@ -91,5 +92,16 @@ class Admin_podcasts extends Badgeek_Controller
         }
 
         redirect('/admin/podcasts');
+    }
+
+    private function initBreadcrumbItem($current = false)
+    {
+        return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin(false), new BreadcrumbItem("Gestion des podcasts","/admin/podcasts", $current));
+    }
+
+    private function getBreadcrumbItems($extra_liste_items)
+    {
+        if(!is_array($extra_liste_items)) $extra_liste_items = [$extra_liste_items];
+        return array_merge($this->initBreadcrumbItem(), array_values($extra_liste_items));
     }
 }
