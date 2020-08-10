@@ -6,6 +6,7 @@
                     <a href="<?= base_url("admin"); ?>">Menu d'Administration</a>
                 </div>
                 <ul class="list-group admin_listgroup">
+                    <li class="list-group-item admin_listitem"><a href="<?= base_url("admin/users"); ?>">Gestion des utilisateurs</a></li>
                     <li class="list-group-item admin_listitem">
                         <a href="<?= base_url("admin/podcasts"); ?>">Gestion des podcasts <? if($waiting_podcasts) echo "($waiting_podcasts en attente)"?></a>
                     </li>
