@@ -66,8 +66,8 @@ class  Lives_model extends CI_Model
 
     public function addLive($title,$content,$start_at,$id_member){
 
-       $date = DateTime::createFromFormat('Y-m-d H:i:s',$start_at);
-
+       $date = new DateTime();
+       $date = $date->format('Y-m-d H:i:s');
         $this->db->set('title', $title);
         $this->db->set('content', $content);
         $this->db->set('id_member', $id_member);
@@ -80,8 +80,6 @@ class  Lives_model extends CI_Model
 
 
     public function updateLive($id,$title,$content,$start_at,$id_member,$created_at){
-
-        $date = DateTime::createFromFormat('Y-m-d H:i:s',$start_at);
 
         $this->db->set('title', $title);
         $this->db->set('content', $content);
