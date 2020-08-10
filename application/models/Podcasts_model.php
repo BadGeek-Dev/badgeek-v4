@@ -67,6 +67,15 @@ class Podcasts_model extends CI_Model {
 
     public function findAll()
     {
+        $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, podcasts.valid, users.username, users.email');
+        $this->db->from('podcasts');
+        $this->db->join('users', 'podcasts.id_createur = users.id', 'inner');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function findAllValid()
+    {
         return $this->db->get_where('podcasts', ['valid' => 1])->result();
     }
 
