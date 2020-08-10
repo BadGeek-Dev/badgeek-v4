@@ -14,7 +14,7 @@ class Medias extends Badgeek_Controller
      */
     public function index()
     {
-        $podcasts = $this->podcasts_model->findAll();
+        $podcasts = $this->podcasts_model->findAllValid();
         $this->template->load('medias/list', [
             'podcasts' => $podcasts, 
             'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)
