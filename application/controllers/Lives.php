@@ -78,6 +78,17 @@ class Lives extends Badgeek_Controller
         }
     }
 
+    public function live($id){
+    $live = $this->Lives_model->getLiveById($id);
+
+    if($live->status == 2 ){
+    $this->template->load('public/lives/live.php',array(
+        'live' => $live,
+        "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem("Demande de live"))));}
+    else{
+        redirect('/', 'refresh');
+    }
+}
 
 
 

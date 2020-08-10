@@ -103,6 +103,14 @@ class  Lives_model extends CI_Model
         return $query;
     }
 
+    public function updateUrl($id,$url){
+
+        $this->db->set('url', $url);
+        $this->db->where('id',$id);
+        $query = $this->db->update('lives');
+        return $query;
+    }
+
 
     public function insert()
     {
