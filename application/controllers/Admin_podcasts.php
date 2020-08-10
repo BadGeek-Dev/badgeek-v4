@@ -43,12 +43,15 @@ class Admin_podcasts extends Badgeek_Controller
         $this->load->model('users_model');
         $creator = $this->users_model->findOneById($podcast->id_createur);
 
-        if ($podcast) {
+        if ($podcast) 
+        {
             $podcast->valid = 0;
             $this->podcasts_model->update($podcast);
+            $this->load->library('email_manager');
+            $this->email_manager->sendValidationPodcastEmail($podcast, $creator);
         }
 
-        redirect('/admin/podcasts/view/'.$id);
+        redirect('/admin/podcasts');
     }
 
     public function view($id)

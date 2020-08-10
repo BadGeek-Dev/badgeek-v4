@@ -34,15 +34,27 @@ class Email_manager {
             Créateur : {$creator->username} {$creator->email}
             "
         );
+        $this->send(
+            [$creator->email],
+            "Podcast en attente de validation",
+            "Bonjour, <br/>
+            Votre podcast {$podcast->titre} est actuellement en cours de validation par notre équipe.
+            <br/>
+            Cordialement,<br/>
+            L'équipe Badgeek"
+        );
     }
 
     public function sendPodcastValidatedEmail($podcast, $creator)
     {
         $this->send(
             [$creator->email],
-            'Podcast Validé',
+            'Podcast validé',
             "Bonjour, <br/>
-            Votre podcast {$podcast->titre}, a été validé par l'équipe Badgeek."
+            Félicitations ! Votre podcast {$podcast->titre}, a été validé par l'équipe Badgeek.
+            <br/>
+            Cordialement,<br/>
+            L'équipe Badgeek"
         );
     }
 
@@ -52,8 +64,11 @@ class Email_manager {
             [$creator->email],
             'Podcast refusé',
             "Bonjour, <br/>
-            Votre podcast {$podcast->titre}, a été validé par l'équipe Badgeek.
-            Voici la raison : $reason
+            Votre podcast {$podcast->titre}, a été refusé par l'équipe Badgeek.
+            <br/> Motif du refus : $reason
+            <br/>
+            Cordialement,<br/>
+            L'équipe Badgeek
             "
         );
     }
