@@ -10,7 +10,14 @@ class Podcasts_model extends CI_Model {
     public $rss;
     public $tags;
     public $id_createur;
+
+    /**
+     * 0 waiting validation
+     * 1 validated
+     * 2 refused 
+     */
     public $valid;
+    public $hosted;
 
     public function insert()
     {
@@ -33,14 +40,43 @@ class Podcasts_model extends CI_Model {
         return $this->db->get_where('podcasts', ['id' => $id])->row();
     }
 
+    public function findByUserNotRefused($userId)
+    {
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid !=' => 2])->result();
+    }
+
     public function findByUser($userId)
     {
-        return $this->db->get_where('podcasts', ['id_createur' => $userId])->result();
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => 1])->result();
+    }
+
+    public function findByUserWaiting($userId)
+    {
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => 0])->result();
+    }
+
+    public function findByValid($valid)
+    {
+        $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, users.username, users.email');
+        $this->db->from('podcasts');
+        $this->db->where(['podcasts.valid' => $valid]);
+        $this->db->join('users', 'podcasts.id_createur = users.id', 'inner');
+        $query = $this->db->get();
+        return $query->result();
     }
 
     public function findAll()
     {
-        return $this->db->get('podcasts')->result();
+        $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, podcasts.valid, users.username, users.email');
+        $this->db->from('podcasts');
+        $this->db->join('users', 'podcasts.id_createur = users.id', 'inner');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function findAllValid()
+    {
+        return $this->db->get_where('podcasts', ['valid' => 1])->result();
     }
 
     public function findByContainRss()
@@ -225,6 +261,26 @@ class Podcasts_model extends CI_Model {
     public function setValid($valid)
     {
         $this->valid = $valid;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of hosted
+     */ 
+    public function getHosted()
+    {
+        return $this->hosted;
+    }
+
+    /**
+     * Set the value of hosted
+     *
+     * @return  self
+     */ 
+    public function setHosted($hosted)
+    {
+        $this->hosted = $hosted;
 
         return $this;
     }

@@ -8,6 +8,7 @@ class Template {
     public function __construct() 
     {
         $this->CI =& get_instance();
+        $this->CI->load->model('podcasts_model');
     }
 
     function set($content_area, $value)
@@ -49,7 +50,13 @@ class Template {
         {
             $this->set('breadcrumb', new Breadcrumb($view_data['liste_BreadcrumbItems']));
         }
+        $this->inject_admin_data($view_data);
         $this->set('contents_admin', $this->CI->load->view($view, $view_data, TRUE));
         $this->load('layouts/admin_layout',$this->template_data);
+    }
+
+    function inject_admin_data(&$view_data)
+    {
+        $view_data['waiting_podcasts'] = count($this->CI->podcasts_model->findByValid(0));
     }
 }

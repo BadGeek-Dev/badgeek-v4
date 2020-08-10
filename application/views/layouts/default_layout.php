@@ -15,6 +15,7 @@
     <link href="<?php echo base_url('assets/css/animation.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/fontello.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/badgeek.css') ?>" rel="stylesheet">
+    <link href="<?php echo base_url('assets/node_modules/@yaireo/tagify/dist/tagify.css') ?>" rel="stylesheet">
     <script src="<?php echo base_url('assets/node_modules/jquery/dist/jquery.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/popper.js/dist/umd/popper.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/piexifjs/piexif.js') ?>"></script>
@@ -24,6 +25,7 @@
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/fileinput.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/themes/fas/theme.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/locales/fr.js') ?>"></script>
+    <script src="<?php echo base_url('assets/node_modules/@yaireo/tagify/dist/jQuery.tagify.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/js/badgeek.js') ?>"></script>
     <?php
         if (isset($extras) && is_array($extras) && is_array($extras["js"])) {
@@ -94,7 +96,13 @@
     <!-- MODAL CONNEXION -->
     <?php include(__DIR__."/modal/modal_connexion.php"); ?>
     <!-- MODAL PROFIL -->
-    <?php if($this->ion_auth->logged_in()) include(__DIR__."/modal/modal_profil.php"); ?>
+    <?php 
+    if($this->ion_auth->logged_in()) 
+    {
+        include(APPPATH."/models/Usersgroups_model.php");
+        include(__DIR__."/modal/modal_profil.php");
+    } 
+    ?>
 
     <!--FIL D'ARIANE-->
     <?php if(isset($breadcrumb)) echo $breadcrumb; ?>

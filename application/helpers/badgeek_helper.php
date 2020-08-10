@@ -14,7 +14,7 @@ if ( ! function_exists('refreshSid'))
 
 if ( ! function_exists('setFlashdataMessage'))
 {
-	function setFlashdataMessage(&$session, $message, $title = false, $position = "top-right", $timeout = BADGEEK__TIMEOUT_TOAST)
+	function setFlashdataMessage(&$session, $message, $position = "top-center", $title = false, $timeout = BADGEEK__TIMEOUT_TOAST)
 	{
 		if($message)  $session->set_flashdata('message', $message);
 		if($title)    $session->set_flashdata('message-title', $title);

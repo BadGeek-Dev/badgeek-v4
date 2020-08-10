@@ -81,7 +81,7 @@ class Auth extends Badgeek_Controller
 				{
 					//if the login is successful
 					//redirect them back to the home page
-					setFlashdataMessage($this->session, $this->ion_auth->messages(), '', 'top-right', 2000);
+					setFlashdataMessage($this->session, $this->ion_auth->messages(),"top-right");
 					$result = "";
 					$message = "";
 				}
@@ -129,7 +129,7 @@ class Auth extends Badgeek_Controller
 		$this->ion_auth->logout();
 
 		// redirect them to the login page
-		setFlashdataMessage($this->session, $this->ion_auth->messages(), '', 'top-right');
+		setFlashdataMessage($this->session, $this->ion_auth->messages(),  "top-right");
 		redirect('/', 'refresh');
 	}
 
@@ -256,7 +256,7 @@ class Auth extends Badgeek_Controller
 					if ($forgotten)
 					{
 						// if there were no errors
-						$this->session->set_flashdata("message", $this->ion_auth->messages());
+						setFlashdataMessage($this->session, $this->ion_auth->messages());
 					}
 					else
 					{
@@ -975,7 +975,7 @@ class Auth extends Badgeek_Controller
 				
 			}
 			$this->session->reload = true;
-			setFlashdataMessage($this->session, "Profil mis à jour");
+			setFlashdataMessage($this->session, "Profil mis à jour", "top-right");
 			$this->returnAjax("OK","", $new_sid);
 		}
 	}
