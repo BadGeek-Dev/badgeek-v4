@@ -1,6 +1,5 @@
 <div class="container">
     <h2>Demander un nouveau Live</h2>
-    <?= var_dump(str_split($live->start_at,10)) ?>
     <?= form_open('lives/editlive/' . $live->id); ?>
 
     <div class="form-group">
