@@ -32,7 +32,7 @@ class Admin_users extends Badgeek_Controller
 
         $this->template->load_admin('admin/users_edit', array(
             "user" => $user,
-            'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)
+            'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem(getLibelleFromUser($user)))
         ));
     }
 
@@ -60,7 +60,7 @@ class Admin_users extends Badgeek_Controller
 
     private function initBreadcrumbItem($current = false)
     {
-        return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin(false), new BreadcrumbItem("Articles","/admin/users", $current));
+        return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin(false), new BreadcrumbItem("Gestions des utilisateurs","/admin/users", $current));
     }
 
     private function getBreadcrumbItems($extra_liste_items)
