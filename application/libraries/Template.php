@@ -44,8 +44,6 @@ class Template {
 
     function load_admin($view, $view_data = [])
     {
-        $trace = debug_backtrace();
-        $caller = $trace[1];
         if(key_exists('liste_BreadcrumbItems', $view_data) && is_array($view_data['liste_BreadcrumbItems']))
         {
             $this->set('breadcrumb', new Breadcrumb($view_data['liste_BreadcrumbItems']));
