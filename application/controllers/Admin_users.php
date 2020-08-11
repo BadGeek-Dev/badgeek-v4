@@ -24,9 +24,15 @@ class Admin_users extends Badgeek_Controller
     public function edit($id)
     {
         $user = $this->Users_model->findOneById($id);
+
+        if ($this->ion_auth->is_admin($user->id))
+        {
+            redirect('/admin/users');
+        }
+
         $this->template->load_admin('admin/users_edit', array(
             "user" => $user,
-            'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)
+            'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem(getLibelleFromUser($user)))
         ));
     }
 
@@ -46,12 +52,15 @@ class Admin_users extends Badgeek_Controller
         $user->active = $state;
         $this->Users_model->update($user);
 
+        $this->load->library('email_manager');
+        $this->email_manager->sendUserActiveState($user, $state);
+
         redirect('/admin/users/edit/'.$id);
     }
 
     private function initBreadcrumbItem($current = false)
     {
-        return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin(false), new BreadcrumbItem("Articles","/admin/users", $current));
+        return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin(false), new BreadcrumbItem("Gestions des utilisateurs","/admin/users", $current));
     }
 
     private function getBreadcrumbItems($extra_liste_items)
