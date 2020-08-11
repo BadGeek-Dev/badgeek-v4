@@ -24,6 +24,12 @@ class Admin_users extends Badgeek_Controller
     public function edit($id)
     {
         $user = $this->Users_model->findOneById($id);
+
+        if ($this->ion_auth->is_admin($user->id))
+        {
+            redirect('/admin/users');
+        }
+
         $this->template->load_admin('admin/users_edit', array(
             "user" => $user,
             'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)
