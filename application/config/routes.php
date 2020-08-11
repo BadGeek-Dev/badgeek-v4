@@ -58,12 +58,9 @@ $route['podcasts/create/(:num)'] = 'podcasts/createWaitingValidation/$1';
 $route['episodes/create/(:num)'] = 'episodes/create/$1';
 $route['episodes/edit/(:num)'] = 'episodes/edit/$1';
 $route['episodes/validate/(:num)'] = 'episodes/validate/$1';
-$route['medias/podcast/(:num)'] = 'medias/podcast/$1';
-$route['medias/episode/(:num)'] = 'medias/episode/$1';
-$route['medias/search/(:any)'] = 'medias/search/$1';
 
 //hosted medias
-$route['badgeek/uploads/podcasts/(:num)/(:any)'] = 'medias/mp3/$1/$2';
+$route['badgeek/uploads/podcasts/(:num)/(:any)'] = 'podcasts/mp3/$1/$2';
 
 //Admin articles
 $route['admin/articles'] = 'admin_articles/index';

@@ -6,9 +6,6 @@ class Podcasts extends Badgeek_Controller
 {
     public function __construct() {
         parent::__construct();
-        if (!isPodcasteur()) {
-            redirect('/');
-        }
         $this->load->model('podcasts_model');
     }
 
@@ -170,8 +167,8 @@ class Podcasts extends Badgeek_Controller
      */
     public function index()
     {
-        $podcasts = $this->podcasts_model->findByUser($this->user->id);
-        $podcasts_waiting = $this->podcasts_model->findByUserWaiting($this->user->id);
+        $podcasts_waiting = $this->podcasts_model->findByUserWaiting($this->user ? $this->user->id : null);
+        $podcasts = $this->podcasts_model->findAll();
 
         $this->template->load('podcasts/list', [
             'podcasts_waiting' => $podcasts_waiting,
@@ -327,9 +324,18 @@ class Podcasts extends Badgeek_Controller
         redirect('/podcasts/display/'.$podcast->id);
     }
 
+    public function mp3($dir, $file)
+    {
+        $this->load->helper('file');
+
+        $mp3Path = APPPATH.'../uploads/podcasts/'.$dir.'/'.$file;
+        $this->output->set_content_type(get_mime_by_extension($mp3Path));
+        $this->output->set_output(file_get_contents($mp3Path));
+    }
+
     private function initBreadcrumbItem($current = false)
     {
-        return array(BreadcrumbItem::getBreadcrumbItemAccueil(), new BreadcrumbItem("Mes podcasts", "/podcasts", $current));
+        return array(BreadcrumbItem::getBreadcrumbItemAccueil(), new BreadcrumbItem("Podcasts", "/podcasts", $current));
     }
 
     private function getBreadcrumbItems($extra_liste_items)

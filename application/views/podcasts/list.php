@@ -4,9 +4,9 @@
         echo "<br/>";
     }
 ?>
-
-<a href="<?= site_url("podcasts/create") ?>" class="btn btn-danger margin-right-10">Ajouter un podcast</a>
-
+<?php if (isPodcasteur()) : ?>
+    <a href="<?= site_url("podcasts/create") ?>" class="btn btn-danger margin-right-10">Ajouter un podcast</a>
+<?php endif; ?>
 <br/>
 <br/>
 <?php 

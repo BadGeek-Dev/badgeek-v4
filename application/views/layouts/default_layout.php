@@ -39,27 +39,22 @@
 <body class="container-fluid">
     <div class="page-header row padding-10">
         <div class="col-md-4">
-            <h1 style='font-family:BGFont;'>
-                    <font style='color:red;'>&</font>BadGeek
-            </h1>
+            <a href="<?= site_url() ?>" style="text-decoration: none; color: white;">
+                <h1 style='font-family:BGFont;'>
+                        <font style='color:red;'>&</font>BadGeek
+                </h1>
+            </a>
         </div>
         <div class="col-md-8 text-right">
-        <a href="<?= site_url("medias") ?>" class="btn btn-danger margin-right-10">
+        <a href="<?= site_url("podcasts") ?>" class="btn btn-danger margin-right-10">
             <i class='icon-user'></i>
-            Les podcasts
+            Podcasts
         </a>
         <?php if ($this->ion_auth->logged_in()) : ?>
             <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#profilModal">
                 <i class='icon-user'></i>
                 <?=$this->user->username ?: "Profil"?>
             </button>
-            <?php if (isPodcasteur()) : ?>
-                <a href="<?= site_url("podcasts") ?>" class="btn btn-danger margin-right-10">
-                    <i class='icon-user'></i>
-                    Mes podcasts
-                </a>
-                &nbsp;&nbsp;&nbsp;
-            <?php endif; ?>
             <?php if (isAdmin()) : ?>
                 <a href="<?= site_url("admin") ?>" class="btn btn-danger margin-right-10">
                     <i class='icon-key'></i>
