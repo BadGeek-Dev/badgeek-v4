@@ -27,7 +27,7 @@ class Lives extends Badgeek_Controller
         $this->form_validation->set_rules('content','Motif','htmlspecialchars');
         $this->form_validation->set_rules('start_at','Date de Début','required|htmlspecialchars');
         $this->form_validation->set_rules('start_at_hour','Heure de Début','required|htmlspecialchars');
-        if($this->form_validation->run()){ //formulaire OK
+        if($this->form_validation->run()){
 
             $idmember = $this->session->userdata('user_id');
             $this->input->post('start_at');
@@ -40,7 +40,7 @@ class Lives extends Badgeek_Controller
             setFlashdataMessage($this->session, 'Demande de Live créée');
             redirect("/lives");
         }
-        else{ // formulaire no ok
+        else{
            $this->template->load('public/lives/live_newLive.php',array(
                'error' => validation_errors(),
                "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem("Demande de live"))));
@@ -55,7 +55,7 @@ class Lives extends Badgeek_Controller
         $this->form_validation->set_rules('content','Motif','htmlspecialchars');
         $this->form_validation->set_rules('start_at','Date de Début','required|htmlspecialchars');
         $liverequest = $this->Lives_model->getLiveById($id);
-        if($this->form_validation->run()){ //formulaire OK
+        if($this->form_validation->run()){
 
             $idmember = $this->session->userdata('user_id');
             $this->input->post('start_at');
@@ -68,7 +68,7 @@ class Lives extends Badgeek_Controller
             setFlashdataMessage($this->session, 'Edition de Live effectuée');
             redirect("/lives");
         }
-        else{ // formulaire no ok
+        else{
 
 
             $this->template->load('public/lives/live_editLive.php',array(
@@ -82,9 +82,9 @@ class Lives extends Badgeek_Controller
     $live = $this->Lives_model->getLiveById($id);
 
     if($live->status == 2 ){
-    $this->template->load('public/lives/live.php',array(
-        'live' => $live,
-        "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem("Demande de live"))));}
+        $this->template->load('public/lives/live.php',array(
+            'live' => $live,
+            "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem("Demande de live"))));}
     else{
         redirect('/', 'refresh');
     }

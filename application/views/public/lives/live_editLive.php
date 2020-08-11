@@ -32,7 +32,6 @@
         <div>
             <?= form_input(['name' => "start_at_hour",'id' => "start_at_hour",'value'=>ltrim(str_split($live->start_at,10)[1]," "), 'class' => 'form-control', 'type'=>'time']
             ) ?>
-            <!--            <span class="help-block">--><?//= form_error('start_at'); ?><!-- </span>-->
         </div>
     </div>
 

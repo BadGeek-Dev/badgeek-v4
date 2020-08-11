@@ -60,11 +60,6 @@ $route['episodes/validate/(:num)'] = 'episodes/validate/$1';
 $route['medias/podcast/(:num)'] = 'medias/podcast/$1';
 $route['medias/episode/(:num)'] = 'medias/episode/$1';
 $route['medias/search/(:any)'] = 'medias/search/$1';
-$route['admin/articles'] = 'admin_articles/index';
-$route['admin/articles/(:any)'] = 'admin_articles/$1';
-$route['admin/lives'] = 'admin_lives/index';
-$route['admin/lives/(:any)/(:any)'] = 'admin_lives/$1/$2';
-$route['admin/articles/(:any)/(:any)'] = 'admin_articles/$1/$2';
 
 //hosted medias
 $route['badgeek/uploads/podcasts/(:num)/(:any)'] = 'medias/mp3/$1/$2';
@@ -72,7 +67,9 @@ $route['badgeek/uploads/podcasts/(:num)/(:any)'] = 'medias/mp3/$1/$2';
 //Admin articles
 $route['admin/articles'] = 'admin_articles/index';
 $route['admin/articles/(:any)'] = 'admin_articles/$1';
-$route['admin/articles/(:any)/(:any)'] = 'admin_articles/$1/$2';
+$route['admin/articles/add/(:num)'] = 'admin_articles/add/$1';
+$route['admin/articles/edit/(:num)'] = 'admin_articles/edit/$1';
+$route['admin/articles/delete/(:num)'] = 'admin_articles/delete/$1';
 
 //Admin podcasts
 $route['admin/podcasts'] = 'admin_podcasts';
@@ -87,3 +84,9 @@ $route['admin/users'] = 'admin_users/index';
 $route['admin/users/edit/(:num)'] = 'admin_users/edit/$1';
 $route['admin/users/activate/(:num)'] = 'admin_users/activate/$1';
 $route['admin/users/deactivate/(:num)'] = 'admin_users/deactivate/$1';
+
+//Admin lives
+$route['admin/lives'] = 'admin_lives/index';
+$route['admin/lives/view/(:num)'] = 'admin_lives/view/$1';
+$route['admin/lives/refuse/(:num)'] = 'admin_lives/refuse/$1';
+$route['admin/lives/accept/(:num)'] = 'admin_lives/accept/$1';

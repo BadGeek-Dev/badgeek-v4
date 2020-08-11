@@ -83,7 +83,6 @@ class Admin_articles extends Badgeek_Controller
             setFlashdataMessage($this->session, 'Article mis à jour');
             redirect('/admin_articles/index', 'refresh');
         } else {
-            //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
             $this->template->load_admin('public/Admin/admin_articles_editArticle', array(
                 "article" => $article,
                 "error"=> validation_errors(),
