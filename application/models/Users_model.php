@@ -39,6 +39,7 @@ class Users_Model extends CI_Model
         $this->db->from('users');
         $this->db->join('users_groups', 'users.id = users_groups.user_id', 'inner');
         $this->db->where(['users_groups.group_id !=' => 1]);
+        $this->db->group_by('users.id');
         $query = $this->db->get();
         
         return $query->result();
