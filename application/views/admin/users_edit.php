@@ -1,5 +1,6 @@
-<h2><?= $user->username ?></h2>
-
+<img src="<?=base_url(getAvatar($user->id))?>"/>
+<br/>
+<br/>
 Username : <?= $user->username ?><br/>
 Email : <?= $user->email ?><br/>
 Last Login : <?= date('Y-m-d H:m', $user->last_login) ?><br/>
