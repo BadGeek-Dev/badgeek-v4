@@ -56,4 +56,11 @@ if ( ! function_exists('isInGroupe'))
 	}
 }
 
+if ( ! function_exists('getLibelleFromUser'))
+{
+	function getLibelleFromUser($user)
+	{
+        return ($user->username ?: "(pas de pseudo défini)"). " - ".$user->email;
+	}
+}
 
