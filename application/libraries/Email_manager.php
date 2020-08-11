@@ -72,4 +72,20 @@ class Email_manager {
             "
         );
     }
+
+    public function sendUserActiveState($user, $state)
+    {
+        $state = $state ? 'activé' : 'désactivé';
+
+        $this->send(
+            [$user->email],
+            "Compte {$state}" ,
+            "Bonjour, <br/>
+            Votre compte a été {$state} par l'équipe Badgeek.
+            <br/>
+            Cordialement,<br/>
+            L'équipe Badgeek
+            "
+        );
+    }
 }

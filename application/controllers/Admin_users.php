@@ -52,6 +52,9 @@ class Admin_users extends Badgeek_Controller
         $user->active = $state;
         $this->Users_model->update($user);
 
+        $this->load->library('email_manager');
+        $this->email_manager->sendUserActiveState($user, $state);
+
         redirect('/admin/users/edit/'.$id);
     }
 
