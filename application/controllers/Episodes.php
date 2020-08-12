@@ -149,6 +149,13 @@ class Episodes extends Badgeek_Controller
         $episode = $this->episodes_model->findOneById($id);
         $podcast = $this->podcasts_model->findOneById($episode->id_podcast);
 
+        $stats = json_decode($episode->stats, true);
+        $episode->stats = json_encode([
+            'view' => ($stats['view'] ?? 0) + 1,
+            'listen' => ($stats['listen'] ?? 0) + 0
+        ]);
+        $this->episodes_model->update($episode);
+
         $this->template->load('episodes/view', [
             'episode' => $episode, 
             'podcast' => $podcast,
@@ -157,6 +164,22 @@ class Episodes extends Badgeek_Controller
                 new BreadcrumbItem($episode->titre)
             ])
         ]); 
+    }
+
+    public function statsListen($id)
+    {
+        $episode = $this->episodes_model->findOneById($id);
+
+        $stats = json_decode($episode->stats, true);
+        $episode->stats = json_encode([
+            'view' => ($stats['view'] ?? 0) + 0,
+            'listen' => ($stats['listen'] ?? 0) + 1
+        ]);
+        $this->episodes_model->update($episode);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encore(['sucess' => true]));
     }
 
     /**

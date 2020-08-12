@@ -58,6 +58,7 @@ $route['podcasts/create/(:num)'] = 'podcasts/createWaitingValidation/$1';
 $route['episodes/create/(:num)'] = 'episodes/create/$1';
 $route['episodes/edit/(:num)'] = 'episodes/edit/$1';
 $route['episodes/validate/(:num)'] = 'episodes/validate/$1';
+$route['episodes/stats/listen/(:num)'] = 'episodes/statsListen/$1';
 
 //hosted medias
 $route['badgeek/uploads/podcasts/(:num)/(:any)'] = 'podcasts/mp3/$1/$2';

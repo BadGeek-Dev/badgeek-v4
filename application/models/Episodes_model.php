@@ -12,6 +12,7 @@ class Episodes_model extends CI_Model {
     public $tags;
     public $valid;
     public $id_podcast;
+    public $stats;
 
     public function refresh()
     {
@@ -25,6 +26,7 @@ class Episodes_model extends CI_Model {
         $this->tags = null;
         $this->valid = null;
         $this->id_podcast = null;
+        $this->stats = null;
     }
 
     public function insert()
