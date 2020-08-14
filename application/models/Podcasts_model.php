@@ -74,6 +74,24 @@ class Podcasts_model extends CI_Model {
         return $query->result();
     }
 
+    public function search($query = null)
+    {
+        $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, podcasts.valid');
+        $this->db->from('podcasts');
+        $this->db->join('episodes', 'podcasts.id = episodes.id_podcast', 'left');
+        if ($query) {
+            $this->db->like('podcasts.titre', $query);
+            $this->db->or_like('podcasts.description', $query);
+            $this->db->or_like('episodes.titre', $query);
+            $this->db->or_like('episodes.description', $query);
+        }
+        
+        $this->db->group_by('podcasts.id');
+        $this->db->where('podcasts.valid', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function findAllValid()
     {
         return $this->db->get_where('podcasts', ['valid' => 1])->result();
