@@ -7,6 +7,7 @@ class Search extends Badgeek_Controller
     public function __construct() {
         parent::__construct();
         $this->load->model('podcasts_model');
+        $this->load->model('searchstats_model');
     }
 
     /**
@@ -17,6 +18,9 @@ class Search extends Badgeek_Controller
         $query = $this->input->get('query', TRUE);
 
         $podcasts = $this->podcasts_model->search($query);
+
+        $this->searchstats_model->setQuery($query);
+        $this->searchstats_model->insert();
 
         $this->template->load('search/search', [
             'podcasts' => $podcasts, 
