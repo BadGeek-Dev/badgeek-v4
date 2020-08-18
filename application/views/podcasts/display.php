@@ -25,6 +25,21 @@
 <?php
     foreach ($episodes as $episode) {
         echo '<a href="'.site_url("episodes/view/".$episode->id).'">'.$episode->titre.'</a>';
+        if ($this->user && $podcast->id_createur == $this->user->id) {
+            $stats = json_decode($episode->stats, true);
+            echo ' (page vu '.($stats['view'] ?? "0").', lecture '.($stats['listen'] ?? "0").')';
+
+            $total = [
+                'view' => ($total['view'] ?? 0) + ($stats['view'] ?? 0),
+                'listen' => ($total['listen'] ?? 0) + ($stats['listen'] ?? 0)
+            ];
+        }
         echo "<br/>";
     }
 ?>
+
+<?php if ($this->user && $podcast->id_createur == $this->user->id): ?>
+    <h3>Statistiques global</h3>
+    <p>Total page vu <?= $total['view'] ?></p>
+    <p>Total lecture <?= $total['listen'] ?></p>
+<?php endif; ?>

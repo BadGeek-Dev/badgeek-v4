@@ -13,3 +13,13 @@
 <audio controls style="max-width:100%;" class="mejs__player">
     <source src="<?= $episode->lien_mp3 ?>" type="audio/mp3">
 </audio>
+
+<script>
+    let update_stats = function() {
+        $.ajax({
+            type: "POST",
+            url: "<?= site_url("episodes/stats/listen/".$episode->id) ?>",
+        });
+    };
+    $('.mejs__player')[0].addEventListener("play", update_stats);
+</script>
