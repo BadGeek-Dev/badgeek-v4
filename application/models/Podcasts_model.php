@@ -57,10 +57,9 @@ class Podcasts_model extends CI_Model {
 
     public function findLastValidated($limit = 5)
     {
-        $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, users.username, users.email');
+        $this->db->select('*');
         $this->db->from('podcasts');
         $this->db->where(['podcasts.valid' =>1]);
-        $this->db->join('users', 'podcasts.id_createur = users.id', 'inner');
         $this->db->limit($limit);
         $this->db->order_by('podcasts.id', 'DESC');
         $query = $this->db->get();
