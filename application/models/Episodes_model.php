@@ -74,6 +74,16 @@ class Episodes_model extends CI_Model {
             ->get('episodes')
             ->row();
     }
+
+    public function findLastValidated($limit = 5)
+    {
+        return $this->db
+            ->where('valid', 1)
+            ->order_by('id', 'DESC')
+            ->limit($limit)
+            ->get('episodes')
+            ->result();
+    }
     
     /**
      * Get the value of id
