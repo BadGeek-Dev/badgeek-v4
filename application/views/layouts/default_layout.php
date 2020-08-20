@@ -45,7 +45,13 @@
                 </h1>
             </a>
         </div>
-        <div class="col-md-8 text-right">
+        <div class="col-md-4 text-right">
+            <form method="GET" action="<?= site_url("recherche") ?>">
+                <input type="search" placeholder="Recherche" name="query">
+                <button class="btn btn-outline-success" type="submit">Recherche</button>
+            </form>
+        </div>
+        <div class="col-md-4 text-right">
         <a href="<?= site_url("podcasts") ?>" class="btn btn-danger margin-right-10">
             <i class='icon-user'></i>
             Podcasts

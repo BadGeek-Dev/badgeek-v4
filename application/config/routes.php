@@ -54,6 +54,9 @@ $route['default_controller'] = 'badgeek/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+//search
+$route['recherche'] = 'search/index';
+
 $route['podcasts/create/(:num)'] = 'podcasts/createWaitingValidation/$1';
 $route['episodes/create/(:num)'] = 'episodes/create/$1';
 $route['episodes/edit/(:num)'] = 'episodes/edit/$1';

@@ -25,6 +25,17 @@ class Admin extends Badgeek_Controller
         ));
     }
 
+    public function stats()
+    {
+        $this->load->model('Searchstats_model');
+        $result = $this->Searchstats_model->admin_stats();
+
+        $this->template->load_admin('admin/stats', array(
+            "result" => $result, 
+            "liste_BreadcrumbItems" => $this->initBreadcrumbItem(true)
+        ));
+    }
+
     private function initBreadcrumbItem($current = false)
     {
         return array(BreadcrumbItem::getBreadcrumbItemAccueilAdmin($current));
