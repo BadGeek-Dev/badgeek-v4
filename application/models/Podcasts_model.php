@@ -55,6 +55,17 @@ class Podcasts_model extends CI_Model {
         return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => 0])->result();
     }
 
+    public function findLastValidated($limit = 5)
+    {
+        $this->db->select('*');
+        $this->db->from('podcasts');
+        $this->db->where(['podcasts.valid' =>1]);
+        $this->db->limit($limit);
+        $this->db->order_by('podcasts.id', 'DESC');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function findByValid($valid)
     {
         $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, users.username, users.email');

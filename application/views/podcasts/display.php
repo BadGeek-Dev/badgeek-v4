@@ -23,6 +23,8 @@
 <h3>Episodes</h3>
 
 <?php
+    $total = [];
+
     foreach ($episodes as $episode) {
         echo '<a href="'.site_url("episodes/view/".$episode->id).'">'.$episode->titre.'</a>';
         if ($this->user && $podcast->id_createur == $this->user->id) {
@@ -40,6 +42,6 @@
 
 <?php if ($this->user && $podcast->id_createur == $this->user->id): ?>
     <h3>Statistiques global</h3>
-    <p>Total page vu <?= $total['view'] ?></p>
-    <p>Total lecture <?= $total['listen'] ?></p>
+    <p>Total page vu <?= $total['view'] ?? 0 ?></p>
+    <p>Total lecture <?= $total['listen'] ?? 0 ?></p>
 <?php endif; ?>
