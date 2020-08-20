@@ -20,7 +20,12 @@
     </a>
 <?php endif; ?>
 
-<h3>Episodes</h3>
+<h3>Informations :</3>
+
+<p>Description : <?= $podcast->description ?></p>
+<p>Tags : <input name="tags" value='<?= $podcast->tags ?>' readOnly></p>
+
+<h3>Episodes : </h3>
 
 <?php
     foreach ($episodes as $episode) {
@@ -43,3 +48,7 @@
     <p>Total page vu <?= $total['view'] ?></p>
     <p>Total lecture <?= $total['listen'] ?></p>
 <?php endif; ?>
+
+<script>
+    $('[name=tags]').tagify();
+</script>
