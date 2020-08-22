@@ -93,8 +93,10 @@ class Podcasts_model extends CI_Model {
         if ($query) {
             $this->db->like('podcasts.titre', $query);
             $this->db->or_like('podcasts.description', $query);
+            $this->db->or_like('podcasts.tags',$query);
             $this->db->or_like('episodes.titre', $query);
             $this->db->or_like('episodes.description', $query);
+            $this->db->or_like('episodes.tags',$query);
         }
         
         $this->db->group_by('podcasts.id');
