@@ -24,3 +24,7 @@
             echo '</div>';
         echo '</div>';
 ?>
+
+<script>
+    $('[name=tags]').tagify();
+</script>
