@@ -7,14 +7,24 @@ class Badgeek extends Badgeek_Controller
     public function index()
     {
         $this->load->model('Articles_model');
-        $result = $this->Articles_model->getFirstArticleVisible();
-       $btnStatus = $this->Articles_model->isPreviousNextArticleVisible();
+        $this->load->model('Podcasts_model');
+        $this->load->model('Episodes_model');
 
-        $this->template->load('public/index', array("result" => $result, "btnStatus" => $btnStatus));
+        $this->template->load(
+            'public/index', 
+            [
+                "result" => $this->Articles_model->getFirstArticleVisible(), // getAllArticlesVisible(),
+                "podcasts" => $this->Podcasts_model->findLastValidated(),
+                "episodes" => $this->Episodes_model->findLastValidated(),
+                "btnStatus" => $this->Articles_model->isPreviousNextArticleVisible(),
+                "liste_BreadcrumbItems" => [
+                    BreadcrumbItem::getBreadcrumbItemAccueil(true)
+                    ]
+            ]);
     }
-
-    public function getNews($id,$side){
-
+    
+    public function getNews($id,$side)
+    {
         $this->load->model('Articles_model');
         $result = $this->Articles_model->getArticleBySide($id,$side);
         $article = $result['article'][0];
@@ -23,6 +33,5 @@ class Badgeek extends Badgeek_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode(array('html' => $html,"btnStatus" => $btnStatus[0],'currentID'=>$article->id)));
-
     }
 }

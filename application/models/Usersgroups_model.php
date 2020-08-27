@@ -6,6 +6,9 @@ class Usersgroups_Model extends CI_Model
     public $group_id;
 
     const DB_BASE = "users_groups";
+    const GROUPE_ADMIN       = 1;
+    const GROUPE_PODITEURS   = 2;
+    const GROUPE_PODCASTEURS = 3;
 
     public function insertUserInGroup($id_user, $id_group)
     {

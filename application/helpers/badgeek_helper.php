@@ -14,7 +14,7 @@ if ( ! function_exists('refreshSid'))
 
 if ( ! function_exists('setFlashdataMessage'))
 {
-	function setFlashdataMessage(&$session, $message, $title = false, $position = "top-right", $timeout = BADGEEK__TIMEOUT_TOAST)
+	function setFlashdataMessage(&$session, $message, $position = "top-center", $title = false, $timeout = BADGEEK__TIMEOUT_TOAST)
 	{
 		if($message)  $session->set_flashdata('message', $message);
 		if($title)    $session->set_flashdata('message-title', $title);
@@ -38,15 +38,15 @@ if ( ! function_exists('isInGroupe'))
 {
 	function isAdmin()
 	{
-		return isInGroupe(1);
+		return isInGroupe(Badgeek_constantes::AUTH_GROUP_ADMIN);
 	}
 	function isPoditeur()
 	{
-		return isInGroupe(2);
+		return isInGroupe(Badgeek_constantes::AUTH_GROUP_PODITEUR);
 	}
 	function isPodcasteur()
 	{
-		return isInGroupe(3);
+		return isInGroupe(Badgeek_constantes::AUTH_GROUP_PODCASTEUR);
 	}
 	function isInGroupe($group_id)
 	{
@@ -55,3 +55,12 @@ if ( ! function_exists('isInGroupe'))
 		return in_array($group_id,  $user->groups_id);
 	}
 }
+
+if ( ! function_exists('getLibelleFromUser'))
+{
+	function getLibelleFromUser($user)
+	{
+        return ($user->username ?: "(pas de pseudo défini)"). " - ".$user->email;
+	}
+}
+

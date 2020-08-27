@@ -81,10 +81,7 @@ class Auth extends Badgeek_Controller
 				{
 					//if the login is successful
 					//redirect them back to the home page
-					// $this->session->set_flashdata('message', $this->ion_auth->messages());
-					// $this->session->set_flashdata('message-position', 'top-right');
-					// $this->session->set_flashdata('message-timeout', 2000);
-					setFlashdataMessage($this->session, $this->ion_auth->messages(), '', 'top-right', 2000);
+					setFlashdataMessage($this->session, $this->ion_auth->messages(),"top-right");
 					$result = "";
 					$message = "";
 				}
@@ -103,7 +100,23 @@ class Auth extends Badgeek_Controller
 				$result = "KO";
 				$message = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 			}
-			$this->returnAjax($result, $message, $new_sid);
+			$is_admin = false;
+			if(empty($message))
+			{
+				//Gestion du post login si celui ci est réussi
+				$id_user = $this->ion_auth->user()->row()->id;
+				$groups = $this->ion_auth->get_users_groups($id_user)->result();
+				foreach($groups as $group)
+				{
+					if($group->id == Badgeek_constantes::AUTH_GROUP_ADMIN) 
+					{
+						$is_admin = true;
+						break;
+					}
+				}
+			}
+			//Page de retour spếcifique pour les admins
+			$this->returnAjax($result, $message, $new_sid, array("redirect" => base_url().($is_admin ? "/admin" : "")));
 		}
 	}
 		
@@ -116,7 +129,7 @@ class Auth extends Badgeek_Controller
 		$this->ion_auth->logout();
 
 		// redirect them to the login page
-		setFlashdataMessage($this->session, $this->ion_auth->messages(), '', 'top-right');
+		setFlashdataMessage($this->session, $this->ion_auth->messages(),  "top-right");
 		redirect('/', 'refresh');
 	}
 
@@ -243,7 +256,7 @@ class Auth extends Badgeek_Controller
 					if ($forgotten)
 					{
 						// if there were no errors
-						$this->session->set_flashdata("message", $this->ion_auth->messages());
+						setFlashdataMessage($this->session, $this->ion_auth->messages());
 					}
 					else
 					{
@@ -962,7 +975,7 @@ class Auth extends Badgeek_Controller
 				
 			}
 			$this->session->reload = true;
-			setFlashdataMessage($this->session, "Profil mis à jour");
+			setFlashdataMessage($this->session, "Profil mis à jour", "top-right");
 			$this->returnAjax("OK","", $new_sid);
 		}
 	}

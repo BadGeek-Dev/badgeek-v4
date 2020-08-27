@@ -1,29 +1,66 @@
 Bienvenue <?= $this->ion_auth->logged_in() ? $this->user->username : "" ?>
 
-<?php
-if (isset($result) AND sizeof($result) > 0) {
-    ?>
+
+<?php if (!empty($result)) :?>
+    <div class="container-fluid">
+        <div class="card text-white bg-dark">
+            <div class="card-header bg-danger">
+                <h2>L'actu</h2>
+            </div>
+        <div class="card-body"id="ajax-results">
+           <h3><?= $item->title ?></h3>
+           <p class="font-italic text-secondary">
+               par <?= $item->username ?> le <?= $item->created_at ?>
+            </p>
+            <div class="row">
+                <?php if($item->picture) : ?>
+                <img class="mr-4" src="<?php echo base_url('assets/pictures/news/'.$item->picture);?>"></img>
+                <?php endif ?>
+                <p><?= $item->content ?></p>
+            </div>
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="btn page-item previous_news_item <?php if(!$btnStatus['previous']){ echo "disabled";}?> p-0"><button class="page-link previous_news">Previous</button></li>
+                <li class="btn page-item next_news_item <?php if(!$btnStatus['next']){ echo "disabled";}?> p-0"><button class="page-link next_news">Next</button></li>
+            </ul>
+        </nav>
+    </div>
+<?php endif;?>
+
 
 <div class="container-fluid">
     <div class="card text-white bg-dark">
         <div class="card-header bg-danger">
-            <h2> News</h2>
+            <h2> Derniers podcasts validés</h2>
+        </div>
+        <div class="card-body ">
+            <?php 
+                foreach ($podcasts as $podcast) {
+                    echo '<a href="'.site_url("podcasts/display/".$podcast->id).'">'.$podcast->titre.'</a>';
+                    echo "<br/>";
+                } 
+            ?>
         </div>
     </div>
-    <div class="card-body"id="ajax-results">
-        <h3> <?= $result->title ?></h3>
-        <p class="font-italic text-secondary"> par <?= $result->username ?>
-            le <?= $result->created_at ?></p>
-        <p><?= $result->content ?></p>
-    </div>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="btn page-item previous_news_item <?php if(!$btnStatus['previous']){ echo "disabled";}?> p-0"><button class="page-link previous_news">Previous</button></li>
-            <li class="btn page-item next_news_item <?php if(!$btnStatus['next']){ echo "disabled";}?> p-0"><button class="page-link next_news">Next</button></li>
-        </ul>
-    </nav>
 </div>
-<?php } ?>
+
+<div class="container-fluid">
+    <div class="card text-white bg-dark">
+        <div class="card-header bg-danger">
+            <h2> Derniers épisodes validés</h2>
+        </div>
+        <div class="card-body ">
+            <?php 
+                foreach ($episodes as $episode) {
+                    echo '<a href="'.site_url("episodes/view/".$episode->id).'">'.$episode->titre.'</a>';
+                    echo "<br/>";
+                } 
+            ?>
+        </div>
+    </div>
+</div>
+
 
 <script>
     let currentID = <?= $result->id ?>; //initialisation pour index.js

@@ -10,7 +10,9 @@ class Episodes_model extends CI_Model {
     public $lien_mp3;
     public $infos_mp3;
     public $tags;
+    public $valid;
     public $id_podcast;
+    public $stats;
 
     public function refresh()
     {
@@ -22,7 +24,9 @@ class Episodes_model extends CI_Model {
         $this->lien_mp3 = null;
         $this->infos_mp3 = null;
         $this->tags = null;
+        $this->valid = null;
         $this->id_podcast = null;
+        $this->stats = null;
     }
 
     public function insert()
@@ -33,7 +37,7 @@ class Episodes_model extends CI_Model {
 
     public function update($episode)
     {
-        $this->db->update('episodes', $episodes, ['id' => $episode->id]);
+        $this->db->update('episodes', $episode, ['id' => $episode->id]);
     }
 
     public function deleteByPodcast($podcast)
@@ -56,9 +60,32 @@ class Episodes_model extends CI_Model {
     {
         return $this->db
             ->where('id_podcast', $podcast->id)
+            ->where('valid', 1)
             ->order_by('date_publication')
             ->get('episodes')
             ->result();
+    }
+
+    public function findLastByPodcast($podcast)
+    {
+        return $this->db
+            ->where('id_podcast', $podcast->id)
+            ->order_by('id', 'DESC')
+            ->get('episodes')
+            ->row();
+    }
+
+    public function findLastValidated($limit = 5)
+    {
+        $this->db->select('episodes.id, episodes.titre, episodes.valid, podcasts.valid');
+        $this->db->from('episodes');
+        $this->db->where(['podcasts.valid' => 1]);
+        $this->db->where(['episodes.valid' => 1]);
+        $this->db->join('podcasts', 'episodes.id_podcast = podcasts.id', 'inner');
+        $this->db->limit($limit);
+        $this->db->order_by('episodes.id', 'DESC');
+        $query = $this->db->get();
+        return $query->result();
     }
     
     /**
@@ -207,6 +234,26 @@ class Episodes_model extends CI_Model {
         $this->tags = $tags;
 
         return $this;
+    }
+
+    /**
+     * Get the value of valid
+     */ 
+    public function getValid()
+    {
+        return $this->valid;
+    }
+
+    /**
+     * Set the value of valid
+     *
+     * @return  self
+     */ 
+    public function setValid($valid)
+    {
+        $this->valid = $valid;
+
+        return $valid;
     }
 
     /**

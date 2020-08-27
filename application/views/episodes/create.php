@@ -15,9 +15,14 @@
             echo '</div>';
         echo '</div>';
     }
+    
     echo '<div class="row">';
         echo '<div class="col-md-12 text-center">';
             echo form_submit('submit', 'Créer', ['class' => 'btn btn-danger']);
         echo '</div>';
     echo '</div>';
 ?>
+
+<script>
+    $('[name=tags]').tagify();
+</script>
