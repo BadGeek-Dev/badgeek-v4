@@ -145,15 +145,16 @@ class  Articles_model extends CI_Model
         $this->db->join('users', 'articles.id_author = users.id', 'inner');
         $this->db->where('articles.id =', $id);
         $query = $this->db->get();
-        return $query->result()[0];
+        return $query->row();
     }
 
     public function getFirstArticleVisible()
     {
-        $this->db->select('articles.id,title,content,created_at,username');
+        $this->db->select('articles.id,title,content,created_at,username, picture');
         $this->db->from('articles');
         $this->db->join('users', 'articles.id_author = users.id', 'inner');
         $this->db->where('status = 1');
+        $this->db->order_by('articles.id DESC');
         $query = $this->db->get();
         return $query->row();
     }
@@ -224,25 +225,38 @@ class  Articles_model extends CI_Model
     }
 
 
-  public function  getArticleBySide($id=0,$side=''){ // question nommage : article suivant /précedent par rapport a l'id et au sens indiqué en parametre
-    if($id==0) $article = $this->getFirstArticleVisible();
-    else if($side != 'next' and $side!='previous') $article=$this->getArticleByID($id);
-    else {
-        $this->db->select('articles.id,title,content,created_at,status,username');
+  public function  getArticleBySide($id=0,$side='')
+  { 
+    // question nommage : article suivant /précedent par rapport a l'id et au sens indiqué en parametre
+    if($id == 0)
+    {
+        $article = $this->getFirstArticleVisible();
+    }
+    else if($side == 'next' || $side == 'previous')
+    {
+        $this->db->select('articles.id,title,content,created_at,status,username, picture');
         $this->db->from('articles');
         $this->db->join('users', 'articles.id_author = users.id', 'inner');
         $this->db->limit(1);
-        if ($side == 'next') $this->db->where('articles.id >', $id);
-        if ($side == 'previous') {
+        if ($side == 'next') 
+        {
+            $this->db->where('articles.id >', $id);
+        }
+        else 
+        {
             $this->db->where('articles.id <', $id);
             $this->db->order_by('id','DESC');
         }
         $query = $this->db->get();
-        $article = $query->result();
-        $id = $article[0]->id;
-        };
-       $btnStatus =  $this->isPreviousNextArticleVisible($id);
-        return array('article' => $article,'btnStatus' =>$btnStatus);
+        $article = $query->row();
+        $id = $article->id;
+    }
+    else
+    {
+        $article=$this->getArticleByID($id);
+    }
+    $btnStatus =  $this->isPreviousNextArticleVisible($id);
+    return array('article' => $article,'btnStatus' =>$btnStatus);
   }
 
 }
