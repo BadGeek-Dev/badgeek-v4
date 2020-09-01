@@ -18,9 +18,38 @@ class User extends Badgeek_Controller
      */
     public function index()
     {
-        
+        $this->load->helper(['form', 'url']);
+        $this->load->library(['form_validation', 'helper']);
+
+        if ($this->input->post()) {
+            foreach(['navi'] as $attribute) {
+                $new_preferences[$attribute] = $this->input->post($attribute);
+                $this->helper->set_user_prefs($new_preferences);
+            }
+        }
+
+        $prefs = $this->helper->get_user_prefs();
+        $attributes = [
+            [
+                'type' => 'checkbox',
+                'name' => 'navi',
+                'id' => 'navi',
+                'label' => 'Hey you !',
+                'class' => 'form-control hosted',
+                'value' => TRUE,
+            ]
+        ];
+
+        foreach($attributes as $index => $attribute) {
+            if (isset($prefs[$attribute['name']]) && $prefs[$attribute['name']]) {
+                $attributes[$index]['checked'] = true; 
+            }
+        }
+
+
         $this->template->load('user/pref', [
-            'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)
+            'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true),
+            'attributes' => $attributes
         ]);
     }
 
