@@ -69,6 +69,7 @@ class Rss_import {
         $this->CI->episodes_model->setInfos_mp3('');
         $this->CI->episodes_model->setTags('');
         $this->CI->episodes_model->setId_podcast($this->podcast->id);
+        $this->CI->episodes_model->setValid(true);
 
         $this->CI->episodes_model->insert();
     }
