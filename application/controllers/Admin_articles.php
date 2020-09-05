@@ -23,36 +23,7 @@ class Admin_articles extends Badgeek_Controller
     }
     public function add()
     {
-        $this->load->helper("form");
-        $this->form_validation->set_rules('title', 'Titre', 'required|htmlspecialchars');
-        $this->form_validation->set_rules('content', 'Contenu', 'required|htmlspecialchars');
-
-        if ($this->form_validation->run()) {
-            $idauthor = $this->session->userdata('user_id'); // id auteur = id utilisateur courrant
-            $status = null !== $this->input->post('status') ? 1 : 0;   //etat de l'article (visible / non visible). Par défaut 1 pour visible
-            $has_picture = ($_FILES["picture"]["size"] != 0);
-            if($has_picture) { // presence de fichier
-                $uploadReport = $this->uploadFile();
-                if (!$uploadReport['status']) { 
-                    // erreur lors de l'upload
-                    $this->template->load_admin('public/Admin/admin_articles_newArticle',array("error"=>$uploadReport['error']));
-                    return;
-                }
-            }
-            $this->Articles_model->addArticle(
-                $this->input->post('title'), 
-                $this->input->post('content'), 
-                $idauthor, 
-                $status, 
-                $has_picture ? $uploadReport['filename'] : false);
-            setFlashdataMessage($this->session, 'Article créé');
-            redirect('/admin_articles/index');
-        } else {
-            //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
-            $this->template->load_admin('public/Admin/admin_articles_newArticle',array(
-                'error'=> validation_errors(), 
-                "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem("Nouvel article"))));
-        }
+        $this->edit(0);
     }
 
     public function edit($id)
@@ -61,33 +32,70 @@ class Admin_articles extends Badgeek_Controller
         $this->form_validation->set_rules('title', 'Titre', 'required|htmlspecialchars');
         $this->form_validation->set_rules('content', 'Contenu', 'required|htmlspecialchars');
 
-        $article = $this->Articles_model->getArticleByID($id);
-        if ($this->form_validation->run()) {
+        $article = $id ? $this->Articles_model->getArticleByID($id) : false;
+        if ($this->form_validation->run()) 
+        {
             $status = (null !== $this->input->post('status')); //etat de l'article (visible / non visible). Par défaut 1 pour visible
             $has_picture = ($_FILES["picture"]["size"] != 0);
             if($has_picture) { 
                 // presence de fichier
                 $uploadReport = $this->uploadFile();
-                if (!$uploadReport['status']) {
+                if (!$uploadReport['status']) 
+                {
                     // erreur lors de l'upload
-                    $this->template->load_admin('public/Admin/admin_articles_editArticle', array("article" => $article,"error"=>$uploadReport['error']));
+                    $this->template->load_admin('public/Admin/admin_articles_editArticle', 
+                        array("article" => $article, 
+                            "error_upload"=>$uploadReport['error']));
                     return;
                 }
             }
-            $this->Articles_model->updateArticle(
-                $id, 
-                $this->input->post('title'), 
-                $this->input->post('content'), 
-                $status, 
-                $has_picture ? $uploadReport['filename'] : false);
-            setFlashdataMessage($this->session, 'Article mis à jour');
+            if($article)
+            {   
+                //Edition d'un article
+                $this->Articles_model->updateArticle(
+                    $id, 
+                    $this->input->post('title'), 
+                    $this->input->post('content'), 
+                    $status, 
+                    $has_picture ? $uploadReport['filename'] : false);
+                    setFlashdataMessage($this->session, 'Article mis à jour');
+            }
+            else
+            {
+                //Ajout d'un article
+                $this->Articles_model->addArticle(
+                    $this->input->post('title'), 
+                    $this->input->post('content'), 
+                    $this->session->userdata('user_id'), 
+                    $status, 
+                    $has_picture ? $uploadReport['filename'] : false);
+                setFlashdataMessage($this->session, 'Article créé');
+            }
             redirect('/admin_articles/index', 'refresh');
         } else {
-            //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
-            $this->template->load_admin('public/Admin/admin_articles_editArticle', array(
-                "article" => $article,
-                "error"=> validation_errors(),
-                "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem($article->title))));
+            //pas de validation ou validation incorrecte ,afficher les message d'erreur en cas d'erreur
+            if($article)
+            {
+                $this->template->load_admin("admin/articles_edit", 
+                array(
+                    "article" => $article,
+                    "error"=> validation_errors(),
+                    "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem($article->title))
+                    )
+                );
+            }
+            else
+            {
+                //Garder les valeurs en INPUT 
+                $this->template->load_admin("admin/articles_add", 
+                array(
+                    "post_title" => $this->input->post("title"),
+                    "post_content" => $this->input->post("content"),
+                    "error"=> validation_errors(),
+                    "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem("Nouvel article"))
+                    )
+                );
+            }
         }
     }
 
