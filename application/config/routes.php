@@ -66,6 +66,9 @@ $route['episodes/stats/listen/(:num)'] = 'episodes/statsListen/$1';
 //hosted medias
 $route['badgeek/uploads/podcasts/(:num)/(:any)'] = 'podcasts/mp3/$1/$2';
 
+//user
+$route['preferences'] = 'user/index';
+
 //Admin articles
 $route['admin/articles'] = 'admin_articles/index';
 $route['admin/articles/(:any)'] = 'admin_articles/$1';

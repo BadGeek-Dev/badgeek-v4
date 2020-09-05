@@ -61,6 +61,12 @@
                 <i class='icon-user'></i>
                 <?=$this->user->username ?: "Profil"?>
             </button>
+            <a href="<?= site_url("preferences") ?>">
+                <button name="" id="" class="btn btn-danger margin-right-10" type="button">
+                    <i class='icon-user'></i>
+                    Préférences
+                </button>
+            </a>
             <?php if (isAdmin()) : ?>
                 <a href="<?= site_url("admin") ?>" class="btn btn-danger margin-right-10">
                     <i class='icon-key'></i>

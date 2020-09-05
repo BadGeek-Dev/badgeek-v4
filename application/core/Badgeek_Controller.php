@@ -8,7 +8,7 @@ class Badgeek_Controller extends CI_Controller
     {
         parent::__construct();
         $this->load->helper(['badgeek']);
-        $this->load->library('session');
+        $this->load->library(['session', 'helper']);
         $this->load->database();
         $this->load->model('podcasts_model');
         $this->user = false;
@@ -26,6 +26,7 @@ class Badgeek_Controller extends CI_Controller
                 $this->session->unset_userdata("reload");
             }
             $this->user = $this->session->user;
+            $this->user->prefs_decoded = $this->helper->get_user_prefs();
             $this->user_podcasts = $this->podcasts_model->findByUserNotRefused($this->user->id);
         }
 
