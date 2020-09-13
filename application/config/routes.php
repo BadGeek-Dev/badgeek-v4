@@ -87,3 +87,9 @@ $route['admin/users'] = 'admin_users/index';
 $route['admin/users/edit/(:num)'] = 'admin_users/edit/$1';
 $route['admin/users/activate/(:num)'] = 'admin_users/activate/$1';
 $route['admin/users/deactivate/(:num)'] = 'admin_users/deactivate/$1';
+
+//Admin aides
+$route['admin/aides'] = 'admin_aide/index';
+$route['admin/aides/add'] = 'admin_aide/add';
+$route['admin/aides/edit/(:num)'] = 'admin_aide/edit/$1';
+$route['admin/aides/delete/(:num)'] = 'admin_aide/delete/$1';
