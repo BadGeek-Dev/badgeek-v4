@@ -139,12 +139,12 @@ class  Aides_model extends CI_Model
 
     public function getAllAidesVisible()
     {
-//        $this->db->select('articles.id,title,content,created_at,picture,username');
-//        $this->db->from('articles');
-//        $this->db->join('users', 'articles.id_author = users.id', 'inner');
-//        $this->db->where('status = 1');
-//        $query = $this->db->get();
-//        return $query->result();
+		$this->db->select('aides.id,title,content,created_at,visible,username');
+		$this->db->from('aides');
+		$this->db->join('users', 'aides.id_author = users.id', 'inner');
+		$this->db->where('visible = 1');
+		$query = $this->db->get();
+		return $query->result();
     }
 
     public function getAideByID($id)

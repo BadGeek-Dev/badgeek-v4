@@ -93,3 +93,6 @@ $route['admin/aides'] = 'admin_aide/index';
 $route['admin/aides/add'] = 'admin_aide/add';
 $route['admin/aides/edit/(:num)'] = 'admin_aide/edit/$1';
 $route['admin/aides/delete/(:num)'] = 'admin_aide/delete/$1';
+
+//aides
+$route['/aide'] = 'Aide/index';
