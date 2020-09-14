@@ -7,12 +7,13 @@ class  Aides_model extends CI_Model
     public $content;
     public $id_author;
     public $created_at;
-    public $visible;
+    public $visible; //etat de l'aide (visible / non visible). Par défaut 1 pour visible
 
 
     public function insert()
     {
         $this->db->insert('aides', $this);
+        $this->id = $this->db->insert_id();
     }
 
     public function update()

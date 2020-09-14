@@ -28,8 +28,8 @@ class Admin_aide extends Badgeek_Controller
         $this->form_validation->set_rules('content', 'Contenu', 'required|htmlspecialchars');
 
         if ($this->form_validation->run()) {
-            $idauthor = $this->session->userdata('user_id'); // id auteur = id utilisateur courrant
-            $status = null !== $this->input->post('status') ? 1 : 0;   //etat de l'article (visible / non visible). Par défaut 1 pour visible
+            $idauthor = $this->session->userdata('user_id');
+            $status = null !== $this->input->post('status') ? 1 : 0;
             $this->Aides_model->addAide(
                 $this->input->post('title'),
                 $this->input->post('content'),
@@ -39,7 +39,6 @@ class Admin_aide extends Badgeek_Controller
             setFlashdataMessage($this->session, 'Aide créé');
             redirect('/admin_aide/index');
         } else {
-            //pas de validation ou validation incorecte ,afficher les message d'erreur en cas d'erreur
             $this->template->load_admin('public/Admin/admin_aide_addAide',array(
                 'error'=> validation_errors(),
                 "liste_BreadcrumbItems" => $this->getBreadcrumbItems(new BreadcrumbItem("Nouvelle aide"))));
@@ -76,12 +75,14 @@ class Admin_aide extends Badgeek_Controller
         if($this->Aides_model->deleteAideByID($id))
         {
             setFlashdataMessage($this->session, "Aide supprimée");
+			echo json_encode("OK");
         }
         else
         {
             setFlashdataMessage($this->session, "Erreur lors de la suppression de l'aide");
+			echo json_encode("NO OK");
         }
-		echo json_encode("OK");
+
     }
 
     private function initBreadcrumbItem($current = false)
