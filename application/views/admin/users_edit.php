@@ -27,9 +27,7 @@ Admin : <?= strpos($user->groups_id, '1') !== false ? 'oui' : 'non' ?><br/>
     </a>
     <br/>
     <br/>
-<?php endif ;?>
-
-<?php if (!$user->active) :?>
+<?php else :?>
     <a 
         href="<?= base_url("admin/users/activate/" . $user->id); ?>" 
         class="btn btn-info"
