@@ -91,7 +91,6 @@ class  Articles_model extends CI_Model
     public function setIdAuthor($idAuthor)
     {
         $this->title = $idAuthor;
-
         return $this;
     }
 
@@ -146,7 +145,18 @@ class  Articles_model extends CI_Model
         $this->db->join('users', 'articles.id_author = users.id', 'inner');
         $this->db->where('articles.id =', $id);
         $query = $this->db->get();
-        return $query->result()[0];
+        return $query->row();
+    }
+
+    public function getFirstArticleVisible()
+    {
+        $this->db->select('articles.id,title,content,created_at,username, picture');
+        $this->db->from('articles');
+        $this->db->join('users', 'articles.id_author = users.id', 'inner');
+        $this->db->where('status = 1');
+        $this->db->order_by('articles.id DESC');
+        $query = $this->db->get();
+        return $query->row();
     }
 
     public function addArticle($title, $content, $id_author, $status, $picture = false)
@@ -186,7 +196,67 @@ class  Articles_model extends CI_Model
             unlink("assets/pictures/news/".$picture);
         }
         return $this->db->delete('articles', array('id'=> $id));
-
     }
+    public function isPreviousNextArticleVisible($id = 39){
+
+        if($id==0){
+            $this->db->select('articles.id');
+            $this->db->from('articles');
+            $this->db->where('status = 1');
+            $this->db->limit(1);
+            $query=$this->db->get();
+            $id=$query->result()[0]->id;
+        }
+
+        $this->db->select('articles.id,articles.title');
+        $this->db->from('articles');
+        $this->db->where('status = 1');
+        $this->db->where('articles.id >',$id);
+        $query = $this->db->get();
+        $next =  $query->num_rows()>0 ? true : false;
+
+        $this->db->select('articles.id,articles.title');
+        $this->db->from('articles');
+        $this->db->where('status = 1');
+        $this->db->where('articles.id <',$id);
+        $query = $this->db->get();
+        $previous =  $query->num_rows()>0 ? true : false;
+        return array('next' =>$next,'previous' => $previous);
+    }
+
+
+  public function  getArticleBySide($id=0,$side='')
+  { 
+    // question nommage : article suivant /précedent par rapport a l'id et au sens indiqué en parametre
+    if($id == 0)
+    {
+        $article = $this->getFirstArticleVisible();
+    }
+    else if($side == 'next' || $side == 'previous')
+    {
+        $this->db->select('articles.id,title,content,created_at,status,username, picture');
+        $this->db->from('articles');
+        $this->db->join('users', 'articles.id_author = users.id', 'inner');
+        $this->db->limit(1);
+        if ($side == 'next') 
+        {
+            $this->db->where('articles.id >', $id);
+        }
+        else 
+        {
+            $this->db->where('articles.id <', $id);
+            $this->db->order_by('id','DESC');
+        }
+        $query = $this->db->get();
+        $article = $query->row();
+        $id = $article->id;
+    }
+    else
+    {
+        $article=$this->getArticleByID($id);
+    }
+    $btnStatus =  $this->isPreviousNextArticleVisible($id);
+    return array('article' => $article,'btnStatus' =>$btnStatus);
+  }
 
 }
