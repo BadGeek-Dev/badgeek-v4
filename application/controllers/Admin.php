@@ -17,10 +17,8 @@ class Admin extends Badgeek_Controller
 
     public function index()
     {
-        $result = $this->Articles_model->getAllArticles();
         //Gestion fil d'Ariane
         $this->template->load_admin('public/Admin/admin', array(
-            "result" => $result, 
             "liste_BreadcrumbItems" => $this->initBreadcrumbItem(true)
         ));
     }

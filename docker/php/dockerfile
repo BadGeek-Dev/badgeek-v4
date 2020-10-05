@@ -1,4 +1,4 @@
-FROM php:7.1.9-fpm
+FROM php:7.2-fpm
 
 ENV NODE_VERSION=6.2.2
 
@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    gnupg2 \
     && docker-php-ext-configure gd \
-    --enable-gd-native-ttf \
     --with-jpeg-dir=/usr/lib \
     --with-freetype-dir=/usr/include/freetype2 && \
     docker-php-ext-install gd 
@@ -46,7 +46,7 @@ RUN apt-get install build-essential curl -y && \
 RUN apt-get update && apt-get install -y apt-transport-https
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install yarn
+RUN apt-get update && apt-get install -y yarn
 
 # user
 RUN useradd -ms /bin/bash badgeek

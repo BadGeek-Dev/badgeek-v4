@@ -1,6 +1,5 @@
-Bienvenue <?= $this->ion_auth->logged_in() ? $this->user->username : "" ?>
-
-
+Bienvenue 
+    <?=$this->ion_auth->logged_in() ? isset($this->user->prefs_decoded['navi']) && $this->user->prefs_decoded['navi'] ? 'Hey You! Listen!' : $this->user->username : ""?>
 <?php if (!empty($news)) :?>
     <div class="container-fluid">
         <div class="card text-white bg-dark">

@@ -66,6 +66,9 @@ $route['episodes/stats/listen/(:num)'] = 'episodes/statsListen/$1';
 //hosted medias
 $route['badgeek/uploads/podcasts/(:num)/(:any)'] = 'podcasts/mp3/$1/$2';
 
+//user
+$route['preferences'] = 'user/index';
+
 //Admin articles
 $route['admin/articles'] = 'admin_articles/index';
 $route['admin/articles/(:any)'] = 'admin_articles/$1';
@@ -84,3 +87,12 @@ $route['admin/users'] = 'admin_users/index';
 $route['admin/users/edit/(:num)'] = 'admin_users/edit/$1';
 $route['admin/users/activate/(:num)'] = 'admin_users/activate/$1';
 $route['admin/users/deactivate/(:num)'] = 'admin_users/deactivate/$1';
+
+//Admin aides
+$route['admin/aides'] = 'admin_aide/index';
+$route['admin/aides/add'] = 'admin_aide/add';
+$route['admin/aides/edit/(:num)'] = 'admin_aide/edit/$1';
+$route['admin/aides/delete/(:num)'] = 'admin_aide/delete/$1';
+
+//aides
+$route['/aide'] = 'Aide/index';

@@ -1,6 +1,11 @@
-<img src="<?=base_url(getAvatar($user->id))?>"/>
+<?
+$avatar = getAvatar($user->id);
+if($avatar):
+?>
+<img src="<?=base_url($avatar)?>"/>
 <br/>
 <br/>
+<?endif;?>
 Username : <?= $user->username ?><br/>
 Email : <?= $user->email ?><br/>
 Last Login : <?= date('Y-m-d H:m', $user->last_login) ?><br/>
@@ -13,8 +18,6 @@ Admin : <?= strpos($user->groups_id, '1') !== false ? 'oui' : 'non' ?><br/>
 
 <br/>
 
-Actif : <?= $user->active ? 'oui' : 'non' ?><br/>
-
 <?php if ($user->active) :?>
     <a 
         href="<?= base_url("admin/users/deactivate/" . $user->id); ?>" 
@@ -24,9 +27,7 @@ Actif : <?= $user->active ? 'oui' : 'non' ?><br/>
     </a>
     <br/>
     <br/>
-<?php endif ;?>
-
-<?php if (!$user->active) :?>
+<?php else :?>
     <a 
         href="<?= base_url("admin/users/activate/" . $user->id); ?>" 
         class="btn btn-info"
