@@ -13,9 +13,13 @@
                     <li class="list-group-item admin_listitem">
                         <a href="<?= base_url("admin/articles"); ?>">Gestion des Articles</a>
                     </li>
+					<li class="list-group-item admin_listitem">
+						<a href="<?= base_url("admin/aides"); ?>">Gestion des Aides</a>
+					</li>
                     <li class="list-group-item admin_listitem">
                         <a href="<?= base_url("admin/stats"); ?>">Stats</a>
                     </li>
+
                 </ul>
             </div>
         </div>
