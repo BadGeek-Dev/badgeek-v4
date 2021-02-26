@@ -66,7 +66,7 @@ class Podcasts extends Badgeek_Controller
             $this->podcasts_model->setTags($this->input->post('tags'));
             $this->podcasts_model->setHosted($this->input->post('hosted'));
             $this->podcasts_model->setId_createur($this->user->id);
-            $this->podcasts_model->setValid(0);
+            $this->podcasts_model->setValid(Podcasts_model::EN_ATTENTE);
 
             $this->podcasts_model->insert();
 
@@ -167,8 +167,8 @@ class Podcasts extends Badgeek_Controller
      */
     public function index()
     {
-        $podcasts_waiting = $this->podcasts_model->findByUserWaiting($this->user ? $this->user->id : null);
-        $podcasts = $this->podcasts_model->findAll();
+        $podcasts_waiting = $this->user ? $this->podcasts_model->findByUserWaiting($this->user->id) : [];
+        $podcasts = $this->podcasts_model->findByValid(Podcasts_model::VALIDE);
 
         $this->template->load('podcasts/list', [
             'podcasts_waiting' => $podcasts_waiting,
@@ -176,21 +176,47 @@ class Podcasts extends Badgeek_Controller
             'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)
             ]);
     }
+    
 
+        
     /**
-     * 
+     * Affichage de la fiche d'un podcast
+     *
+     * @param  mixed $id id du podcast
+     * @return void
      */
     public function display($id)
     {
         $this->load->model('episodes_model');
         $podcast = $this->podcasts_model->findOneById($id);
-        $episodes = $this->episodes_model->findByPodcast($podcast);
-
-        $this->template->load('podcasts/display', [
-            'podcast' => $podcast,
-            'episodes' => $episodes,
-            'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem($podcast->titre))
-        ]);
+        if($podcast)
+        {
+            //On vérifie le statut du podcast
+            switch ($podcast->valid) 
+            {
+                case Podcasts_model::EN_ATTENTE:
+                    $this->template->loadError($this->getErrorMessage("podcast_en_attente"));
+                    break;
+                case Podcasts_model::VALIDE:
+                    $episodes = $this->episodes_model->findByPodcast($podcast);
+                    $this->template->load('podcasts/display', [
+                        'podcast' => $podcast,
+                        'episodes' => $episodes,
+                        'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem($podcast->titre))
+                    ]);
+                    break;
+                case Podcasts_model::REFUSE:
+                    $this->template->loadError($this->getErrorMessage("podcast_inexistant"));
+                    break;
+            }
+            
+        }
+        else
+        {
+            //Podcast non trouvé
+            $this->template->loadError($this->getErrorMessage("podcast_inexistant"));
+        }
+        
     }
 
     public function edit($id)
@@ -236,7 +262,7 @@ class Podcasts extends Badgeek_Controller
             $podcast->lien = $this->input->post('lien');
             $podcast->image = $this->input->post('image');
             $podcast->tags = $this->input->post('tags');
-            $podcast->valid = 0;
+            $podcast->valid = Podcasts_model::EN_ATTENTE;
 
             $this->podcasts_model->update($podcast);
             redirect('podcasts/create/'.$podcast->id);

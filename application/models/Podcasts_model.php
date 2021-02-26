@@ -16,6 +16,10 @@ class Podcasts_model extends CI_Model {
      * 1 validated
      * 2 refused 
      */
+    const EN_ATTENTE = 0;
+    const VALIDE = 1;
+    const REFUSE = 2;
+    
     public $valid;
     public $hosted;
 
@@ -42,17 +46,17 @@ class Podcasts_model extends CI_Model {
 
     public function findByUserNotRefused($userId)
     {
-        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid !=' => 2])->result();
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid !=' => self::REFUSE])->result();
     }
 
     public function findByUser($userId)
     {
-        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => 1])->result();
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => self::VALIDE])->result();
     }
 
     public function findByUserWaiting($userId)
     {
-        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => 0])->result();
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => self::EN_ATTENTE])->result();
     }
 
     public function findLastValidated($limit = 5)
@@ -90,17 +94,19 @@ class Podcasts_model extends CI_Model {
         $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, podcasts.valid');
         $this->db->from('podcasts');
         $this->db->join('episodes', 'podcasts.id = episodes.id_podcast', 'left');
+        $this->db->where('podcasts.valid', 1);
         if ($query) {
-            $this->db->like('podcasts.titre', $query);
-            $this->db->or_like('podcasts.description', $query);
-            $this->db->or_where("JSON_SEARCH(`podcasts`.`tags`, 'one', '$query') != ", null);
-            $this->db->or_like('episodes.titre', $query);
-            $this->db->or_like('episodes.description', $query);
-            $this->db->or_where("JSON_SEARCH(`episodes`.`tags`, 'one', '$query') != ", null);
+            $this->db->group_start()
+                ->like('podcasts.titre', $query)
+                ->or_like('podcasts.description', $query)
+                ->or_where("JSON_SEARCH(`podcasts`.`tags`, 'one', '$query') != ", null)
+                ->or_like('episodes.titre', $query)
+                ->or_like('episodes.description', $query)
+                ->or_where("JSON_SEARCH(`episodes`.`tags`, 'one', '$query') != ", null)
+            ->group_end();
         }
         
         $this->db->group_by('podcasts.id');
-        $this->db->where('podcasts.valid', 1);
         $query = $this->db->get();
         return $query->result();
     }
