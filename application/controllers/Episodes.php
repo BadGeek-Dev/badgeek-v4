@@ -63,7 +63,7 @@ class Episodes extends Badgeek_Controller
                 $this->episodes_model->setDescription($this->input->post('description'));
                 $this->episodes_model->setInfos_mp3('time : ' . $mp3Info['playtime_string'] . ' size : ' . $mp3Size);
                 $this->episodes_model->setTags($this->input->post('tags'));
-                $this->episodes_model->setValid(0);
+                $this->episodes_model->setValid(Podcasts_model::EN_ATTENTE);
 
                 $this->episodes_model->setDate_publication((new \DateTime())->format("Y-m-d H:i:s"));
                 $this->episodes_model->setId_podcast($podcast->id);
@@ -277,7 +277,7 @@ class Episodes extends Badgeek_Controller
         $podcast = $this->podcasts_model->findOneById($episode->id_podcast);
 
         if ($this->input->get('valid')) {
-            $episode->valid = 1;
+            $episode->valid = Episodes_model::VALIDE;
             $this->episodes_model->update($episode);
 
             redirect('/podcasts/display/'.$podcast->id);

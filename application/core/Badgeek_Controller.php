@@ -44,9 +44,16 @@ class Badgeek_Controller extends CI_Controller
             redirect('/', 'refresh');
         }
     }
-   public function real_url($url)
+
+    public function real_url($url)
     {
         return filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED) || empty($url) ? true : false;
 
+    }
+
+    public function getErrorMessage($cle)
+    {
+        $this->lang->load("badgeek_errors");
+        return $this->lang->line($cle);
     }
 }

@@ -14,6 +14,10 @@ class Episodes_model extends CI_Model {
     public $id_podcast;
     public $stats;
 
+    const EN_ATTENTE = 0;
+    const VALIDE = 1;
+    const REFUSE = 2;
+
     public function refresh()
     {
         $this->id = null;

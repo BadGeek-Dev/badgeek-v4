@@ -27,7 +27,7 @@ class Admin_podcasts extends Badgeek_Controller
         $creator = $this->users_model->findOneById($podcast->id_createur);
 
         if ($podcast) {
-            $podcast->valid = 1;
+            $podcast->valid = Podcasts_model::VALIDE;
             $this->podcasts_model->update($podcast);
 
             $this->load->library('email_manager');
@@ -45,7 +45,7 @@ class Admin_podcasts extends Badgeek_Controller
 
         if ($podcast) 
         {
-            $podcast->valid = 0;
+            $podcast->valid = Podcasts_model::EN_ATTENTE;
             $this->podcasts_model->update($podcast);
             $this->load->library('email_manager');
             $this->email_manager->sendValidationPodcastEmail($podcast, $creator);
@@ -71,7 +71,7 @@ class Admin_podcasts extends Badgeek_Controller
         $creator = $this->users_model->findOneById($podcast->id_createur);
 
         if ($podcast) {
-            $podcast->valid = 2;
+            $podcast->valid = Podcasts_model::REFUSE;
             $this->podcasts_model->update($podcast);
 
             $this->load->library('email_manager');

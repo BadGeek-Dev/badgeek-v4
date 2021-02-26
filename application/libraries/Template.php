@@ -42,6 +42,14 @@ class Template {
         $this->CI->load->view('layouts/'.$layout, $this->template_data);
     }
 
+    function loadError($message, $layout = 'default_layout')
+    {
+        $this->load("errors/html/badgeek/generique", [
+            "message" => $message,
+            "liste_BreadcrumbItems" => [BreadcrumbItem::getBreadcrumbItemAccueil(),new BreadcrumbItem("Erreur", "", true)]
+        ], $layout);
+    }
+
     function load_admin($view, $view_data = [])
     {
         if(key_exists('liste_BreadcrumbItems', $view_data) && is_array($view_data['liste_BreadcrumbItems']))
