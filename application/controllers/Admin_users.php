@@ -32,18 +32,24 @@ class Admin_users extends Badgeek_Controller
 
         $this->template->load_admin('admin/users_edit', array(
             "user" => $user,
+            "liste_podcasts" => $this->podcasts_model->findByUserNotRefused($user->id),
             'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem(getLibelleFromUser($user)))
         ));
     }
 
     public function activate($id)
     {
-        $this->changeActiveState($id, 1);
+        $this->changeActiveState($id, Users_Model::ACTIVE);
     }
 
     public function deactivate($id)
     {
-        $this->changeActiveState($id, 0);
+        $this->changeActiveState($id, Users_Model::DESACTIVE);
+    }
+
+    public function unvalidate($id)
+    {
+        $this->changeActiveState($id, Users_Model::NON_VALIDE);
     }
 
     private function changeActiveState($id, $state)

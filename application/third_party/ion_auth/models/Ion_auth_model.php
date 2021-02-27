@@ -923,12 +923,17 @@ class Ion_auth_model extends CI_Model
 
 			if ($this->verify_password($password, $user->password, $identity))
 			{
-				if ($user->active == 0)
-				{
-					$this->trigger_events('post_login_unsuccessful');
-					$this->set_error('login_unsuccessful_not_active');
-
-					return FALSE;
+				switch ($user->active) {
+					case Users_Model::NON_VALIDE:
+						$this->trigger_events('post_login_unsuccessful');
+						$this->set_error('login_unsuccessful_not_active');
+						return FALSE;
+						case Users_Model::DESACTIVE:
+							$this->trigger_events('post_login_unsuccessful');
+							$this->set_error('deactivate_successful');
+							return FALSE;
+					default:
+						break;
 				}
 
 				$this->set_session($user);

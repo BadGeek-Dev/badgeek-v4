@@ -1,4 +1,13 @@
 <!-- MODAL FORGOTTEN PASSWORD -->
+<script>
+//Cloture de la modal = redirection vers l'accueil
+$(document).ready(function () {
+    $('#rememberPasswordModal').on('hidden.bs.modal', function(){
+        window.location.replace("/");
+    });
+    
+});
+</script>
 <div class="modal show modal-black" id="rememberPasswordModal" tabindex="-1" role="dialog" aria-labelledby="rememberPasswordModal" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
