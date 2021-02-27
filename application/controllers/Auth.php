@@ -132,6 +132,7 @@ class Auth extends Badgeek_Controller
 		setFlashdataMessage($this->session, $this->ion_auth->messages(),  "top-right");
 		redirect('/', 'refresh');
 	}
+	
 
 	/**
 	 * Change password
@@ -249,10 +250,16 @@ class Auth extends Badgeek_Controller
 					$message = $this->ion_auth->errors();
 				}
 				
-				if($result == "OK")
+				
+				if($identity->active == Users_Model::DESACTIVE)
+				{
+					$result = "KO";
+					$message = sprintf($this->getErrorMessage("mdp_oublie"),$this->getErrorMessage("utilisateur_desactive"));
+				}
+				else
 				{
 					// run the forgotten password method to email an activation code to the user
-					$forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
+					$forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});	
 					if ($forgotten)
 					{
 						// if there were no errors
@@ -280,7 +287,11 @@ class Auth extends Badgeek_Controller
 		{
 			show_404();
 		}
-
+		if($this->ion_auth->logged_in())
+		{
+			setFlashdataMessage($this->session, sprintf($this->getErrorMessage("mdp_changement"), $this->getErrorMessage("utilisateur_deja_active")));
+			redirect("/");
+		}
 		$user = $this->ion_auth->forgotten_password_check($code);
 
 		if ($user)

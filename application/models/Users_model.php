@@ -5,6 +5,9 @@ class Users_Model extends CI_Model
     public $username;
 
     const DB_TABLE = "users";
+    const NON_VALIDE = 0;
+    const ACTIVE = 1;
+    const DESACTIVE = 2;
 
     public function updateUsername()
     {
@@ -43,5 +46,17 @@ class Users_Model extends CI_Model
         $query = $this->db->get();
         
         return $query->result();
+    }
+    public function isNonValide()
+    {
+        return $this->valid == self::NON_VALIDE;
+    }
+    public function isActive()
+    {
+        return $this->valid == self::ACTIVE;
+    }
+    public function isDesactive()
+    {
+        return $this->valid == self::DESACTIVE;
     }
 }

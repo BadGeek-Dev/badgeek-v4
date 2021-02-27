@@ -43,7 +43,7 @@ $lang['activation_email_unsuccessful'] = 'Impossible d\'envoyer l\'email d\'acti
 // Login / Logout
 $lang['login_successful']              = 'Connecté avec succès';
 $lang['login_unsuccessful']            = 'Erreur lors de la connexion';
-$lang['login_unsuccessful_not_active'] = 'Ce compte est inactif';
+$lang['login_unsuccessful_not_active'] = 'Ce compte n\'a pas encore été activé, veuillez cliquer sur le lien reçu par mail pour l\'activer. Si vous n\'avez pas reçu le mail, cliquez sur "J\'ai oublié mon mot de passe" pour obtenir un nouveau lien d\'activation';
 $lang['login_timeout']                 = 'Compte temporairement bloqué suite à de trop nombreuses tentatives.  Veuillez réessayer plus tard.';
 $lang['logout_successful']             = 'Déconnexion effectuée avec succès';
 
