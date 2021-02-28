@@ -22,6 +22,7 @@ class Migration_Add_AdminNews extends CI_Migration {
 
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->drop_table('articles', true);
         $this->dbforge->create_table('articles');
     }
 

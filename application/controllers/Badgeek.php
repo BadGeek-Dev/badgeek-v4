@@ -13,7 +13,7 @@ class Badgeek extends Badgeek_Controller
         $this->template->load(
             'public/index', 
             [
-                "news" => [$this->Articles_model->getFirstArticleVisible()], // getAllArticlesVisible(),
+                "news" => $this->Articles_model->getFirstArticleVisible() ?: [], // getAllArticlesVisible(),
                 "podcasts" => $this->Podcasts_model->findLastValidated(),
                 "episodes" => $this->Episodes_model->findLastValidated(),
                 "btnStatus" => $this->Articles_model->isPreviousNextArticleVisible(),
