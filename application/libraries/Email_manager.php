@@ -73,19 +73,29 @@ class Email_manager {
         );
     }
 
-    public function sendUserActiveState($user, $state)
+    public function sendUserActiveState($user, $state, $motif = "")
     {
-        $state = $state ? 'activé' : 'désactivé';
-
-        $this->send(
-            [$user->email],
-            "Compte {$state}" ,
-            "Bonjour, <br/>
-            Votre compte a été {$state} par l'équipe Badgeek.
-            <br/>
-            Cordialement,<br/>
-            L'équipe Badgeek
-            "
-        );
+        if($state == Users_Model::NON_VALIDE)
+        {
+            //Mise en attente, envoi du mail de validation
+            $auth = new Ion_auth();
+            $auth->forgotten_password($user->email);
+        }
+        else
+        {
+            //Mail d'activation / désactivation
+            $state = $state == Users_Model::ACTIVE ? "activé" : "désactivé";
+            $this->send(
+                [$user->email],
+                "Compte {$state}" ,
+                "Bonjour, <br/><br/>
+                Votre compte a été {$state} par l'équipe Badgeek.
+                <br/><br/>
+                ". ($motif ? "Motif : $motif <br/><br/>" : "")."
+                Cordialement,<br/>
+                L'équipe Badgeek
+                "
+            );
+        }
     }
 }

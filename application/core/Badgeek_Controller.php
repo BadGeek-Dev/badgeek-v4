@@ -15,9 +15,10 @@ class Badgeek_Controller extends CI_Controller
 
         if($this->ion_auth->logged_in())
         {
+            //Utilisateur connecté 
+            $user = $this->ion_auth->user()->row();
             if(empty($this->session->user) || key_exists("force_init", $_GET)  || !empty($this->session->reload))
             {
-                $user = $this->ion_auth->user()->row();
                 $user->avatar = getAvatar($user->id);
                 $user->groups = $this->ion_auth->get_users_groups($user->id)->result();
                 $user->groups_id = $user->groups;
@@ -25,16 +26,32 @@ class Badgeek_Controller extends CI_Controller
                 $this->session->user = $user;
                 $this->session->unset_userdata("reload");
             }
-            $this->user = $this->session->user;
-            $this->user->prefs_decoded = $this->helper->get_user_prefs();
-            $this->user_podcasts = $this->podcasts_model->findByUserNotRefused($this->user->id);
+            if($user->active == Users_Model::ACTIVE) 
+            {
+                //Utilisateur actif
+                $this->user = $this->session->user;
+                //Récupération des préférences
+                $this->user->prefs_decoded = $this->helper->get_user_prefs();
+                //Liste de ses podcasts
+                $this->user_podcasts = $this->podcasts_model->findByUserNotRefused($this->user->id);
+                //Gestion des groupes auxquel il appartient
+                if(empty($this->session->groups) || key_exists("force_init", $_GET ))
+                {
+                    $this->session->groups = $this->db->select()->where("id > 1")->get($this->ion_auth_model->tables['groups'])->result_array();
+                }
+                $this->groups = $this->session->groups;
+            }
+            else
+            {
+                //Utilisateur désactivé - On détruit sa session et on le prévient.
+		        $this->ion_auth->logout();
+		        //Renvoi à la page d'accueil avec un message
+                setFlashdataMessage($this->session, 
+                    $user->active == Users_Model::DESACTIVE ? $this->getErrorMessage("utilisateur_desactive") : $this->getErrorMessage("utilisateur_non_active"),
+                      "top-center");
+                redirect('/', 'refresh');
+            }
         }
-
-        if(empty($this->session->groups) || key_exists("force_init", $_GET ))
-        {
-            $this->session->groups = $this->db->select()->where("id > 1")->get($this->ion_auth_model->tables['groups'])->result_array();
-        }
-        $this->groups = $this->session->groups;
     }
 
     public function checkAdminRights()
