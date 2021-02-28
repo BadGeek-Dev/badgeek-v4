@@ -289,7 +289,7 @@ class Auth extends Badgeek_Controller
 		}
 		if($this->ion_auth->logged_in())
 		{
-			setFlashdataMessage($this->session, sprintf($this->getErrorMessage("mdp_changement"), $this->getErrorMessage("utilisateur_deja_active")));
+			setFlashdataMessage($this->session, sprintf($this->getErrorMessage("mdp_changement"), $this->getErrorMessage("utilisateur_deja_connecte")));
 			redirect("/");
 		}
 		$user = $this->ion_auth->forgotten_password_check($code);
@@ -370,6 +370,17 @@ class Auth extends Badgeek_Controller
 	{
 		$activation = FALSE;
 
+		//Si un utilisateur est connecté et qu'il n'est pas admin, on le déconnecte.  
+		if($this->ion_auth->logged_in())
+		{
+			$user = $this->ion_auth->user()->row();
+			if($user->id == $id)
+			{
+				setFlashdataMessage($this->session, $this->getErrorMessage("utilisateur_deja_active"));
+				redirect("/", "refresh");
+			}
+		}
+
 		if ($code !== FALSE)
 		{
 			$activation = $this->ion_auth->activate($id, $code);
@@ -388,8 +399,28 @@ class Auth extends Badgeek_Controller
 		}
 		else
 		{
+			$message = "";
+			if($code)
+			{
+				//Affichage d'un message d'erreur en fonction du statut de l'utilisateur.
+				$user = $this->db->get_where(Users_Model::DB_TABLE, "id='$id'")->row_object();
+				if($user)
+				{
+					switch ($user->active) {
+						case Users_Model::NON_VALIDE:
+							$message = $this->getErrorMessage("activation_code_invalide");
+							break;
+						case Users_Model::ACTIVE:
+							$message = $this->getErrorMessage("utilisateur_deja_active");
+							break;
+						case Users_Model::DESACTIVE:
+							$message = $this->getErrorMessage("utilisateur_desactive");
+							break;
+					}
+				}
+			}
 			// redirect them to the forgot password page
-			$this->session->set_flashdata('message', $this->ion_auth->errors());
+			$this->session->set_flashdata('message', $message ?: $this->ion_auth->errors());
 		}
 		redirect("/", "refresh");
 	}

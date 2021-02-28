@@ -2,6 +2,8 @@
 
 class Podcasts_model extends CI_Model {
 
+    const DB_NAME = "podcasts";
+
     public $id;
     public $titre;
     public $description;
@@ -10,6 +12,7 @@ class Podcasts_model extends CI_Model {
     public $rss;
     public $tags;
     public $id_createur;
+    public $archive;
 
     /**
      * 0 waiting validation
@@ -41,29 +44,29 @@ class Podcasts_model extends CI_Model {
 
     public function findOneById($id)
     {
-        return $this->db->get_where('podcasts', ['id' => $id])->row();
+        return $this->db->get_where('podcasts', ['id' => $id, 'archive' => 0])->row();
     }
 
     public function findByUserNotRefused($userId)
     {
-        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid !=' => self::REFUSE])->result();
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid !=' => self::REFUSE, 'archive' => 0])->result();
     }
 
     public function findByUser($userId)
     {
-        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => self::VALIDE])->result();
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => self::VALIDE, 'archive' => 0])->result();
     }
 
     public function findByUserWaiting($userId)
     {
-        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => self::EN_ATTENTE])->result();
+        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => self::EN_ATTENTE, 'archive' => 0])->result();
     }
 
     public function findLastValidated($limit = 5)
     {
         $this->db->select('*');
         $this->db->from('podcasts');
-        $this->db->where(['podcasts.valid' =>1]);
+        $this->db->where(['podcasts.valid' =>1, 'podcasts.archive' => 0]);
         $this->db->limit($limit);
         $this->db->order_by('podcasts.id', 'DESC');
         $query = $this->db->get();
@@ -74,27 +77,35 @@ class Podcasts_model extends CI_Model {
     {
         $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, users.username, users.email');
         $this->db->from('podcasts');
-        $this->db->where(['podcasts.valid' => $valid]);
+        $this->db->where(['podcasts.valid' => $valid, 'podcasts.archive' => 0]);
         $this->db->join('users', 'podcasts.id_createur = users.id', 'inner');
         $query = $this->db->get();
         return $query->result();
     }
 
-    public function findAll()
+    public function findAll($exclude_archives = true)
     {
         $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, podcasts.valid, users.username, users.email');
         $this->db->from('podcasts');
         $this->db->join('users', 'podcasts.id_createur = users.id', 'inner');
+        if($exclude_archives) 
+        {
+            $this->db->where(['podcasts.archive' => 0]);
+        }
         $query = $this->db->get();
         return $query->result();
     }
 
-    public function search($query = null)
+    public function search($query = null, $exclude_archives = true)
     {
         $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, podcasts.valid');
         $this->db->from('podcasts');
         $this->db->join('episodes', 'podcasts.id = episodes.id_podcast', 'left');
         $this->db->where('podcasts.valid', 1);
+        if($exclude_archives) 
+        {
+            $this->db->where(['podcasts.archive' => 0]);
+        }
         if ($query) {
             $this->db->group_start()
                 ->like('podcasts.titre', $query)
@@ -133,6 +144,18 @@ class Podcasts_model extends CI_Model {
             ->get()
             ->result();   
     }
+
+    public function archiveByUser($id_createur)
+    {
+        $this->db->update(self::DB_NAME, ["archive" => 1], "id_createur='$id_createur'");
+    }
+
+    public function unarchiveByUser($id_createur)
+    {
+        $this->db->update(self::DB_NAME, ["archive" => 0], "id_createur='$id_createur'");
+    }
+
+
 
     /**
      * Get the value of id

@@ -47,7 +47,7 @@ class Badgeek_Controller extends CI_Controller
 		        $this->ion_auth->logout();
 		        //Renvoi à la page d'accueil avec un message
                 setFlashdataMessage($this->session, 
-                    $user->active == Users_Model::DESACTIVE ? $this->getErrorMessage("utilisateur_desactive") : $this->getErrorMessage("utilisateur_non_valide"),
+                    $user->active == Users_Model::DESACTIVE ? $this->getErrorMessage("utilisateur_desactive") : $this->getErrorMessage("utilisateur_non_active"),
                       "top-center");
                 redirect('/', 'refresh');
             }

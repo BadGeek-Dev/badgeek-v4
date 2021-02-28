@@ -73,7 +73,7 @@ class Email_manager {
         );
     }
 
-    public function sendUserActiveState($user, $state)
+    public function sendUserActiveState($user, $state, $motif = "")
     {
         if($state == Users_Model::NON_VALIDE)
         {
@@ -84,13 +84,14 @@ class Email_manager {
         else
         {
             //Mail d'activation / désactivation
-            $state == Users_Model::ACTIVE ? "activé" : "désactivé";
+            $state = $state == Users_Model::ACTIVE ? "activé" : "désactivé";
             $this->send(
                 [$user->email],
                 "Compte {$state}" ,
-                "Bonjour, <br/>
+                "Bonjour, <br/><br/>
                 Votre compte a été {$state} par l'équipe Badgeek.
-                <br/>
+                <br/><br/>
+                ". ($motif ? "Motif : $motif <br/><br/>" : "")."
                 Cordialement,<br/>
                 L'équipe Badgeek
                 "

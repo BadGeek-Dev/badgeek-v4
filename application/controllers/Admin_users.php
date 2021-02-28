@@ -29,7 +29,7 @@ class Admin_users extends Badgeek_Controller
         {
             redirect('/admin/users');
         }
-
+        $this->load->helper("form");
         $this->template->load_admin('admin/users_edit', array(
             "user" => $user,
             "liste_podcasts" => $this->podcasts_model->findByUserNotRefused($user->id),
@@ -44,7 +44,7 @@ class Admin_users extends Badgeek_Controller
 
     public function deactivate($id)
     {
-        $this->changeActiveState($id, Users_Model::DESACTIVE);
+        $this->changeActiveState($id, Users_Model::DESACTIVE, $this->input->post('motif'));
     }
 
     public function unvalidate($id)
@@ -52,14 +52,25 @@ class Admin_users extends Badgeek_Controller
         $this->changeActiveState($id, Users_Model::NON_VALIDE);
     }
 
-    private function changeActiveState($id, $state)
+    private function changeActiveState($id, $state, $motif= "")
     {
         $user = $this->Users_model->bareFindOneById($id);
         $user->active = $state;
         $this->Users_model->update($user);
 
         $this->load->library('email_manager');
-        $this->email_manager->sendUserActiveState($user, $state);
+        $this->email_manager->sendUserActiveState($user, $state, $motif);
+        
+        //Si on désactive un compte, on archive ses podcasts
+        //Si on l'active, on les désarchive.
+        if($state == Users_Model::DESACTIVE)
+        {
+            $this->podcasts_model->archiveByUser($id);
+        }
+        else if($state == Users_Model::ACTIVE)
+        {
+            $this->podcasts_model->unarchiveByUser($id);
+        }
 
         redirect('/admin/users/edit/'.$id);
     }
