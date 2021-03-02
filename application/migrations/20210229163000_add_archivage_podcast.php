@@ -6,15 +6,11 @@ class Migration_Add_Archivage_Podcast extends CI_Migration {
 
     public function up()
     {
-        $fields = array(
-            'archive' => array('type' => 'TINYINT')
-        );
-
-        $this->dbforge->add_column('podcasts',$fields);
+        $this->dbforge->add_column('podcasts',['archive' => ['type' => 'TINYINT']]);
     }
 
     public function down()
     {
-        
+        $this->dbforge->drop_column('podcasts', 'archives');
     }
 }

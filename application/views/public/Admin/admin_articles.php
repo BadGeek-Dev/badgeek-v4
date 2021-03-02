@@ -1,7 +1,16 @@
-            <div class='margin-bottom-10 text-right'>
-                <a href="<?=base_url("admin/articles/add")?>" class="btn btn-success"> 
-                    <i class="fas fa-edit"></i>&nbsp;Ajouter un article
-                </a>
+            <div class="container margin-bottom-10">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <label for="nb_articles">Nombre d'articles en page d'accueil : </label>
+                        <input type="number" name="nb_articles" id="nb_articles" style='width:100px' value="<?php echo getConfig("nb_articles_homepage"); ?>">
+                        <button onclick='setNbArticlesHomePage()' class="btn btn-success">Valider</button>
+                    </div>
+                    <div class="col-sm text-right">
+                        <a href="<?=base_url("admin/articles/add")?>" class="btn btn-success"> 
+                            <i class="fas fa-edit"></i>&nbsp;Ajouter un article
+                        </a>
+                    </div>
+                </div>
             </div>
             <table class="table table-striped  text-center table_admin">
                 <thead class="bg-danger text-light">

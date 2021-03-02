@@ -34,3 +34,23 @@ function deleteAide(id)
 		});
 	}
 }
+
+
+function setNbArticlesHomePage()
+{
+    $.ajax({
+        type: "POST",
+        url: ajaxUrl + "/admin_articles/majNbArticlesHomepage",
+        data: {nb_articles: $("#nb_articles").val()},
+        dataType: "JSON",
+        success: function (response)
+        {
+            showSuccessMessage("Mise à jour effectuée");
+        }
+    });
+}
+
+function showSuccessMessage(message)
+{
+    console.log(message);
+}
