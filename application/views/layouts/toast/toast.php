@@ -16,7 +16,7 @@
     }
 ?>
 <?php if (isset($flashdata_message)) : ?>
-        <div class="toast" role="alert" aria-live="polite" aria-atomic="true" id="toast-message" data-autohide="true" data-delay="<?=$flashdata_timeout?>" style="<?=$flashdata_position?>">
+        <div class="toast badgeek-toast-message" role="alert" aria-live="polite" aria-atomic="true" id="toast-message" data-autohide="true" data-delay="<?=$flashdata_timeout?>" style="<?=$flashdata_position?>">
                 <div class="toast-header">
                         <i class="icon-info-circled"></i>
                         <strong class="mr-auto"><?= $flashdata_message_title?></strong>
@@ -29,3 +29,7 @@
                 </div>
         </div>
 <?php endif; ?>
+<div id="toast-js" class="toast badgeek-toast-message" role="alert" aria-live="polite" aria-atomic="true" data-autohide="true" data-delay="<? echo BADGEEK__TIMEOUT_TOAST_SHORT;?>" style="position:absolute;top:55px;left:40%;">
+        <div class="toast-body">
+        </div>
+</div>

@@ -45,12 +45,13 @@ function setNbArticlesHomePage()
         dataType: "JSON",
         success: function (response)
         {
-            showSuccessMessage("Mise à jour effectuée");
+            showSuccessMessage("<span class='icon-ok'>Mise à jour effectuée</span>");
         }
     });
 }
 
 function showSuccessMessage(message)
 {
-    console.log(message);
+    $('#toast-js .toast-body').html(message);
+    $('#toast-js').toast('show');
 }
