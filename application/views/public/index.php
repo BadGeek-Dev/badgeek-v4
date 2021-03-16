@@ -25,8 +25,8 @@ Bienvenue
         <? endforeach;?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="btn page-item previous_news_item <?php if(!$btnStatus['previous']){ echo "disabled";}?> p-0"><button class="page-link previous_news"><< Article précédent </button></li>
-                    <li class="btn page-item next_news_item <?php if(!$btnStatus['next']){ echo "disabled";}?> p-0"><button class="page-link next_news">Article suivant >> </button></li>
+                    <li class="btn page-item previous_news_item <?php if(empty($btnStatus['previous'])){ echo "disabled";}?> p-0"><button class="page-link previous_news"><< Article précédent </button></li>
+                    <li class="btn page-item next_news_item <?php if(empty($btnStatus['next'])){ echo "disabled";}?> p-0"><button class="page-link next_news">Article suivant >> </button></li>
                 </ul>
             </nav>
         </div>

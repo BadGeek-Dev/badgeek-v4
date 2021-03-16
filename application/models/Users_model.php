@@ -17,18 +17,18 @@ class Users_Model extends CI_Model
 
     public function update($user)
     {
-        $this->db->update('users', $user, ['id' => $user->id]);
+        $this->db->update(self::DB_TABLE, $user, ['id' => $user->id]);
     }
 
     public function bareFindOneById($id)
     {
-        return $this->db->get_where('users', ['id' => $id])->row();
+        return $this->db->get_where(self::DB_TABLE, ['id' => $id])->row();
     }
 
     public function findOneById($id)
     {
         $this->db->select('users.id, users.username, users.email, users.last_login, users.active, GROUP_CONCAT(users_groups.group_id SEPARATOR ", ") AS groups_id');
-        $this->db->from('users');
+        $this->db->from(self::DB_TABLE);
         $this->db->where(['users.id' => $id]);
         $this->db->join('users_groups', 'users.id = users_groups.user_id', 'inner');
         $this->db->limit(1);
@@ -39,7 +39,7 @@ class Users_Model extends CI_Model
     public function getAllUsers()
     {
         $this->db->select('users.id, users.username, users.email, users.last_login, users.active');
-        $this->db->from('users');
+        $this->db->from(self::DB_TABLE);
         $this->db->join('users_groups', 'users.id = users_groups.user_id', 'inner');
         $this->db->where(['users_groups.group_id !=' => 1]);
         $this->db->group_by('users.id');
@@ -58,5 +58,16 @@ class Users_Model extends CI_Model
     public function isDesactive()
     {
         return $this->valid == self::DESACTIVE;
+    }
+
+    public function getAdmins($champ = false)
+    {
+        return $this->db->select($champ ? "users.$champ" : "*")
+            ->from(self::DB_TABLE)
+            ->join('users_groups', 'users.id = users_groups.user_id', 'inner')
+            ->where(['users_groups.group_id =' => 1])
+            ->group_by('users.id')
+            ->get()
+            ->result();
     }
 }

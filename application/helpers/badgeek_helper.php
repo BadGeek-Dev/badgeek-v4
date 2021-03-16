@@ -64,3 +64,22 @@ if ( ! function_exists('getLibelleFromUser'))
 	}
 }
 
+if ( ! function_exists('getConfig'))
+{
+	function getConfig($element = "")
+    {
+		$CI =& get_instance();
+        $config = $CI->session->userdata("config");
+		if(1 || empty($config))
+		{
+			$CI->load->model("Config_model");
+			$CI->Config_model->loadConfig();
+			$config = $CI->session->userdata("config");
+		}
+        return $config && $element && key_exists($element, $config) ? $config[$element] : $config;
+    }
+
+}
+
+
+

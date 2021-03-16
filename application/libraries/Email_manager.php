@@ -14,13 +14,22 @@ class Email_manager {
 
     private function send($to, $subject, $message)
     {
-        $this->CI->email->clear();
-        $this->CI->email->from($this->CI->config->item('admin_email', 'ion_auth'), $this->CI->config->item('site_title', 'ion_auth'));
-        $this->CI->email->to($to);
-        $this->CI->email->subject($this->CI->config->item('site_title', 'ion_auth') . ' - ' . $subject);
-        $this->CI->email->message($message);
-
-        $this->CI->email->send();
+        if(is_array($to))
+        {
+            foreach($to as $destinataire)
+            {
+                $this->send($destinataire, $subject, $message);
+            }
+        }
+        else
+        {
+            $this->CI->email->clear();
+            $this->CI->email->from($this->CI->config->item('admin_email', 'ion_auth'), $this->CI->config->item('site_title', 'ion_auth'));
+            $this->CI->email->to($to);
+            $this->CI->email->subject($this->CI->config->item('site_title', 'ion_auth') . ' - ' . $subject);
+            $this->CI->email->message($message);
+            $this->CI->email->send();
+        }
     }
 
     public function sendValidationPodcastEmail($podcast, $creator)
@@ -97,5 +106,20 @@ class Email_manager {
                 "
             );
         }
+    }
+        
+    /**
+     * sendErrorMailToAdmins
+     *
+     * @param  mixed $subject
+     * @param  mixed $message
+     * @return void
+     */
+    public function sendMessageToAdmins($subject = "", $message = "")
+    {
+        $this->CI->load->model("Users_model");
+        $admins = $this->CI->Users_model->getAdmins("email");
+        array_walk($admins, function (&$element) { $element = $element->email;});
+        $this->send($admins,$subject ?: "Alerte destinée aux administrateurs", $message ?: print_r(debug_backtrace(),true));
     }
 }

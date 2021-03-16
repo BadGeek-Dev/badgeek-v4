@@ -6,14 +6,32 @@ class Badgeek extends Badgeek_Controller
 {
     public function index()
     {
-        $this->load->model('Articles_model');
+        $this->load->model('Config_model');
+        
+        //Initialisation du site
+        $init_file = realpath(__DIR__."/../config/badgeek.init");
+        if(file_exists($init_file))
+        {
+            $this->load->library('email_manager');
+            if($this->Config_model->init())
+            {
+                unlink($init_file);
+                $this->email_manager->sendMessageToAdmins("Initialisation du site effectuée", "OK");
+            }
+            else
+            {
+                $this->email_manager->sendErrorMailToAdmins("Initialisation foirée");
+
+            }
+        }
         $this->load->model('Podcasts_model');
         $this->load->model('Episodes_model');
+        $this->load->model('Articles_model');
 
         $this->template->load(
             'public/index', 
             [
-                "news" => $this->Articles_model->getFirstArticleVisible() ?: [], // getAllArticlesVisible(),
+                "news" => $this->Articles_model->getFirstArticlesVisibles(getConfig("nb_articles_homepage")) ?: [], // getAllArticlesVisible(),
                 "podcasts" => $this->Podcasts_model->findLastValidated(),
                 "episodes" => $this->Episodes_model->findLastValidated(),
                 "btnStatus" => $this->Articles_model->isPreviousNextArticleVisible(),

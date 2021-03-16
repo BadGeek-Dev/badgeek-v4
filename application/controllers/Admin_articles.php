@@ -8,6 +8,7 @@ class Admin_articles extends Badgeek_Controller
     {
         parent::__construct();
         $this->load->library('ion_auth');
+        $this->load->helper("form");
         $this->checkAdminRights();
         $this->load->model('Articles_model');
         $this->load->library('form_validation');
@@ -133,6 +134,19 @@ class Admin_articles extends Badgeek_Controller
             $error = array('error' => $this->upload->display_errors());
             return array('status'=>FALSE, 'error' =>$error['error']);
         }
+    }
+
+    public function majNbArticlesHomepage()
+    {
+        $this->load->model("Config_model");
+        $nb_articles = intval($this->input->post("nb_articles"));
+        if(is_int($nb_articles) && $nb_articles < 99 && $nb_articles > 0)
+        {
+            $this->Config_model->setConfig("nb_articles_homepage", $nb_articles);
+            echo json_encode("Mise à jour effectuée");
+            return;
+        }
+        echo json_encode("Erreur");
     }
 
     private function initBreadcrumbItem($current = false)

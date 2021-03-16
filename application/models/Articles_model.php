@@ -150,13 +150,21 @@ class  Articles_model extends CI_Model
 
     public function getFirstArticleVisible()
     {
+        $first_article = $this->getFirstArticlesVisibles(1);
+        return is_array($first_article) ? $first_article[0] : false;
+    }
+
+    public function getFirstArticlesVisibles($nb_articles)
+    {
         $this->db->select('articles.id,title,content,created_at,username, picture');
         $this->db->from('articles');
         $this->db->join('users', 'articles.id_author = users.id', 'inner');
         $this->db->where('status = 1');
         $this->db->order_by('articles.id DESC');
+        $limit = intval($nb_articles)?: 1;
+        $this->db->limit($limit);
         $query = $this->db->get();
-        return $query->row();
+        return $query->num_rows() ? $query->result() : false;
     }
 
     public function addArticle($title, $content, $id_author, $status, $picture = false)

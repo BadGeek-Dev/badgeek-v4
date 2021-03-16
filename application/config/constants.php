@@ -89,3 +89,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
  */
 
 defined('BADGEEK__TIMEOUT_TOAST')      OR define('BADGEEK__TIMEOUT_TOAST', 5000); // Temps par défaut des timeout des toasts
+defined('BADGEEK__TIMEOUT_TOAST_SHORT')      OR define('BADGEEK__TIMEOUT_TOAST_SHORT', 1000); // Temps court par défaut des timeout des toasts
