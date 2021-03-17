@@ -42,3 +42,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 assets/yarn-error.log
 assets/*.txt
 assets/pictures/avatars/
+assets/yarn.lock
