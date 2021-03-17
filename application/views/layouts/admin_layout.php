@@ -23,8 +23,21 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 admin-table">
             <?php echo $contents_admin ?>
         </div>
     </div>
 </div>
+<script>
+    $(".admin-table table").DataTable({
+        "language": {
+            url: '/assets/node_modules/datatables.net/languages/fr_fr.json'
+        },
+        "columnDefs": [
+            {
+                "targets": 'nosort',
+                "orderable": false
+            } 
+        ]
+    } )
+</script>

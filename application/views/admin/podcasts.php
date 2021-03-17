@@ -6,7 +6,7 @@
         <th scope="col">Créateur</th>
         <th scope="col">Lien</th>
         <th scope="col">Etat</th>
-        <th scope="col">Actions</th>
+        <th scope="col" class="noorder"></th>
     </tr>
     </thead>
     <tbody>
@@ -17,17 +17,7 @@
             <td><?= $podcast->username; ?> (<a href="mailto:<?= $podcast->email; ?>"><?= $podcast->email; ?></a>)</td>
             <td><a href="<?= $podcast->lien; ?>"><?= $podcast->lien; ?></a></td>
             <td><?php 
-                switch($podcast->valid) {
-                    case 0:
-                        echo "En attente de validation";
-                        break;
-                    case 1:
-                        echo "Validé";
-                        break;
-                    case 2:
-                        echo "Refusé";
-                        break;
-                }
+               echo getBadgeFromPodcast($podcast);
             ?></td>
             <td>
                 <?php if($podcast->valid == 0) : ?>

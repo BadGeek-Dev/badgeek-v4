@@ -179,7 +179,7 @@ class Episodes extends Badgeek_Controller
 
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encore(['sucess' => true]));
+            ->set_output(json_encode(['sucess' => true]));
     }
 
     /**

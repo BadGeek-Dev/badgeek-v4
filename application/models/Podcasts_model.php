@@ -22,6 +22,9 @@ class Podcasts_model extends CI_Model {
     const EN_ATTENTE = 0;
     const VALIDE = 1;
     const REFUSE = 2;
+    const LIBELLE_EN_ATTENTE = "En attente de validation";
+    const LIBELLE_VALIDE = "Validé";
+    const LIBELLE_REFUSE = "Refusé";
     
     public $valid;
     public $hosted;
@@ -42,9 +45,11 @@ class Podcasts_model extends CI_Model {
         $this->db->delete('podcasts', ['id' => $podcast->id]);
     }
 
-    public function findOneById($id)
+    public function findOneById($id, $return_class = false)
     {
-        return $this->db->get_where('podcasts', ['id' => $id, 'archive' => 0])->row();
+        return $this->db
+            ->get_where('podcasts', ['id' => $id, 'archive' => 0])
+            ->row(0,get_class($this));
     }
 
     public function findByUserNotRefused($userId)
@@ -93,7 +98,7 @@ class Podcasts_model extends CI_Model {
             $this->db->where(['podcasts.archive' => 0]);
         }
         $query = $this->db->get();
-        return $query->result();
+        return $query->custom_result_object(get_class($this));
     }
 
     public function search($query = null, $exclude_archives = true)
@@ -153,6 +158,19 @@ class Podcasts_model extends CI_Model {
     public function unarchiveByUser($id_createur)
     {
         $this->db->update(self::DB_NAME, ["archive" => 0], "id_createur='$id_createur'");
+    }
+
+    public function isEnAttente()
+    {
+        return $this->valid == self::EN_ATTENTE;
+    }
+    public function isValide()
+    {
+        return $this->valid == self::VALIDE;
+    }
+    public function isRefuse()
+    {
+        return $this->valid == self::REFUSE;
     }
 
 
