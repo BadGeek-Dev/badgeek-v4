@@ -16,6 +16,7 @@
     <link href="<?php echo base_url('assets/css/fontello.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/badgeek.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/node_modules/@yaireo/tagify/dist/tagify.css') ?>" rel="stylesheet">
+    <link href="<?php echo base_url('assets/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css') ?>" rel="stylesheet">
     <script src="<?php echo base_url('assets/node_modules/jquery/dist/jquery.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/popper.js/dist/umd/popper.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/piexifjs/piexif.js') ?>"></script>
@@ -26,6 +27,8 @@
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/themes/fas/theme.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/locales/fr.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/@yaireo/tagify/dist/jQuery.tagify.min.js') ?>"></script>
+    <script src="<?php echo base_url('assets/node_modules/datatables.net/js/jquery.dataTables.min.js') ?>"></script>
+    <script src="<?php echo base_url('assets/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/js/badgeek.js') ?>"></script>
     <?php
         if (isset($extras) && is_array($extras) && is_array($extras["js"])) {

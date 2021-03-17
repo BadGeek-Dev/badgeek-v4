@@ -1,22 +1,11 @@
 <h2><?= $podcast->titre ?></h2>
 Podcast : <br/>
 Description : <?= $podcast->description ?> <br/>
-Status : <?php switch ($podcast->valid) {
-    case 0:
-        echo "En attente de validation";
-        break;
-
-    case 1:
-        echo "Validé";
-        break;
-
-    case 2:
-        echo "Refusé";
-        break;
-    }?><br/>
+Status : <?php echo getBadgeFromPodcast($podcast);?><br/>
 RSS : <?= $podcast->rss ?><br/>
 Lien : <?= $podcast->lien ?><br/>
 Image : <?= $podcast->image ?><br/>
+Tags : <?php echo getBadgeFromPodcast($podcast, "tags");?><br/>
 <br/>
 
 Créateur : <br/>

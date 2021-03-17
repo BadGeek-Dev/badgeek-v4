@@ -10,6 +10,8 @@
     "@yaireo/tagify": "^3.17.4",
     "bootstrap": "^4.3.1",
     "bootstrap-fileinput": "^5.0.7",
+    "datatables.net-bs4": "^1.10.24",
+    "datatables.net-dt": "^1.10.24",
     "dompurify": "^2.0.17",
     "jquery": "^3.5.1",
     "mediaelement": "^4.2.16",

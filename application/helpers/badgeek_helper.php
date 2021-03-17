@@ -58,9 +58,81 @@ if ( ! function_exists('isInGroupe'))
 
 if ( ! function_exists('getLibelleFromUser'))
 {
-	function getLibelleFromUser($user)
+	function getLibelleFromUser($user, $retour = "")
 	{
-        return ($user->username ?: "(pas de pseudo défini)"). " - ".$user->email;
+		switch ($retour) {
+			case 'user_only':
+				return $user->username ?: "(pas de pseudo défini)";
+				break;
+			
+			default:
+				return ($user->username ?: "(pas de pseudo défini)"). " - ".$user->email;
+				break;
+		}
+	}
+}
+
+if ( ! function_exists('getBadgeFromUser'))
+{
+	function getBadgeFromUser(Users_Model $user)
+	{
+		if($user->isAdmin())
+		{
+			return "<span class=\"badge badge-primary\">".Users_Model::LIBELLE_ADMIN."</span>";
+		}
+		if($user->isActive())
+		{
+			return "<span class=\"badge badge-success\">".Users_Model::LIBELLE_ACTIVE."</span>";
+		}
+		if($user->isDesactive())
+		{
+			return "<span class=\"badge badge-danger\">".Users_Model::LIBELLE_DESACTIVE."</span>";
+		}
+		if($user->isNonValide())
+		{
+			return "<span class=\"badge badge-warning\">".Users_Model::LIBELLE_NON_VALIDE."</span>";
+		}
+	}
+}
+if ( ! function_exists('getBadgeFromPodcast'))
+{
+	function getBadgeFromPodcast(Podcasts_model $podcast, $mode = "statut")
+	{
+		if($mode == "statut")
+		{
+			return getBadgeFromPodcastStatut($podcast);
+		}
+		else if($mode == "tags")
+		{
+			return getBadgeFromPodcastTags($podcast);
+		}
+	}
+
+	function getBadgeFromPodcastStatut(Podcasts_model $podcast)
+	{
+		if($podcast->isValide())
+		{
+			return "<span class=\"badge badge-success\">".Podcasts_model::LIBELLE_VALIDE."</span>";
+		}
+		if($podcast->isRefuse())
+		{
+			return "<span class=\"badge badge-danger\">".Podcasts_model::LIBELLE_REFUSE."</span>";
+		}
+		if($podcast->isEnAttente())
+		{
+			return "<span class=\"badge badge-warning\">".Podcasts_model::LIBELLE_EN_ATTENTE."</span>";
+		}
+	}
+
+	function getBadgeFromPodcastTags(Podcasts_model $podcast)
+	{
+		$retour = "";
+		$tags = json_decode($podcast->tags, true);
+		foreach($tags as $tag)
+		{
+			$retour .= "<span class=\"badge badge-secondary\">".$tag["value"]."</span>&nbsp;";
+		}
+		return $retour;
 	}
 }
 
