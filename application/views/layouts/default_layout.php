@@ -31,95 +31,100 @@
     <script src="<?php echo base_url('assets/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/js/badgeek.js') ?>"></script>
     <?php
-        if (isset($extras) && is_array($extras) && is_array($extras["js"])) {
-                foreach ($extras["js"] as $extra_js_file) {
-                echo "<script src=\"" . base_url($extra_js_file) . "\"></script>";
-                }
+    if (isset($extras) && is_array($extras) && is_array($extras["js"])) {
+        foreach ($extras["js"] as $extra_js_file) {
+            echo "<script src=\"" . base_url($extra_js_file) . "\"></script>";
         }
+    }
     ?>
 </head>
 
 <body class="container-fluid">
     <div class="page-header row padding-10">
-        <div class="col-md-4">
-            <a href="<?= site_url() ?>" style="text-decoration: none; color: white;">
-                <h1 style='font-family:BGFont;'>
-                        <font style='color:red;'>&</font>BadGeek
-                </h1>
+        <div class="col-md-2">
+            <a href="<?= site_url() ?>" style="text-decoration: none; color: white;font-family:BGFont;font-size:2em;">
+                <font style='color:red;'>&</font>BadGeek
             </a>
         </div>
-        <div class="col-md-4 text-right">
-            <form method="GET" action="<?= site_url("recherche") ?>">
-                <input type="search" placeholder="Recherche" name="query">
-                <button class="btn btn-outline-success" type="submit">Recherche</button>
-            </form>
-        </div>
-        <div class="col-md-4 text-right">
-        <a href="<?= site_url("podcasts") ?>" class="btn btn-danger margin-right-10">
-            <i class='icon-user'></i>
-            Podcasts
-        </a>
-        <?php if ($this->ion_auth->logged_in()) : ?>
-            <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#profilModal">
-                <i class='icon-user'></i>
-                <?=$this->user->username ?: "Profil"?>
+        <div class="col-md-3">
+
+            <input type="search" name="query" class="search-input">
+            <button class="search-button icon-search"></button><br />
+            <button class="search-advanced" data-toggle="modal" data-target="#searchModal">
+                Recherche avancée
             </button>
-            <a href="<?= site_url("preferences") ?>">
-                <button name="" id="" class="btn btn-danger margin-right-10" type="button">
-                    <i class='icon-user'></i>
-                    Préférences
-                </button>
+
+        </div>
+        <div class="col-md-6 text-right">
+
+            <a href="<?= site_url("podcasts") ?>" class="btn btn-danger margin-right-10">
+                <i class='icon-user'></i>
+                Podcasts
             </a>
-            <?php if (isAdmin()) : ?>
-                <a href="<?= site_url("admin") ?>" class="btn btn-danger margin-right-10">
-                    <i class='icon-key'></i>
-                    Administration
+            <?php if ($this->ion_auth->logged_in()) : ?>
+                <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#profilModal">
+                    <i class='icon-user'></i>
+                    <?= $this->user->username ?: "Profil" ?>
+                </button>
+                <a href="<?= site_url("preferences") ?>">
+                    <button name="" id="" class="btn btn-danger margin-right-10" type="button">
+                        <i class='icon-user'></i>
+                        Préférences
+                    </button>
                 </a>
-                &nbsp;&nbsp;&nbsp;
-            <?php endif; ?>
-            <a href="<?= site_url("auth/logout") ?>">
-                <button class="btn btn-dark margin-right-10">
+                <?php if (isAdmin()) : ?>
+                    <a href="<?= site_url("admin") ?>" class="btn btn-danger margin-right-10">
+                        <i class='icon-key'></i>
+                        Administration
+                    </a>
+                    &nbsp;&nbsp;&nbsp;
+                <?php endif; ?>
+                <a href="<?= site_url("auth/logout") ?>">
+                    <button class="btn btn-dark margin-right-10">
                         <i class="icon-logout"></i>
                         Se déconnecter
+                    </button>
+                </a>
                 </button>
-            </a>
-            </button>
             <?php else : ?>
-            <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#registerModal">
+                <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#registerModal">
                     <i class='icon-edit'></i>
                     M'inscrire
-            </button>
-            &nbsp;&nbsp;&nbsp;
-            <button name="" id="" class="btn btn-dark" type="button" data-toggle="modal" data-target="#loginModal">
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <button name="" id="" class="btn btn-dark" type="button" data-toggle="modal" data-target="#loginModal">
                     <i class='icon-login'></i>Se connecter
-            </button>
+                </button>
             <?php endif; ?>
         </div>
     </div>
     <!-- TOAST -->
-    <?php include(__DIR__."/toast/toast.php"); ?>
+    <?php include(__DIR__ . "/toast/toast.php"); ?>
     <!-- MODAL REGISTER -->
-    <?php include(__DIR__."/modal/modal_register.php"); ?>
+    <?php include(__DIR__ . "/modal/modal_register.php"); ?>
     <!-- MODAL CONNEXION -->
-    <?php include(__DIR__."/modal/modal_connexion.php"); ?>
+    <?php include(__DIR__ . "/modal/modal_connexion.php"); ?>
+    <!-- MODAL CONNEXION -->
+    <?php include(__DIR__ . "/modal/modal_recherche.php"); ?>
     <!-- MODAL PROFIL -->
-    <?php 
-    if($this->ion_auth->logged_in()) 
-    {
-        include(APPPATH."/models/Usersgroups_model.php");
-        include(__DIR__."/modal/modal_profil.php");
-    } 
+    <?php
+    if ($this->ion_auth->logged_in()) {
+        include(APPPATH . "/models/Usersgroups_model.php");
+        include(__DIR__ . "/modal/modal_profil.php");
+    }
     ?>
 
     <!--FIL D'ARIANE-->
-    <?php if(isset($breadcrumb)) echo $breadcrumb; ?>
+    <?php if (isset($breadcrumb)) echo $breadcrumb; ?>
 
-    <?php echo $contents;?>
+    <?php echo $contents; ?>
 
-    <br/><br/>
-        <div class='text-center'>
-                <hr/>        
-                <em>&copy; BadGeek <?=date("Y")?></em></div>
-        </div>
-    </body>
+    <br /><br />
+    <div class='text-center'>
+        <hr />
+        <em>&copy; BadGeek <?= date("Y") ?></em>
+    </div>
+    </div>
+</body>
+
 </html>
