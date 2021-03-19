@@ -180,7 +180,6 @@ body {
 }
 .search-button:hover {
     color:lightgray;
-    background-color:lightgray;
     font-size: 20px;
 }
 .search-advanced
