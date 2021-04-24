@@ -1,4 +1,4 @@
-<h3>Résultat recherche</h3>
+<h3>Résultat recherche <?php if($query) echo "\"".$query."\""; ?></h3>
 
 <?php
     foreach ($podcasts as $podcast) {

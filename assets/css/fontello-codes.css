@@ -13,5 +13,7 @@
 .icon-info-circled:before { content: '\e80b'; } /* '' */
 .icon-logout:before { content: '\e80c'; } /* '' */
 .icon-user:before { content: '\e80d'; } /* '' */
+.icon-search:before { content: '\e80e'; } /* '' */
+.icon-list-add:before { content: '\e80f'; } /* '' */
 .icon-undo:before { content: '\e810'; } /* '' */
 .icon-spin6:before { content: '\e839'; } /* '' */

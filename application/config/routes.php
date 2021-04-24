@@ -56,6 +56,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 //search
 $route['recherche'] = 'search/index';
+$route['rechercheAvancee'] = 'search/rechercheAvancee';
 
 $route['podcasts/create/(:num)'] = 'podcasts/createWaitingValidation/$1';
 $route['episodes/create/(:num)'] = 'episodes/create/$1';

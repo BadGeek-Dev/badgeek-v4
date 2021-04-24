@@ -1,156 +1,148 @@
-body
-{
+body {
     background: black;
-    color:white;
+    color: white;
 }
 
-	
 /* Général - Fonts */
+
 @font-face {
     font-family: 'BGFont';
     src: url('../font/BRLNSR.eot');
-    src: url('../font/BRLNSR.eot?#iefix') format('embedded-opentype'),
-         url('../font/BRLNSR.TTF') format('truetype');
+    src: url('../font/BRLNSR.eot?#iefix') format('embedded-opentype'), url('../font/BRLNSR.TTF') format('truetype');
 }
+
 @font-face {
     font-family: 'BTTFFont';
     src: url('../font/BTTF.eot');
-    src: url('../font/BTTF.eot?#iefix') format('embedded-opentype'),
-         url('../font/BTTF.ttf') format('truetype');
+    src: url('../font/BTTF.eot?#iefix') format('embedded-opentype'), url('../font/BTTF.ttf') format('truetype');
 }
 
 .animate-spin[class^="icon-"]:before, .animate-spin[class*=" icon-"]:before {
-    display:block;
-  }
+    display: block;
+}
 
-.padding-5
-{
+.padding-5 {
     padding: 5px 5px 5px 5px;
 }
-.padding-10
-{
+
+.padding-10 {
     padding: 10px 10px 10px 10px;
 }
-.margin-top-10
-{
+
+.margin-top-10 {
     margin-top: 10px;
 }
-.margin-top-15
-{
+
+.margin-top-15 {
     margin-top: 15px;
 }
-.margin-left-10
-{
+
+.margin-left-10 {
     margin-left: 10px;
 }
-.marginright-10
-{
+
+.marginright-10 {
     margin-right: 10px;
 }
-.margin-bottom-10
-{
+
+.margin-bottom-10 {
     margin-bottom: 10px;
 }
-.margin-10
-{
+
+.margin-10 {
     margin: 10px;
 }
-.margin-top-30
-{
+
+.margin-top-30 {
     margin-top: 30px;
 }
-.margin-auto
-{
+
+.margin-auto {
     margin: auto;
 }
-.cache
-{
+
+.cache {
     display: none;
 }
-.carousel-indicators 
-{
-    bottom:-35px;
-    padding-bottom: 10px ;
+
+.carousel-indicators {
+    bottom: -35px;
+    padding-bottom: 10px;
 }
 
-.modal-black div
-{
+.modal-black div {
     color: black;
 }
-.badgeek-toast-message
-{
+
+.badgeek-toast-message {
     width: 350px !important;
 }
-.badgeek-toast-message .toast-header, .modal-header
-{
+
+.badgeek-toast-message .toast-header, .modal-header {
     color: white !important;
-    background-color:red !important;
+    background-color: red !important;
 }
 
-.badgeek-toast-message .toast-body
-{
+.badgeek-toast-message .toast-body {
     background-color: white;
     color: black;
 }
 
-.background-black
-{
+.background-black {
     background-color: black;
 }
 
-
-
-.admin_card{
+.admin_card {
     background-color: black;
     border: red 2px solid;
 }
 
-.admin_card a{
-    color : white !important;
+.admin_card a {
+    color: white !important;
 }
-.admin_card_header{
+
+.admin_card_header {
     font-family: BGFont;
     font-size: larger;
     border: red 1px solid;
 }
 
-.admin_listgroup{
+.admin_listgroup {
     background-color: black;
 }
-.admin_listitem{
+
+.admin_listitem {
     background-color: black;
     border-top: #404040 1px solid;
 }
 
-.admin_listitem:hover{
+.admin_listitem:hover {
     background-color: red;
     font-weight: bold;
 }
 
-
-.table_admin thead{
+.table_admin thead {
     background-color: red;
     border: none;
 }
 
-.table_admin td{
+.table_admin td {
     border: none;
 }
 
-.table_admin tr{
+.table_admin tr {
     color: white;
-    border-bottom:#404040 1px solid;
+    border-bottom: #404040 1px solid;
 }
 
-.table_admin tbody tr:hover{
+.table_admin tbody tr:hover {
     background-color: gray;
     font-weight: bold;
 }
 
-.help-block{
-    color : red;
+.help-block {
+    color: red;
 }
-
 
 .hr_news {
     display: block;
@@ -161,7 +153,69 @@ body
     padding: 0;
 }
 
-.toast
-{
+.toast {
     z-index: 100 !important;
+}
+
+.input-bottom-only
+{
+    border-left: 0px;
+    border-right: 0px;
+    border-top: 0px;
+
+}
+.input-70
+{
+    width:70%;
+}
+.search-input {
+    background-color: transparent;
+    border-bottom: 0.5px gray solid;
+    color: white;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    width:300px;
+    padding-top: 10px;
+}
+
+.search-button {
+    color: gray;
+    background-color:transparent;
+    border:0px;
+    font-size: 20px;
+    height:80%;
+    padding-left:3px;
+}
+.search-button:hover {
+    color:lightgray;
+    font-size: 20px;
+}
+.search-advanced
+{
+    color:gray;
+    font-size: 10px;
+    background : transparent;
+    border: 0px;
+    font-weight: bold;
+    margin-left: -8px;
+
+}
+.search-advanced:hover
+{
+    text-decoration: underline;
+}
+.search-advanced:focus
+{
+    outline: none;
+    margin-left: -8px;
+}
+
+input:focus{
+    outline: none;
+}
+
+.no-margin
+{
+    margin: 0 0 0 0;
 }

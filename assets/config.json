@@ -101,6 +101,18 @@
       "css": "undo",
       "code": 59408,
       "src": "iconic"
+    },
+    {
+      "uid": "9dd9e835aebe1060ba7190ad2b2ed951",
+      "css": "search",
+      "code": 59406,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "97bd5542ed3e143d2ee9b60e14487615",
+      "css": "list-add",
+      "code": 59407,
+      "src": "entypo"
     }
   ]
 }
