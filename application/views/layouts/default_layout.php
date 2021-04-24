@@ -41,19 +41,19 @@
 
 <body class="container-fluid">
     <div class="page-header row padding-10">
-        <div class="col-md-2">
+        <div class="col-md-3">
             <a href="<?= site_url() ?>" style="text-decoration: none; color: white;font-family:BGFont;font-size:2em;">
                 <font style='color:red;'>&</font>BadGeek
             </a>
         </div>
         <div class="col-md-3">
-
-            <input type="search" name="query" class="search-input">
-            <button class="search-button icon-search"></button><br />
+            <form action="<? echo site_url("recherche"); ?>" class="no-margin" id="search-form" method="POST">
+                <input type="search" name="query" class="search-input input-bottom-only">
+                <button class="search-button icon-search"></button>
+            </form>
             <button class="search-advanced" data-toggle="modal" data-target="#searchModal">
                 Recherche avancée
             </button>
-
         </div>
         <div class="col-md-6 text-right">
 

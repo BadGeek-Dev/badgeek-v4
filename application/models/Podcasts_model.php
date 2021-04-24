@@ -121,7 +121,43 @@ class Podcasts_model extends CI_Model {
                 ->or_where("JSON_SEARCH(`episodes`.`tags`, 'one', '$query') != ", null)
             ->group_end();
         }
-        
+        $this->db->group_by('podcasts.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function searchAvancee($query = null, $exclude_archives = true)
+    {
+        $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, podcasts.valid');
+        $this->db->from('podcasts');
+        $this->db->join('episodes', 'podcasts.id = episodes.id_podcast', 'left');
+        $this->db->where('podcasts.valid', 1);
+        if($exclude_archives) 
+        {
+            $this->db->where(['podcasts.archive' => 0]);
+        }
+        if ($query) 
+        {
+            $this->db->group_start();
+            $this->db->where("1");
+            foreach($query as $key => $values)
+            {
+                foreach($values as $value)
+                {
+                    if($key == "tags")
+                    {
+                        $this->db->or_where("JSON_SEARCH(`podcasts`.`tags`, 'one', '$value') != ", null);
+                        $this->db->or_where("JSON_SEARCH(`episodes`.`tags`, 'one', '$value') != ", null);
+                    }
+                    else
+                    {
+                        $this->db->or_like("podcasts.$key", $value);
+                        $this->db->or_like("episodes.$key", $value);
+                    }
+                }
+            }
+            $this->db->group_end();
+        }
         $this->db->group_by('podcasts.id');
         $query = $this->db->get();
         return $query->result();
