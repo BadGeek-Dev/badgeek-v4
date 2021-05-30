@@ -100,44 +100,127 @@ class Podcasts_model extends CI_Model {
         $query = $this->db->get();
         return $query->custom_result_object(get_class($this));
     }
-
-    public function search($query = null, $exclude_archives = true)
+        
+    /**
+     * Fonction de recherche de podcast et d'épisode
+     *
+     * @param  mixed $query : la requête
+     * @param  mixed $exclude_archives : exclure les archives (toujours true pour l'instant)
+     * @param  mixed $search_avancee : True si recherche avancée
+     * @return array
+     */
+    public function search($query = null, $exclude_archives = true, $search_avancee = false)
     {
-        $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, podcasts.valid');
+        //Recherche de podcast
+        $podcasts = $search_avancee ? $this->searchPodcastAvancee($query) : $this->searchPodcast($query);
+        $liste_podcasts = [];
+        foreach($podcasts as $podcast)
+        {
+            $liste_podcasts[$podcast->id] = $podcast;
+        }
+        //Recherche d'épisode groupés par podcast
+        $episodes = $search_avancee ? $this->searchEpisodeAvancee($query) :  $this->searchEpisode($query);
+        $liste_episodes = [];
+        foreach($episodes as $episode){
+            $id_podcast = $episode->podcast_id;
+            if(key_exists($id_podcast, $liste_episodes)){
+                $liste_episodes[$id_podcast][] = $episode;
+            }
+            else{
+                $liste_episodes[$id_podcast] = [$episode];
+            }
+        }
+        return ["podcasts" =>  $liste_podcasts, 
+            "episodes" => $liste_episodes];
+    }    
+    /**
+     * Recherche de podcast
+     *
+     * @param  mixed $query : Requête
+     * @param  mixed $exclude_archives : exclure les archives (toujours true pour l'instant)
+     * @return array
+     */
+    public function searchPodcast($query = null, $exclude_archives = true)
+    {
+        //Recherche podcast
+        $this->db->select('id, description, lien, titre, valid, tags');
         $this->db->from('podcasts');
-        $this->db->join('episodes', 'podcasts.id = episodes.id_podcast', 'left');
         $this->db->where('podcasts.valid', 1);
         if($exclude_archives) 
         {
             $this->db->where(['podcasts.archive' => 0]);
         }
         if ($query) {
-            $this->db->group_start()
-                ->like('podcasts.titre', $query)
+            $this->db->like('podcasts.titre', $query)
                 ->or_like('podcasts.description', $query)
-                ->or_where("JSON_SEARCH(`podcasts`.`tags`, 'one', '$query') != ", null)
-                ->or_like('episodes.titre', $query)
-                ->or_like('episodes.description', $query)
-                ->or_where("JSON_SEARCH(`episodes`.`tags`, 'one', '$query') != ", null)
-            ->group_end();
+                ->or_where("JSON_SEARCH(`podcasts`.`tags`, 'one', '$query') != ", null);
         }
         $this->db->group_by('podcasts.id');
         $query = $this->db->get();
         return $query->result();
     }
+    
+    /**
+     * Recherche d'épisodes
+     *
+     * @param  mixed $query : Requête
+     * @param  mixed $exclude_archives : exclure les archives (toujours true pour l'instant)
+     * @return array
+     */
+    public function searchEpisode($query = null, $exclude_archives = true)
+    {
+        //Recherche épisodes
+        $this->db->select('episodes.id, episodes.description, episodes.titre, episodes.tags, podcasts.id as podcast_id, podcasts.titre as podcast_titre');
+        $this->db->from('episodes');
+        $this->db->join('podcasts', 'podcasts.id = episodes.id_podcast', 'left');
+        $this->db->where(['episodes.valid' => 1, 'podcasts.valid'=> 1]);
+        if($exclude_archives) 
+        {
+            $this->db->where(['podcasts.archive' => 0]);
+        }
+        if ($query) {
+            $this->db->group_start()
+                ->like('episodes.titre', $query)
+                ->or_like('episodes.description', $query)
+                ->or_where("JSON_SEARCH(`episodes`.`tags`, 'one', '$query') != ", null)
+                ->group_end();
+        }
+        $this->db->group_by('episodes.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
 
+        
+    /**
+     * Recherche avancée
+     *
+     * @param  mixed $query : Requête
+     * @param  mixed $exclude_archives : exclure les archives (toujours true pour l'instant)
+     * @return array
+     */
     public function searchAvancee($query = null, $exclude_archives = true)
     {
-        $this->db->select('podcasts.id, podcasts.description, podcasts.lien, podcasts.titre, podcasts.valid');
+        return $this->search($query, true , true);
+    }
+        
+    /**
+     * Recherche avancée de podcast
+     *
+     * @param  mixed $query : Requête
+     * @param  mixed $exclude_archives : exclure les archives (toujours true pour l'instant)
+     * @return array
+     */
+    public function searchPodcastAvancee($query = null, $exclude_archives = true)
+    {
+        //Recherche podcast
+        $this->db->select('id, description, lien, titre, valid, tags');
         $this->db->from('podcasts');
-        $this->db->join('episodes', 'podcasts.id = episodes.id_podcast', 'left');
         $this->db->where('podcasts.valid', 1);
         if($exclude_archives) 
         {
             $this->db->where(['podcasts.archive' => 0]);
         }
-        if ($query) 
-        {
+        if ($query) {
             $this->db->group_start();
             $this->db->where("1");
             foreach($query as $key => $values)
@@ -147,18 +230,58 @@ class Podcasts_model extends CI_Model {
                     if($key == "tags")
                     {
                         $this->db->or_where("JSON_SEARCH(`podcasts`.`tags`, 'one', '$value') != ", null);
-                        $this->db->or_where("JSON_SEARCH(`episodes`.`tags`, 'one', '$value') != ", null);
                     }
                     else
                     {
                         $this->db->or_like("podcasts.$key", $value);
-                        $this->db->or_like("episodes.$key", $value);
                     }
                 }
             }
             $this->db->group_end();
         }
         $this->db->group_by('podcasts.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
+    /**
+     * Recherche avancée d'épisodes 
+     *
+    * @param  mixed $query : Requête
+     * @param  mixed $exclude_archives : exclure les archives (toujours true pour l'instant)
+     * @return void array
+     */
+    public function searchEpisodeAvancee($query = null, $exclude_archives = true)
+    {
+        //Recherche épisodes
+        $this->db->select('episodes.id, episodes.description, episodes.titre, episodes.tags, podcasts.id as podcast_id, podcasts.titre as podcast_titre');
+        $this->db->from('episodes');
+        $this->db->join('podcasts', 'podcasts.id = episodes.id_podcast', 'left');
+        $this->db->where(['episodes.valid' => 1, 'podcasts.valid'=> 1]);
+        if($exclude_archives) 
+        {
+            $this->db->where(['podcasts.archive' => 0]);
+        }
+        if ($query) {
+            $this->db->group_start();
+            $this->db->where("1");
+            foreach($query as $key => $values)
+            {
+                foreach($values as $value)
+                {
+                    if($key == "tags")
+                    {
+                        $this->db->or_where("JSON_SEARCH(`episodes`.`tags`, 'one', '$value') != ", null);
+                    }
+                    else
+                    {
+                        $this->db->or_like("episodes.$key", $value);
+                    }
+                }
+            }
+            $this->db->group_end();
+        }
+        $this->db->group_by('episodes.id');
         $query = $this->db->get();
         return $query->result();
     }
