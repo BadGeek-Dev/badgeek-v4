@@ -11,38 +11,39 @@ class Search extends Badgeek_Controller
     }
 
     /**
-     * 
+     * Fonction de recherche simple
      */
-    public function index()
+    public function search()
     {
+        //Récupération de la chaîne recherchée
         $query = $this->input->post('query', TRUE);
+        //Appel à la fonction principale
+        $this->search_core($query, false);
+    }
+    /**
+     * Fonction de recherche avancée
+     */
+    public function searchAvancee()
+    {
+        //Tableau des critères de recherche
+        $json_query = json_decode($this->input->post("json_query", TRUE),true);
+        //Appel à la fonction principale
+        $this->search_core($json_query, true);
+    }
 
-        $podcasts = $this->podcasts_model->search($query);
+    public function search_core($query, $search_avancee)
+    {
+        //DAO
+        $resultats = $this->podcasts_model->search($query, true, $search_avancee);
 
         $this->searchstats_model->setQuery($query);
         $this->searchstats_model->insert();
 
         $this->template->load('search/search', [
-            'podcasts' => $podcasts, 
+            'resultats' => $resultats, 
             'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true),
             'query' => $query
             ]);
-    }
-
-    public function rechercheAvancee()
-    {
-        $json_query = json_decode($this->input->post("json_query", TRUE),true);
-        $podcasts = $this->podcasts_model->searchAvancee($json_query);
-
-        $this->searchstats_model->setQuery($json_query);
-        $this->searchstats_model->insert();
-
-        $this->template->load('search/search', [
-            'podcasts' => $podcasts, 
-            'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true),
-            'query' => ""
-            ]);
-
     }
 
     private function initBreadcrumbItem($current = false)
