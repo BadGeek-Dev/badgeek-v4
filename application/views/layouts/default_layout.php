@@ -61,6 +61,9 @@
                 <i class='icon-user'></i>
                 Podcasts
             </a>
+			<?php if(isPodcasteur()) : ?>
+				<a href="<?= site_url("podcasts/indexPodcasteur") ?>"  class="btn btn-danger margin-right-10">Mes podcasts</a>
+			<?php endif; ?>
             <?php if ($this->ion_auth->logged_in()) : ?>
                 <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#profilModal">
                     <i class='icon-user'></i>

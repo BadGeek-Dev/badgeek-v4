@@ -177,7 +177,15 @@ class Podcasts extends Badgeek_Controller
             ]);
     }
     
+	public function indexPodcasteur()
+	{
+		$podcasts = $this->podcasts_model->findByUser($this->user->id);
 
+		$this->template->load('podcasts/podcasteurList', [
+			'podcasts' => $podcasts,
+			'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)
+		]);
+	}
         
     /**
      * Affichage de la fiche d'un podcast
