@@ -7,6 +7,7 @@ class Podcasts extends Badgeek_Controller
     public function __construct() {
         parent::__construct();
         $this->load->model('podcasts_model');
+        $this->load->model('episodes_model');
     }
 
     /**
@@ -180,6 +181,11 @@ class Podcasts extends Badgeek_Controller
 	public function indexPodcasteur()
 	{
 		$podcasts = $this->podcasts_model->findByUser($this->user->id);
+
+		foreach ($podcasts as $podcast){
+			$nbep = count($this->episodes_model->findByPodcast($podcast));
+			$podcast->nombreEpisodes = $nbep;
+		}
 
 		$this->template->load('podcasts/podcasteurList', [
 			'podcasts' => $podcasts,
