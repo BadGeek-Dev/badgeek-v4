@@ -1,5 +1,4 @@
-<div class="container">
-<table class="table_admin">
+<table class="table_podcasteur">
     <thead>
     <tr class="text-center">
         <th>Titre</th>
