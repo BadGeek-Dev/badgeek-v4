@@ -1,10 +1,10 @@
-<h1>PODCASTEUR LISTE</h1>
+<div class="container">
 <table class="table_admin">
     <thead>
     <tr class="text-center">
         <th>Titre</th>
         <th>Description</th>
-        <th >Nombre Episode</th>
+        <th >Nombre Episodes</th>
         <th>Tags</th>
 		<th>Statut</th>
         <th>Actions</th>
@@ -12,14 +12,13 @@
     </thead>
     <tbody>
     <?php
-
     foreach ($podcasts as $podcast) {
         echo "<tr>";
         echo '<td> '.$podcast->titre.'</td>';
         echo '<td> '.substr($podcast->description,0,40);
         if(strlen($podcast->description)>40) echo '...';
         echo '</td>';
-        echo '<td>Nombre EP</td>';
+        echo '<td>'.$podcast->nombreEpisodes.'</td>';
         echo '<td> '.$podcast->tags.' </td>';
         echo '<td>';
         switch ($podcast->valid){
