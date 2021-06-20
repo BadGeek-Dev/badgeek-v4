@@ -98,3 +98,6 @@ $route['admin/aides/delete/(:num)'] = 'admin_aide/delete/$1';
 
 //aides
 $route['/aide'] = 'Aide/index';
+
+//Migrations
+$route['devtools'] = 'devtools/index'
