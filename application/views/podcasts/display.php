@@ -1,8 +1,13 @@
 <h2>
-    <?php echo $podcast->titre ?> 
-    <?php if($this->user && $podcast->id_createur == $this->user->id): ?>
+    <?php echo $podcast->titre ?>
+	<?php if($this->user) : ?>
+	<?php if(!$favorite) :?><a href="#" class="btn btn-danger margin-right-10"> Ajouter à mes Favoris</a> <!--Coeur vide. action over : coeur plein.-->
+	<?php else: ?><a href="#" class="btn btn-danger margin-right-10"> <i></i>PodCast Favori</a> <!--Coeur plein. action over : coeur barré-->
+    <?php endif ?>
+	<?php if($this->user && $podcast->id_createur == $this->user->id): ?>
         (<a href="<?= site_url("podcasts/edit/".$podcast->id) ?>">modifier</a>)
     <?php endif; ?>
+	<?php endif; ?>
 </h2>
 <?php if($this->user && $podcast->id_createur == $this->user->id): ?>
     <?php if ($podcast->hosted) :?>
