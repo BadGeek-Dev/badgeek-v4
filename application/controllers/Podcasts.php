@@ -373,7 +373,30 @@ class Podcasts extends Badgeek_Controller
         $this->output->set_output(file_get_contents($mp3Path));
     }
 
-    private function initBreadcrumbItem($current = false)
+    public function addFavorite($idpodcast){
+		$this->load->model('Favoris_model');
+		$favorisUser = $this->Favoris_model->getUserFavorites($this->user->id);
+		$favorisUser = explode(",",$favorisUser->favorites);
+		$favorisUser[] = $idpodcast;
+		$favorisUser = implode(",",$favorisUser);
+		$this->Favoris_model->setUserFavorites($this->user->id,$favorisUser);
+		redirect("/podcasts/display/".$idpodcast);
+
+	}
+
+	public function removeFavorite($idpodcast){
+		$this->load->model('Favoris_model');
+		$favorisUser = $this->Favoris_model->getUserFavorites($this->user->id);
+		$favorisUser = explode(",",$favorisUser->favorites);
+		$indexFavorisUser = array_search($idpodcast,$favorisUser);
+		unset($favorisUser[$indexFavorisUser]);
+		$favorisUser = implode(",",$favorisUser);
+		$this->Favoris_model->setUserFavorites($this->user->id,$favorisUser);
+		redirect("/podcasts/display/".$idpodcast);
+
+	}
+
+	private function initBreadcrumbItem($current = false)
     {
         return array(BreadcrumbItem::getBreadcrumbItemAccueil(), new BreadcrumbItem("Podcasts", "/podcasts", $current));
     }
