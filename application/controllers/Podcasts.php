@@ -7,6 +7,7 @@ class Podcasts extends Badgeek_Controller
     public function __construct() {
         parent::__construct();
         $this->load->model('podcasts_model');
+		$this->load->model('Favoris_model');
     }
 
     /**
@@ -187,6 +188,7 @@ class Podcasts extends Badgeek_Controller
      */
     public function display($id)
     {
+
         $this->load->model('episodes_model');
         $podcast = $this->podcasts_model->findOneById($id);
         if($podcast)
@@ -198,10 +200,22 @@ class Podcasts extends Badgeek_Controller
                     $this->template->loadError($this->getErrorMessage("podcast_en_attente"));
                     break;
                 case Podcasts_model::VALIDE:
+                	$favorite = false;
+					$this->load->model('Favoris_model');
+					$favorisUser = $this->Favoris_model->getUserFavorites($this->user->id);
+					if($favorisUser == null){
+					$this->Favoris_model->addUserFavorites($this->user->id);
+					}else{
+						$favorisUser = explode(",",$favorisUser->favorites);
+						$favorite=in_array($podcast->id,$favorisUser);
+					}
+
+
                     $episodes = $this->episodes_model->findByPodcast($podcast);
                     $this->template->load('podcasts/display', [
                         'podcast' => $podcast,
                         'episodes' => $episodes,
+                        'favorite' => $favorite,
                         'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem($podcast->titre))
                     ]);
                     break;
@@ -369,4 +383,8 @@ class Podcasts extends Badgeek_Controller
         if(!is_array($extra_liste_items)) $extra_liste_items = [$extra_liste_items];
         return array_merge($this->initBreadcrumbItem(), array_values($extra_liste_items));
     }
+
+
+
+
 }
