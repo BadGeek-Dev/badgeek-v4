@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Add_AdminNews extends CI_Migration {
+class Migration_create_articles extends CI_Migration {
 
     public function up()
     {
@@ -22,8 +22,7 @@ class Migration_Add_AdminNews extends CI_Migration {
 
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->drop_table('articles', true);
-        $this->dbforge->create_table('articles');
+        $this->dbforge->create_table('articles', true);
     }
 
     public function down()

@@ -5,13 +5,14 @@ require_once APPPATH . 'core/Badgeek_Controller.php';
 class DevTools extends CI_Controller
 {
     const DUMP_PATH = __DIR__.'/../private/dumps';
+    const ORIGINAL_IMPORT_FILE_PATH = __DIR__. '/../../assets';
     const ORIGINAL_IMPORT_FILE = 'dump-initial.sql.gz';
     const GOOD_COOKIE = 'badgeek';
     public function __construct()
     {
         parent::__construct();
         $this->load->helper(['badgeek', 'cookie']);
-        $this->load->library(['session', 'helper']);
+        $this->load->library(['session', 'helper', 'migration']);
         $this->load->database();
         
     }
@@ -32,8 +33,11 @@ class DevTools extends CI_Controller
         
             closedir($handle);
         }
+        //Migrations
         $this->template->load('private/devtools', array(
             'dumps' => array_reverse($liste_dumps),
+            'migration_courante' => $this->migration->_get_version(),
+            'migrations' => $this->migration->find_migrations(),
             'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)));
             
     }
@@ -98,9 +102,9 @@ class DevTools extends CI_Controller
         }
     }
 
-    function importdump($filename, $delete_gz= true) {
+    function importdump($filename, $delete_gz= true,  $refresh = true) {
         $this->checkDevAccount();
-        $path_gz = DevTools::DUMP_PATH."/".$filename;
+        $path_gz = ($filename == DevTools::ORIGINAL_IMPORT_FILE ? DevTools::ORIGINAL_IMPORT_FILE_PATH : DevTools::DUMP_PATH)."/".$filename;
         $path_sql = $path_gz.".sql";
         file_put_contents($path_sql, gzdecode(file_get_contents($path_gz)));
         $file_restore = $this->load->file($path_sql, true);
@@ -118,7 +122,7 @@ class DevTools extends CI_Controller
         if($delete_gz) unlink($path_gz);
         unlink($path_sql);
         setFlashdataMessage($this->session,'Dump restoré','top-right');
-        redirect("/devtools", 'refresh');
+        if($refresh) redirect("/devtools", 'refresh');
     }
     function forcedownload($filename)
     {
@@ -134,11 +138,11 @@ class DevTools extends CI_Controller
         unlink(DevTools::DUMP_PATH."/".$filename);
         redirect("/devtools", 'refresh');
     }
-    function raz()
+    function raz($refresh = true)
     {
         $this->checkDevAccount();
         $this->dump(false);
-        $this->importdump(DevTools::ORIGINAL_IMPORT_FILE, false);
+        $this->importdump(DevTools::ORIGINAL_IMPORT_FILE, false, $refresh);
     }
 
     public function checkDevAccount()
@@ -153,6 +157,63 @@ class DevTools extends CI_Controller
            redirect("devtools/check");
         }
     }
+    
+    public function migration($method, $version)
+    {
+        $this->checkDevAccount();
+        if($method == "up")
+        {
+            $file = $this->migration->find_migrations()[$version];
+            $version_precedente = 0;
+        }
+        else
+        {
+            $migrations = $this->migration->find_migrations();
+            foreach($migrations as $migration_version => $file)
+            {
+                if($migration_version < $version)
+                {
+                    $version_precedente = $migration_version;
+                } 
+                else if ($migration_version == $version)
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        include_once($file);
+        $class = 'Migration_'.ucfirst(strtolower($this->migration->_get_migration_name(basename($file, '.php'))));
+        // Validate the migration file structure
+        if ( ! class_exists($class, FALSE))
+        {
+            $this->_error_string = sprintf($this->lang->line('migration_class_doesnt_exist'), $class);
+            return FALSE;
+        }
+        elseif ( ! is_callable(array($class, $method)))
+        {
+            $this->_error_string = sprintf($this->lang->line('migration_missing_'.$method.'_method'), $class);
+            return FALSE;
+        }
+        $migration = array($class, $method);
+        $migration[0] = new $migration[0];
+        call_user_func($migration);
+        $this->migration->_update_version($version_precedente ?: $version);
+        setFlashdataMessage($this->session,"Migration " . $class." ".($method == "up" ? "passée" : "annulée"),'top-right');
+        redirect("/devtools", 'refresh');
 
+    }
+
+    function greatreset()
+    {
+        $this->checkDevAccount();
+        $this->raz(false);
+        $this->migration->_update_version(1);
+        $this->migration->latest();
+        redirect("/devtools", 'refresh');
+    }
 
 }

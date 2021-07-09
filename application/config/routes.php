@@ -107,3 +107,5 @@ $route['devtools/raz'] = 'DevTools/raz';
 $route['devtools/importdump/(:any)'] = 'DevTools/importdump/$1';
 $route['devtools/forcedownload/(:any)'] = 'DevTools/forcedownload/$1';
 $route['devtools/deletedump/(:any)'] = 'DevTools/deletedump/$1';
+$route['devtools/migration/(:any)/(:any)'] = 'DevTools/migration/$1/$2';
+$route['devtools/greatreset'] = 'DevTools/greatreset';
