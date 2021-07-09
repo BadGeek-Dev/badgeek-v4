@@ -161,6 +161,7 @@ class DevTools extends CI_Controller
     public function migration($method, $version)
     {
         $this->checkDevAccount();
+        $version_precedente = 1;
         if($method == "up")
         {
             $file = $this->migration->find_migrations()[$version];
@@ -177,7 +178,8 @@ class DevTools extends CI_Controller
                 } 
                 else if ($migration_version == $version)
                 {
-                    continue;
+                    $version_precedente = $version_precedente ?: $version;
+                    break;
                 }
                 else
                 {
