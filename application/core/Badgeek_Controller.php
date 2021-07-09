@@ -62,19 +62,7 @@ class Badgeek_Controller extends CI_Controller
         }
     }
 
-    public function checkDevAccount()
-    {
-        $good_cookie = "badgeek";
-        if(get_cookie("check_dev_password") == $good_cookie)
-        {
-            set_cookie("check_dev_password", $good_cookie, 3600);
-        }
-        else
-        {
-           redirect("devtools/check");
-        }
-    }
-
+    
     public function real_url($url)
     {
         return filter_var($url, FILTER_VALIDATE_URL) || empty($url) ? true : false;

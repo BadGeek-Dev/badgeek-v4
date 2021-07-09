@@ -2,18 +2,17 @@
 
 require_once APPPATH . 'core/Badgeek_Controller.php';
 
-class DevTools extends Badgeek_Controller
+class DevTools extends CI_Controller
 {
     const DUMP_PATH = __DIR__.'/../private/dumps';
     const ORIGINAL_IMPORT_FILE = 'dump-initial.sql.gz';
+    const GOOD_COOKIE = 'badgeek';
     public function __construct()
     {
         parent::__construct();
-        $this->load->helper(['badgeek']);
+        $this->load->helper(['badgeek', 'cookie']);
         $this->load->library(['session', 'helper']);
         $this->load->database();
-        $this->checkAdminRights();
-        $this->load->helper('cookie');
         
     }
     
@@ -33,7 +32,7 @@ class DevTools extends Badgeek_Controller
         
             closedir($handle);
         }
-        $this->template->load_admin('private/devtools', array(
+        $this->template->load('private/devtools', array(
             'dumps' => array_reverse($liste_dumps),
             'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)));
             
@@ -46,7 +45,7 @@ class DevTools extends Badgeek_Controller
         $this->form_validation->set_rules('check_dev_password', 'check_dev_password', 'required');
         if ($this->form_validation->run() === FALSE)
         {
-            $this->template->load_admin('private/check', array(
+            $this->template->load('private/check', array(
                 'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)));
         }
         else
@@ -58,14 +57,13 @@ class DevTools extends Badgeek_Controller
         
     public function checkDevPassword()
     {
-        $good_cookie = "badgeek";
          //Fichier contenant le password en hash256
          $fp = fopen(__DIR__."/../private/check_dev_password", "r");
          $hash_passwd = fgets($fp);
          fclose($fp);
          if($hash_passwd && $hash_passwd == hash("sha256", $this->input->post("check_dev_password")))
          {
-            set_cookie("check_dev_password", $good_cookie, 3600);
+            set_cookie("check_dev_password", DevTools::GOOD_COOKIE, 3600);
          }
          else
          {
@@ -142,5 +140,19 @@ class DevTools extends Badgeek_Controller
         $this->dump(false);
         $this->importdump(DevTools::ORIGINAL_IMPORT_FILE, false);
     }
+
+    public function checkDevAccount()
+    {
+        $good_cookie = DevTools::GOOD_COOKIE;
+        if(get_cookie("check_dev_password") == $good_cookie)
+        {
+            set_cookie("check_dev_password", $good_cookie, 3600);
+        }
+        else
+        {
+           redirect("devtools/check");
+        }
+    }
+
 
 }
