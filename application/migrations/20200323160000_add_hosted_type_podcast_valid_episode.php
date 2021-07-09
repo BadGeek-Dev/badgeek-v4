@@ -19,5 +19,8 @@ class Migration_Add_hosted_type_podcast_valid_episode extends CI_Migration {
 
     public function down()
     {
+        $this->dbforge->add_column('podcasts', 'hosted');
+        $this->dbforge->add_column('episodes', 'valid');
+
     }
 }

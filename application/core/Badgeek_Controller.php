@@ -62,9 +62,10 @@ class Badgeek_Controller extends CI_Controller
         }
     }
 
+    
     public function real_url($url)
     {
-        return filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED) || empty($url) ? true : false;
+        return filter_var($url, FILTER_VALIDATE_URL) || empty($url) ? true : false;
 
     }
 

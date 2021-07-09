@@ -426,7 +426,7 @@ class CI_Migration {
 	 * @param	string	$migration
 	 * @return	string	text portion of a migration filename
 	 */
-	protected function _get_migration_name($migration)
+	public function _get_migration_name($migration)
 	{
 		$parts = explode('_', $migration);
 		array_shift($parts);
@@ -440,7 +440,7 @@ class CI_Migration {
 	 *
 	 * @return	string	Current migration version
 	 */
-	protected function _get_version()
+	public function _get_version()
 	{
 		$row = $this->db->select('version')->get($this->_migration_table)->row();
 		return $row ? $row->version : '0';
@@ -454,7 +454,7 @@ class CI_Migration {
 	 * @param	string	$migration	Migration reached
 	 * @return	void
 	 */
-	protected function _update_version($migration)
+	public function _update_version($migration)
 	{
 		$this->db->update($this->_migration_table, array(
 			'version' => $migration

@@ -15,6 +15,6 @@ class Migration_add_prefs_users extends CI_Migration {
 
     public function down()
     {
-        
+        $this->dbforge->drop_column('users','prefs');
     }
 }

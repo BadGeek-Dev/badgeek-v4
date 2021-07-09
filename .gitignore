@@ -8,6 +8,9 @@ application/logs/*
 
 !application/*/.htaccess
 
+application/private
+application/private/*
+
 application/vendor/*
 
 application/sessions/*
