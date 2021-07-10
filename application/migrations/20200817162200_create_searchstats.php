@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Add_Aides extends CI_Migration {
+class Migration_Create_Searchstats extends CI_Migration {
 
     public function up()
     {
@@ -10,23 +10,19 @@ class Migration_Add_Aides extends CI_Migration {
             'id' => array('type' => 'INT',
                 'auto_increment' => TRUE,
                 'unique'=> TRUE),
-            'id_author' => array('type' => 'INT'),
-            'title' => array('type' => 'VARCHAR',
-                'constraint' => '255'),
-            'content' => array('type' => 'VARCHAR',
+            'query' => array(
+                'type' => 'VARCHAR',
                 'constraint' => '3000',
                 'null' => TRUE),
-            'created_at' => array('type' => 'DATETIME'),
-            'visible' =>array('type' => 'BOOL')
         );
 
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('aides');
+        $this->dbforge->create_table('searchstats', TRUE);
     }
 
     public function down()
     {
-        $this->dbforge->drop_table('aides');
+        $this->dbforge->drop_table('searchstats');
     }
 }

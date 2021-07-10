@@ -17,5 +17,9 @@ class Migration_change_validation_podcast extends CI_Migration {
 
     public function down()
     {
+        $fields = array(
+            'valid' => array('type' => 'BOOL')
+        );
+        $this->dbforge->modify_column('podcasts', $fields);
     }
 }

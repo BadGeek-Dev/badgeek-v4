@@ -97,4 +97,15 @@ $route['admin/aides/edit/(:num)'] = 'admin_aide/edit/$1';
 $route['admin/aides/delete/(:num)'] = 'admin_aide/delete/$1';
 
 //aides
-$route['/aide'] = 'Aide/index';
+$route['aide'] = 'Aide/index';
+
+//Migrations
+$route['devtools'] = 'DevTools/index';
+$route['devtools/check'] = 'DevTools/check';
+$route['devtools/dump'] = 'DevTools/dump';
+$route['devtools/raz'] = 'DevTools/raz';
+$route['devtools/importdump/(:any)'] = 'DevTools/importdump/$1';
+$route['devtools/forcedownload/(:any)'] = 'DevTools/forcedownload/$1';
+$route['devtools/deletedump/(:any)'] = 'DevTools/deletedump/$1';
+$route['devtools/migration/(:any)/(:any)'] = 'DevTools/migration/$1/$2';
+$route['devtools/greatreset'] = 'DevTools/greatreset';
