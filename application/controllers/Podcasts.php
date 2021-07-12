@@ -180,10 +180,8 @@ class Podcasts extends Badgeek_Controller
     
 	public function indexPodcasteur()
 	{
-		if(!isPodcasteur()) {
-			$this->index();
-			return;
-		}
+
+		checkIsPodcasteur();
 		$podcasts = $this->podcasts_model->findByUser($this->user->id);
 
 		foreach ($podcasts as $podcast){
