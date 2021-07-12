@@ -182,11 +182,21 @@ class Podcasts extends Badgeek_Controller
 	{
 
 		checkIsPodcasteur();
-		$podcasts = $this->podcasts_model->findByUser($this->user->id);
-
+		$podcasts = $this->podcasts_model->findModelsByUser($this->user->id);
 		foreach ($podcasts as $podcast){
 			$nbep = count($this->episodes_model->findByPodcast($podcast));
 			$podcast->nombreEpisodes = $nbep;
+            $podcast->badge_statut = getBadgeFromPodcast($podcast);
+            $podcast->tags_value = "";
+            $tags_value = json_decode($podcast->tags);
+            if($tags_value)
+            {
+                foreach($tags_value as $tag_value)
+                {
+                    $podcast->tags_value .= $tag_value->value.",";
+                }
+                $podcast->tags_value = substr($podcast->tags_value, 0, -1);
+            }
 		}
 
 		$this->template->load('podcasts/podcasteurList', [

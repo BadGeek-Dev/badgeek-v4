@@ -59,11 +59,10 @@ if ( ! function_exists('isInGroupe'))
 if (! function_exists( 'checkIsGroup')) {
 	function checkIsPodcasteur()
 	{
-		if(isPodcasteur()){
-			return true;
+		if(!isPodcasteur())
+		{
+			redirect('/', 'refresh');
 		}
-		redirect('/');
-		return false;
 	}
 }
 
