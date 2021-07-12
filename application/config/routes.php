@@ -111,4 +111,5 @@ $route['devtools/migration/(:any)/(:any)'] = 'DevTools/migration/$1/$2';
 $route['devtools/greatreset'] = 'DevTools/greatreset';
 
 //User uploads
-$route['mp3'] = 'UserUploads/index';
+$route['uploads'] = 'UserUploads/index';
+$route['uploads/upload'] = 'UserUploads/upload';
