@@ -1,3 +1,8 @@
+<?php if(isPodcasteur()) : ?>
+<a href="<?= site_url("podcasts/indexPodcasteur") ?>"  class="btn btn-danger margin-right-10">Mes podcasts</a>
+<?php endif; ?>
+<br/>
+<br/>
 <?php
     foreach ($podcasts as $podcast) {
         echo '<a href="'.site_url("podcasts/display/".$podcast->id).'">'.$podcast->titre.'</a>';
