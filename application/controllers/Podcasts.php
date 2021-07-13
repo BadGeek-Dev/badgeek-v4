@@ -213,6 +213,7 @@ class Podcasts extends Badgeek_Controller
      */
     public function display($id)
     {
+
         $this->load->model('episodes_model');
         $podcast = $this->podcasts_model->findOneById($id);
         if($podcast)
@@ -427,4 +428,8 @@ class Podcasts extends Badgeek_Controller
         if(!is_array($extra_liste_items)) $extra_liste_items = [$extra_liste_items];
         return array_merge($this->initBreadcrumbItem(), array_values($extra_liste_items));
     }
+
+
+
+
 }
