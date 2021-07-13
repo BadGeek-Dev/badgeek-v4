@@ -12,7 +12,7 @@ class Badgeek_Controller extends CI_Controller
         $this->load->database();
         $this->load->model('podcasts_model');
         $this->user = false;
-        $this->controller = get_class($this);
+        $this->header_show= true;
 
         if($this->ion_auth->logged_in())
         {

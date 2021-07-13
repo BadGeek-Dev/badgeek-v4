@@ -40,7 +40,7 @@
 </head>
 
 <body class="container-fluid">
-    <? if($this->controller == "Badgeek"):?>
+    <? if($this->header_show):?>
     <div class="page-header row padding-10">
         <div class="col-md-3">
             <a href="<?= site_url() ?>" style="text-decoration: none; color: white;font-family:BGFont;font-size:2em;">
