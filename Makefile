@@ -24,7 +24,7 @@ vendor:
 	$(RUN) -w /badgeek/assets php yarn install
 
 database-import:
-	$(RUN) mysql mysql -h mysql -u badgeek -pbadgeek badgeek < assets/dump-initial.sql
+	$(RUN) mysql mysql -h mysql -u badgeek -pbadgeek badgeek < assets/dump_safe.sql
 
 db-migrate:
 	$(RUN) -w /badgeek php php index.php migrate
