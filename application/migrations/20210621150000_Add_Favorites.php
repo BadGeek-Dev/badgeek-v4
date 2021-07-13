@@ -3,7 +3,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Migration_Add_Config extends CI_Migration
+class Migration_Add_Favorites extends CI_Migration
 {
 
 	public function up()

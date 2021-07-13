@@ -8,6 +8,7 @@ class Podcasts extends Badgeek_Controller
         parent::__construct();
         $this->load->model('podcasts_model');
         $this->load->model('episodes_model');
+		$this->load->model('favoris_model');
     }
 
     /**
@@ -180,7 +181,6 @@ class Podcasts extends Badgeek_Controller
     
 	public function indexPodcasteur()
 	{
-
 		checkIsPodcasteur();
 		$podcasts = $this->podcasts_model->findModelsByUser($this->user->id);
 		foreach ($podcasts as $podcast){
@@ -213,7 +213,6 @@ class Podcasts extends Badgeek_Controller
      */
     public function display($id)
     {
-
         $this->load->model('episodes_model');
         $podcast = $this->podcasts_model->findOneById($id);
         if($podcast)
@@ -226,10 +225,9 @@ class Podcasts extends Badgeek_Controller
                     break;
                 case Podcasts_model::VALIDE:
                 	$favorite = false;
-					$this->load->model('Favoris_model');
-					$favorisUser = $this->Favoris_model->getUserFavorites($this->user->id);
-					if($favorisUser == null){
-					$this->Favoris_model->addUserFavorites($this->user->id);
+					$favorisUser = $this->favoris_model->getUserFavorites($this->user->id);
+					if(empty($favorisUser)){
+					$this->favoris_model->addUserFavorites($this->user->id);
 					}else{
 						$favorisUser = explode(",",$favorisUser->favorites);
 						$favorite=in_array($podcast->id,$favorisUser);
@@ -399,24 +397,22 @@ class Podcasts extends Badgeek_Controller
     }
 
     public function addFavorite($idpodcast){
-		$this->load->model('Favoris_model');
-		$favorisUser = $this->Favoris_model->getUserFavorites($this->user->id);
+		$favorisUser = $this->favoris_model->getUserFavorites($this->user->id);
 		$favorisUser = explode(",",$favorisUser->favorites);
 		$favorisUser[] = $idpodcast;
 		$favorisUser = implode(",",$favorisUser);
-		$this->Favoris_model->setUserFavorites($this->user->id,$favorisUser);
+		$this->favoris_model->setUserFavorites($this->user->id,$favorisUser);
 		redirect("/podcasts/display/".$idpodcast);
 
 	}
 
 	public function removeFavorite($idpodcast){
-		$this->load->model('Favoris_model');
-		$favorisUser = $this->Favoris_model->getUserFavorites($this->user->id);
+		$favorisUser = $this->favoris_model->getUserFavorites($this->user->id);
 		$favorisUser = explode(",",$favorisUser->favorites);
 		$indexFavorisUser = array_search($idpodcast,$favorisUser);
 		unset($favorisUser[$indexFavorisUser]);
 		$favorisUser = implode(",",$favorisUser);
-		$this->Favoris_model->setUserFavorites($this->user->id,$favorisUser);
+		$this->favoris_model->setUserFavorites($this->user->id,$favorisUser);
 		redirect("/podcasts/display/".$idpodcast);
 
 	}
@@ -431,8 +427,4 @@ class Podcasts extends Badgeek_Controller
         if(!is_array($extra_liste_items)) $extra_liste_items = [$extra_liste_items];
         return array_merge($this->initBreadcrumbItem(), array_values($extra_liste_items));
     }
-
-
-
-
 }
