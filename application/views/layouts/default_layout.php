@@ -40,6 +40,7 @@
 </head>
 
 <body class="container-fluid">
+    <? if($this->controller == "Badgeek"):?>
     <div class="page-header row padding-10">
         <div class="col-md-3">
             <a href="<?= site_url() ?>" style="text-decoration: none; color: white;font-family:BGFont;font-size:2em;">
@@ -116,7 +117,7 @@
         include(__DIR__ . "/modal/modal_profil.php");
     }
     ?>
-
+    <?php endif;?>
     <!--FIL D'ARIANE-->
     <?php if (isset($breadcrumb)) echo $breadcrumb; ?>
 
