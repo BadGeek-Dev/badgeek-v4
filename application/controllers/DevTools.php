@@ -14,6 +14,11 @@ class DevTools extends CI_Controller
         $this->load->helper(['badgeek', 'cookie']);
         $this->load->library(['session', 'helper', 'migration']);
         $this->load->database();
+        //Création du dossier de dump si il n'existe pas.
+        if(empty(is_dir(DevTools::DUMP_PATH)))
+        {
+            mkdir(DevTools::DUMP_PATH);
+        }
         
     }
     

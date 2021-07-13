@@ -25,6 +25,7 @@ class Badgeek_Controller extends CI_Controller
                 array_walk($user->groups_id, function(&$element){ $element = $element->id;});
                 $this->session->user = $user;
                 $this->session->unset_userdata("reload");
+                $this->user = $user;
             }
             if($user->active == Users_Model::ACTIVE) 
             {
@@ -60,6 +61,17 @@ class Badgeek_Controller extends CI_Controller
             setFlashdataMessage($this->session,'Vous n\'avez pas les droits d\'accès','top-right');
             redirect('/', 'refresh');
         }
+    }
+
+    public function checkIsPodcasteur()
+    {
+        //Utilisateur podcasteur
+        return $this->user && in_array(Badgeek_constantes::AUTH_GROUP_PODCASTEUR, $this->user->groups_id);
+    }
+
+    public function getPrivateDir()
+    {
+        return realpath(__DIR__."/../private/");
     }
 
     
