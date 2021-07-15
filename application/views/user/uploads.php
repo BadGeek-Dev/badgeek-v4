@@ -17,16 +17,16 @@
                     <li class="list-group-item text-dark">
                         <div class='container'>
                             <div class="row">
-                                <div class="col-sm">
+                                <div class="col-sm-4">
                                     <i class="far fa-file-audio" style="font-size:25px"></i>&nbsp;
                                     <?php echo $file["caption"]; ?> - <?php echo $file["size"]; ?>
                                 </div>
-                                <div class="col-sm">
-                                    <audio controls>
+                                <div class="col-sm-6">
+                                    <audio controls style="width:100%">
                                         <source src="<?php echo base_url($file["path"]); ?>" type="audio/mpeg">>
                                     </audio>
                                 </div>
-                                <div class="col-sm">
+                                <div class="col-sm-2">
                                     <button type="button" class="btn btn-danger delete-file" data-path="<?php echo $file["path"]; ?>"> <i class="fas fa-trash"></i>&nbsp; Supprimer </button>
                                 </div>
                             </div>

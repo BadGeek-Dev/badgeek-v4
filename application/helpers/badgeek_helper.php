@@ -150,8 +150,31 @@ if ( ! function_exists('getConfig'))
 		}
         return $config && $element && key_exists($element, $config) ? $config[$element] : $config;
     }
-
+	
 }
+
+if ( ! function_exists('getPrivateDir'))
+{
+	function getPrivateDir($id_user = 0)
+    {
+        return realpath(__DIR__."/../../assets/private/".($id_user ?: ""));
+    }
+
+	function getPrivateListOfFileForUser($id_user)
+    {
+         //La liste des fichiers
+		 $dir_user = getPrivateDir($id_user);
+		 if($id_user && is_dir($dir_user))
+		 {
+			 return array_filter(scandir($dir_user), function($file) use($dir_user) {
+				 return is_file($dir_user."/".$file);
+				});
+		}
+		return false;
+    }
+  
+}
+
 
 
 

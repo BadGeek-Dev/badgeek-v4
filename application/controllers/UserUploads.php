@@ -10,23 +10,22 @@ class UserUploads extends Badgeek_Controller {
         parent::__construct();
         $this->checkIsPodcasteur();
         $this->load->library("helper");
-        $this->user_dir = $this->getPrivateDir()."/".$this->user->id;
+        $this->user_dir = getPrivateDir($this->user->id);
         //Si le dossier n'existe pas, on le crée
         if(is_dir($this->user_dir))
         {
             //Nettoyage
             $this->listFilesClean();
             //La liste des fichiers
-            $this->list_files = array_filter(scandir($this->user_dir), function($file) {
-                return is_file($this->user_dir."/".$file);
-            });
+            $this->list_files = getPrivateListOfFileForUser($this->user->id);
             
         }
         else{
             mkdir($this->user_dir);
         }
     }
-  
+
+    
     private function listFilesClean()
     {
         foreach ($this->list_files as $key => $filename) 
@@ -76,7 +75,7 @@ class UserUploads extends Badgeek_Controller {
     public function upload()
     {
         $this->checkIsPodcasteur();
-        if(move_uploaded_file($_FILES['file']['tmp_name'],$this->getPrivateDir()."/".$this->user->id."/".$_FILES['file']['name']))
+        if(move_uploaded_file($_FILES['file']['tmp_name'],getPrivateDir($this->user->id)."/".$_FILES['file']['name']))
         {
             setFlashdataMessage($this->session, "Fichier uploadé.");
         }
@@ -91,7 +90,7 @@ class UserUploads extends Badgeek_Controller {
         $dirs = explode("/", $path);
         $filename = array_pop($dirs);
         $id_user = array_pop($dirs);
-        $filepath = $this->getPrivateDir()."/".$id_user."/".$filename;
+        $filepath = getPrivateDir($id_user)."/".$filename;
         if($id_user != $this->user->id)
         {
             $this->goBackError("Opération non autorisée" , "/uploads");
