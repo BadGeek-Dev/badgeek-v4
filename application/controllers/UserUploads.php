@@ -75,7 +75,13 @@ class UserUploads extends Badgeek_Controller {
 
     public function upload()
     {
-        dump($_FILES);
+        $this->checkIsPodcasteur();
+        if(move_uploaded_file($_FILES['file']['tmp_name'],$this->getPrivateDir()."/".$this->user->id."/".$_FILES['file']['name']))
+        {
+            setFlashdataMessage($this->session, "Fichier uploadé.");
+        }
+
+        return json_encode("ok");
     }
 
     public function delete()
@@ -95,12 +101,12 @@ class UserUploads extends Badgeek_Controller {
             unlink($filepath);
             setFlashdataMessage($this->session, "Fichier supprimé");
         }
-        redirect("/uploads", 'refresh');
+        echo json_encode("OK");
     }
 
     private function initBreadcrumbItem($current = false)
     {
-        return array(BreadcrumbItem::getBreadcrumbItemAccueil(), new BreadcrumbItem("Mes uploads", "/uploads", $current));
+        return array(BreadcrumbItem::getBreadcrumbItemAccueil(), new BreadcrumbItem("Mes uploads", "/myuploads", $current));
     }
         
 }
