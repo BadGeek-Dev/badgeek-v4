@@ -74,12 +74,6 @@ class Badgeek_Controller extends CI_Controller
         redirect($page, 'refresh');
     }
 
-    public function getPrivateDir()
-    {
-        return realpath(__DIR__."/../../assets/private/");
-    }
-
-    
     public function real_url($url)
     {
         return filter_var($url, FILTER_VALIDATE_URL) || empty($url) ? true : false;
