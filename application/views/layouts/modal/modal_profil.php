@@ -95,8 +95,7 @@
                                         </div>',
                 layoutTemplates: {
                     actions : '<button class="kv-file-upload btn btn-primary btn-sm">Envoyer</button>', 
-                    preview: '    <div class="file-preview-thumbnails clearfix {dropClass}">\n' +
-                        '</div>', 
+                    
             },
             
             

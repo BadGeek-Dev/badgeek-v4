@@ -11,3 +11,4 @@ $lang['utilisateur_deja_active']    = "Votre compte est déja activé.";
 $lang['mdp_oublie']                 = "Oubli de mot de passe : %s";
 $lang['mdp_changement']             = "Changement de mot de passe : %s";
 $lang["activation_code_invalide"]   = "Votre lien d'activation a expiré.";
+$lang["acces_interdit"]             = "Accès interdit";

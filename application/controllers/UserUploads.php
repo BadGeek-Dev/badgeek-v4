@@ -17,14 +17,16 @@ class UserUploads extends Badgeek_Controller {
             //Nettoyage
             $this->listFilesClean();
             //La liste des fichiers
-            $this->list_files = array_filter(scandir($this->user_dir), "is_file");
+            $this->list_files = array_filter(scandir($this->user_dir), function($file) {
+                return is_file($this->user_dir."/".$file);
+            });
             
         }
         else{
             mkdir($this->user_dir);
         }
     }
-    
+  
     private function listFilesClean()
     {
         foreach ($this->list_files as $key => $filename) 
@@ -59,18 +61,41 @@ class UserUploads extends Badgeek_Controller {
         $liste_files = [];
         foreach($this->list_files as $key => $filename)
         {
-            $filepath = $this->user_dir."/".$filename;
             array_push($liste_files, [
                     "caption" => $filename,
-                    "size" => $this->helper->formatSizeUnits(filesize($filepath)),
-                    "url" => base_url($filepath), 
-                    "key" => $key
+                    "size" => $this->helper->formatSizeUnits(filesize($this->user_dir."/".$filename)),
+                    "path" => 'assets/private/'.$this->user->id.'/'.$filename
                 ]);
         }
         $this->template->load('user/uploads', [
             'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true),
             'liste_files' => $liste_files
         ]);           
+    }
+
+    public function upload()
+    {
+        dump($_FILES);
+    }
+
+    public function delete()
+    {
+        $this->checkIsPodcasteur();
+        $path = $this->input->post("path"); 
+        $dirs = explode("/", $path);
+        $filename = array_pop($dirs);
+        $id_user = array_pop($dirs);
+        $filepath = $this->getPrivateDir()."/".$id_user."/".$filename;
+        if($id_user != $this->user->id)
+        {
+            $this->goBackError("Opération non autorisée" , "/uploads");
+        }
+        if(is_file($filepath))
+        {
+            unlink($filepath);
+            setFlashdataMessage($this->session, "Fichier supprimé");
+        }
+        redirect("/uploads", 'refresh');
     }
 
     private function initBreadcrumbItem($current = false)

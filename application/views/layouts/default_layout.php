@@ -12,7 +12,6 @@
     <link href="<?php echo base_url('assets/node_modules/bootstrap/dist/css/bootstrap.min.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/node_modules/bootstrap-fileinput/css/fileinput.min.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/node_modules/@fortawesome/fontawesome-free/css/all.min.css') ?>" rel="stylesheet">
-    <link href="<?php echo base_url('assets/node_modules/bootstrap-fileinput/themes/explorer/theme.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/animation.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/fontello.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/badgeek.css') ?>" rel="stylesheet">
@@ -25,8 +24,6 @@
     <script src="<?php echo base_url('assets/node_modules/dompurify/dist/purify.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/fileinput.js') ?>"></script>
-    <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/themes/fas/theme.js') ?>"></script>
-    <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/themes/explorer/theme.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/locales/fr.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/@yaireo/tagify/dist/jQuery.tagify.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/datatables.net/js/jquery.dataTables.min.js') ?>"></script>

@@ -47,10 +47,7 @@ class Badgeek_Controller extends CI_Controller
                 //Utilisateur désactivé - On détruit sa session et on le prévient.
 		        $this->ion_auth->logout();
 		        //Renvoi à la page d'accueil avec un message
-                setFlashdataMessage($this->session, 
-                    $user->active == Users_Model::DESACTIVE ? $this->getErrorMessage("utilisateur_desactive") : $this->getErrorMessage("utilisateur_non_active"),
-                      "top-center");
-                redirect('/', 'refresh');
+                $this->goBackError($user->active == Users_Model::DESACTIVE ? $this->getErrorMessage("utilisateur_desactive") : $this->getErrorMessage("utilisateur_non_active"));
             }
         }
     }
@@ -58,20 +55,28 @@ class Badgeek_Controller extends CI_Controller
     public function checkAdminRights()
     {
         if (!$this->ion_auth->is_admin(($this->session->userdata('user_id')))) {
-            setFlashdataMessage($this->session,'Vous n\'avez pas les droits d\'accès','top-right');
-            redirect('/', 'refresh');
+            $this->goBackError();
         }
     }
 
     public function checkIsPodcasteur()
     {
         //Utilisateur podcasteur
-        return $this->user && in_array(Badgeek_constantes::AUTH_GROUP_PODCASTEUR, $this->user->groups_id);
+        if( empty($this->user) || !in_array(Badgeek_constantes::AUTH_GROUP_PODCASTEUR, $this->user->groups_id))
+        {
+            $this->goBackError();
+        }
+    }
+
+    public function goBackError($message = "", $page = "/")
+    {
+        setFlashdataMessage($this->session,$message ?: $this->getErrorMessage("acces_interdit"),'top-center');
+        redirect($page, 'refresh');
     }
 
     public function getPrivateDir()
     {
-        return realpath(__DIR__."/../private/");
+        return realpath(__DIR__."/../../assets/private/");
     }
 
     

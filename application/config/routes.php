@@ -113,3 +113,4 @@ $route['devtools/greatreset'] = 'DevTools/greatreset';
 //User uploads
 $route['uploads'] = 'UserUploads/index';
 $route['uploads/upload'] = 'UserUploads/upload';
+$route['uploads/delete'] = 'UserUploads/delete';
