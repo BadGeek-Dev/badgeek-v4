@@ -4,6 +4,8 @@ require_once APPPATH . 'core/Badgeek_Controller.php';
 
 class Episodes extends Badgeek_Controller 
 {
+    public $private_dir = "";
+
     public function __construct()
     {
         parent::__construct();
@@ -11,6 +13,8 @@ class Episodes extends Badgeek_Controller
         $this->load->model('podcasts_model');
         $this->load->model('episodes_model');
         $this->load->library('helper');
+
+        $this->private_dir = getPrivateDir($this->user->id);
     }
 
     /**
@@ -19,6 +23,10 @@ class Episodes extends Badgeek_Controller
     public function create($id)
     {
         $podcast = $this->podcasts_model->findOneById($id);
+        if(empty($podcast->hosted))
+        {
+            $this->goBackError();
+        }
         $lastEpisode = $this->episodes_model->findLastByPodcast($podcast);
 
         $lastNumber = null;
@@ -43,34 +51,55 @@ class Episodes extends Badgeek_Controller
 
         $this->form_validation->set_rules('titre', 'Nom du podcast', 'required');
         $this->form_validation->set_rules('description', 'Description', 'required');
-
-        $errors = '';
-
+        $this->form_validation->set_rules('saison', 'Saison', 'required');
+        $this->form_validation->set_rules('numero', 'Numero', 'required');
+        $this->form_validation->set_rules('lien_mp3', 'MP3', 'required');
+        $errors = "";
         if (false === $this->form_validation->run()) {
-            
+            $errors = implode("<br/>", array_values($this->form_validation->error_array()));
         } else {
-            if (!$this->upload->do_upload('lien_mp3')) {
-                $errors = $this->upload->display_errors();
-            } else {
 
-                $this->load->library('mp3_info');
-                $mp3Info = $this->mp3_info->analyze($this->upload->data()['full_path']);
-                $mp3Size = filesize($this->upload->data()['full_path']);
-
-                $this->episodes_model->setLien_mp3($this->upload->data()['full_path']);
                 $this->episodes_model->setNumero($this->helper->numero($this->input->post('saison'), $this->input->post('numero')));
                 $this->episodes_model->setTitre($this->input->post('titre'));
                 $this->episodes_model->setDescription($this->input->post('description'));
-                $this->episodes_model->setInfos_mp3('time : ' . $mp3Info['playtime_string'] . ' size : ' . $mp3Size);
-                $this->episodes_model->setTags($this->input->post('tags'));
-                $this->episodes_model->setValid(Podcasts_model::EN_ATTENTE);
 
-                $this->episodes_model->setDate_publication((new \DateTime())->format("Y-m-d H:i:s"));
-                $this->episodes_model->setId_podcast($podcast->id);
-    
-                $this->episodes_model->insert();
-                redirect('episodes/validate/'.$this->episodes_model->getId());
-            }
+                //Gestion MP3
+                $this->load->library('mp3_info');
+                $upload_mp3_filepath = $this->private_dir ."/".$this->input->post('lien_mp3');
+                if(is_file($upload_mp3_filepath))
+                {
+                    //Création du dossier private/id_user/podcast
+                    $podcast_dir = $this->private_dir."/".$podcast->id;
+                    if(!is_dir($podcast_dir))
+                    {
+                        mkdir($podcast_dir);
+                    }
+                    //Création du dossier private/id_user/podcast/episode
+                    $episode_dir = $podcast_dir."/".$this->episodes_model->getNumero();
+                    if(!is_dir($episode_dir))
+                    {
+                        mkdir($episode_dir);
+                    }
+                    $episode_mp3_filepath = $episode_dir."/".$this->input->post('lien_mp3');
+                    rename($upload_mp3_filepath, $episode_mp3_filepath);
+
+                    $mp3Info = $this->mp3_info->analyze($episode_mp3_filepath);
+                    $mp3Size = filesize($episode_mp3_filepath);
+
+                    $this->episodes_model->setInfos_mp3('Durée : ' . $mp3Info['playtime_string'] . ' Taille : ' . $mp3Size);
+                    $this->episodes_model->setTags($this->input->post('tags'));
+                    $this->episodes_model->setLien_mp3($episode_mp3_filepath);
+                    $this->episodes_model->setValid(Podcasts_model::EN_ATTENTE);
+                    $this->episodes_model->setDate_publication((new \DateTime())->format("Y-m-d H:i:s"));
+                    $this->episodes_model->setId_podcast($podcast->id);
+        
+                    $this->episodes_model->insert();
+                    redirect('episodes/validate/'.$this->episodes_model->getId());
+                }
+                else
+                {
+                    $errors = "Impossible de trouver le MP3";
+                }
         }
 
         $attributes = [
@@ -107,14 +136,6 @@ class Episodes extends Badgeek_Controller
                 'class' => 'form-control',
                 'value' => $this->input->post('description'),
                 'required' => true,
-            ],
-            [        
-                'type' => 'text',
-                'name' => 'infos_mp3',
-                'id' => 'infos_mp3',
-                'label' => 'Infos du mp3',
-                'class' => 'form-control',
-                'value' => $this->input->post('infos_mp3'),
             ],
             [        
                 'type' => 'text',
