@@ -71,16 +71,24 @@ class UserUploads extends Badgeek_Controller {
             'liste_files' => $liste_files
         ]);           
     }
-
-    public function upload()
+    public function upload_no_flashdata()
+    {
+        $this->upload(false);
+    }
+    
+    public function upload($flashdata = true)
     {
         $this->checkIsPodcasteur();
         if(move_uploaded_file($_FILES['file']['tmp_name'],getPrivateDir($this->user->id)."/".$_FILES['file']['name']))
         {
-            setFlashdataMessage($this->session, "Fichier uploadé.");
+            if($flashdata) setFlashdataMessage($this->session, "Fichier uploadé.");
+            echo json_encode("ok");
+        }
+        else
+        {
+            echo json_encode("ko");
         }
 
-        return json_encode("ok");
     }
 
     public function delete()

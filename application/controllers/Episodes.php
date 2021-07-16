@@ -109,13 +109,6 @@ class Episodes extends Badgeek_Controller
                 'required' => true,
             ],
             [        
-                'type' => 'file',
-                'name' => 'lien_mp3',
-                'id' => 'lien_mp3',
-                'label' => 'Lien vers le mp3',
-                'class' => 'form-control',
-            ],
-            [        
                 'type' => 'text',
                 'name' => 'infos_mp3',
                 'id' => 'infos_mp3',
@@ -137,6 +130,7 @@ class Episodes extends Badgeek_Controller
             'podcast' => $podcast, 
             'attributes' => $attributes,
             'errors' => $errors,
+            'list_files' => getPrivateListOfFileForUser($this->user->id),
             "liste_BreadcrumbItems" => $this->getBreadcrumbItems([
                 new BreadcrumbItem($podcast->titre,"/podcasts/display/".$podcast->id),
                 new BreadcrumbItem("Nouvel épisode")

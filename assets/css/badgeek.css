@@ -219,3 +219,22 @@ input:focus{
 {
     margin: 0 0 0 0;
 }
+
+/**
+Dropzone
+*/
+
+.dropzone .dz-preview .dz-image img {
+    margin: auto;   /* center the image inside the thumbnail */
+}
+.dropzone .dz-preview .dz-error-message {
+    top: 10px !important;     /* move the tooltip below the "Remove" link */
+    left: 0px !important;     /* move the tooltip below the "Remove" link */
+    width: 100% !important;     /* move the tooltip below the "Remove" link */
+}
+.dropzone .dz-remove
+{
+    background-color:#007bff !important;
+    color: black !important;
+    font-weight: bold;
+}
