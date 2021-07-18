@@ -8,8 +8,8 @@
     if ($errors) :
     ?>
         <div class="row">
-            <div class="alert alert-danger full-width" role="alert">
-                <?php echo $errors;?>
+            <div class="alert alert-danger col-md-12 text-center" role="alert">
+                <i class="fas fa-exclamation-triangle"></i><?php echo $errors; ?>
             </div>
         </div>
     <?php endif; ?>

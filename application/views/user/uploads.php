@@ -57,34 +57,34 @@
                 startUpload.addEventListener("click", function() {
                     myDropzone.processQueue();
                 });
-                this.on("processing", function(file){
+                this.on("processing", function(file) {
                     $(".dz-remove").html("");
                 });
                 this.on("success", function(file) {
                     myDropzone.removeFile(file);
-                    if(myDropzone.getQueuedFiles().length == 0)
-                   {
-                    location.reload();
-                   }
-                   else
-                   {
-                       myDropzone.options.autoProcessQueue = true;
-                   }
+                    if (myDropzone.getQueuedFiles().length == 0) {
+                        location.reload();
+                    } else {
+                        myDropzone.options.autoProcessQueue = true;
+                    }
                 });
             }
         });
         $(".delete-file").click(function(e) {
-            $.ajax({
-                type: "POST",
-                url: ajaxUrl + "/myuploads/delete",
-                data: {
-                    "path": $(this).data("path")
-                },
-                dataType: "JSON",
-                success: function(data) {
-                    location.reload();
-                },
-            });
+            if (confirm("Êtes vous sûr de vouloir supprimer ce fichier ?")) {
+
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrl + "/myuploads/delete",
+                    data: {
+                        "path": $(this).data("path")
+                    },
+                    dataType: "JSON",
+                    success: function(data) {
+                        location.reload();
+                    },
+                });
+            }
         });
         $(".valid-upload").click(function(e) {
             myDropzone.processQueue();

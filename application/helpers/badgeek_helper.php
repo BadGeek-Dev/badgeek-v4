@@ -153,6 +153,14 @@ if ( ! function_exists('getConfig'))
 	
 }
 
+if ( ! function_exists('getBaseUrlFromRealpath'))
+{
+	function getBaseUrlFromRealpath($real_path)
+	{
+		return base_url(substr($real_path, strlen("/badgeek/")));
+	}
+
+}
 if ( ! function_exists('getPrivateDir'))
 {
 	function getPrivateDir($id_user = 0)
