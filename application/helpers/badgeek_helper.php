@@ -56,6 +56,16 @@ if ( ! function_exists('isInGroupe'))
 	}
 }
 
+if (! function_exists( 'checkIsGroup')) {
+	function checkIsPodcasteur()
+	{
+		if(!isPodcasteur())
+		{
+			redirect('/', 'refresh');
+		}
+	}
+}
+
 if ( ! function_exists('getLibelleFromUser'))
 {
 	function getLibelleFromUser($user, $retour = "")

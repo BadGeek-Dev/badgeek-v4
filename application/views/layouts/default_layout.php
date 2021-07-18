@@ -39,6 +39,7 @@
 </head>
 
 <body class="container-fluid">
+    <? if($this->header_show):?>
     <div class="page-header row padding-10">
         <div class="col-md-3">
             <a href="<?= site_url() ?>" style="text-decoration: none; color: white;font-family:BGFont;font-size:2em;">
@@ -60,6 +61,9 @@
                 <i class='icon-user'></i>
                 Podcasts
             </a>
+			<?php if(isPodcasteur()) : ?>
+				<a href="<?= site_url("podcasts/indexPodcasteur") ?>"  class="btn btn-danger margin-right-10">Mes podcasts</a>
+			<?php endif; ?>
             <?php if ($this->ion_auth->logged_in()) : ?>
                 <button name="" id="" class="btn btn-danger margin-right-10" type="button" data-toggle="modal" data-target="#profilModal">
                     <i class='icon-user'></i>
@@ -112,7 +116,7 @@
         include(__DIR__ . "/modal/modal_profil.php");
     }
     ?>
-
+    <?php endif;?>
     <!--FIL D'ARIANE-->
     <?php if (isset($breadcrumb)) echo $breadcrumb; ?>
 

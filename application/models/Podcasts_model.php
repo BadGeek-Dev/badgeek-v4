@@ -59,7 +59,20 @@ class Podcasts_model extends CI_Model {
 
     public function findByUser($userId)
     {
-        return $this->db->get_where('podcasts', ['id_createur' => $userId, 'valid' => self::VALIDE, 'archive' => 0])->result();
+     $this->db->select('*');
+     $this->db->from('podcasts');
+     $this->db->where(['id_createur' => $userId, 'archive' => 0]);
+     $query= $this->db->get();
+     return $query->result();
+    }
+
+    public function findModelsByUser($userId)
+    {
+     $this->db->select('*');
+     $this->db->from('podcasts');
+     $this->db->where(['id_createur' => $userId, 'archive' => 0]);
+     return $this->db->get()->result(get_class($this));
+     
     }
 
     public function findByUserWaiting($userId)

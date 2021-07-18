@@ -7,6 +7,7 @@ class Podcasts extends Badgeek_Controller
     public function __construct() {
         parent::__construct();
         $this->load->model('podcasts_model');
+        $this->load->model('episodes_model');
     }
 
     /**
@@ -177,7 +178,32 @@ class Podcasts extends Badgeek_Controller
             ]);
     }
     
+	public function indexPodcasteur()
+	{
 
+		checkIsPodcasteur();
+		$podcasts = $this->podcasts_model->findModelsByUser($this->user->id);
+		foreach ($podcasts as $podcast){
+			$nbep = count($this->episodes_model->findByPodcast($podcast));
+			$podcast->nombreEpisodes = $nbep;
+            $podcast->badge_statut = getBadgeFromPodcast($podcast);
+            $podcast->tags_value = "";
+            $tags_value = json_decode($podcast->tags);
+            if($tags_value)
+            {
+                foreach($tags_value as $tag_value)
+                {
+                    $podcast->tags_value .= $tag_value->value.",";
+                }
+                $podcast->tags_value = substr($podcast->tags_value, 0, -1);
+            }
+		}
+
+		$this->template->load('podcasts/podcasteurList', [
+			'podcasts' => $podcasts,
+			'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)
+		]);
+	}
         
     /**
      * Affichage de la fiche d'un podcast

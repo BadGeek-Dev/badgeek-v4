@@ -38,9 +38,10 @@ class DevTools extends CI_Controller
         
             closedir($handle);
         }
+        rsort($liste_dumps);
         //Migrations
         $this->template->load('private/devtools', array(
-            'dumps' => array_reverse($liste_dumps),
+            'dumps' => $liste_dumps,
             'migration_courante' => $this->migration->_get_version(),
             'migrations' => $this->migration->find_migrations(),
             'liste_BreadcrumbItems' => $this->initBreadcrumbItem(true)));
