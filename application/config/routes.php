@@ -109,3 +109,9 @@ $route['devtools/forcedownload/(:any)'] = 'DevTools/forcedownload/$1';
 $route['devtools/deletedump/(:any)'] = 'DevTools/deletedump/$1';
 $route['devtools/migration/(:any)/(:any)'] = 'DevTools/migration/$1/$2';
 $route['devtools/greatreset'] = 'DevTools/greatreset';
+
+//User uploads
+$route['myuploads'] = 'UserUploads/index';
+$route['myuploads/file_upload'] = 'UserUploads/upload';
+$route['myuploads/file_upload_no_flashdata'] = 'UserUploads/upload_no_flashdata';
+$route['myuploads/delete'] = 'UserUploads/delete';

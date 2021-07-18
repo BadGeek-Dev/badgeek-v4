@@ -24,7 +24,6 @@
     <script src="<?php echo base_url('assets/node_modules/dompurify/dist/purify.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/fileinput.js') ?>"></script>
-    <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/themes/fas/theme.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/bootstrap-fileinput/js/locales/fr.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/@yaireo/tagify/dist/jQuery.tagify.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/node_modules/datatables.net/js/jquery.dataTables.min.js') ?>"></script>
