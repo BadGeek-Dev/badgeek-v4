@@ -1,16 +1,18 @@
 <link rel="stylesheet" href="<?php echo base_url('assets/node_modules/bootstrap4c-dropzone/dist/css/component-dropzone.min.css'); ?>">
 <script src="<?php echo base_url('assets/node_modules/dropzone/dist/dropzone.js'); ?>"></script>
 
-<?php
-echo validation_errors();
-
-if ($errors) {
-    echo $errors;
-}
-
-echo form_open_multipart('episodes/create/' . $podcast->id);
-?>
+<?php echo form_open_multipart('episodes/create/' . $podcast->id); ?>
 <div class="container">
+    <?php
+    $errors .= validation_errors();
+    if ($errors) :
+    ?>
+        <div class="row">
+            <div class="alert alert-danger full-width" role="alert">
+                <?php echo $errors;?>
+            </div>
+        </div>
+    <?php endif; ?>
     <div class="row">
 
         <div class="col-md-8">
@@ -27,6 +29,9 @@ echo form_open_multipart('episodes/create/' . $podcast->id);
                 echo '</div>';
             }
             ?>
+            <audio controls style="width:100%;" id="mp3player">
+                <source src="" type="audio/mpeg" id="mp3source" data-path="<?php echo getPrivateUrl($this->session->userdata('user_id')); ?>">
+            </audio>
         </div>
         <div class="col-md-4">
 
@@ -34,21 +39,24 @@ echo form_open_multipart('episodes/create/' . $podcast->id);
                 Le mp3
             </div>
             <div class="form-group">
-                <label for="selectMp3">Choisir le fichier :</label>
+                <label for="selectMp3">Vos fichiers</label>
+                &nbsp;&nbsp;
+                <span class="badge badge-light" id="nbmp3"><?php echo count($list_files); ?></span>
 
                 <select class="form-control" id="selectMp3">
+                    <option value=''>-- MP3 disponibles --</option>
                     <?php foreach ($list_files as $file) : ?>
                         <option value='<?php echo $file; ?>'><?php echo $file; ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="form-group">
-            <label for="dropzone">Uploader un fichier :</label>
+                <label for="dropzone">Uploader un fichier :</label>
                 <div class="dropzone margin-bottom-10 col-md-12" id="dropzone">
                 </div>
                 <button type="button" id="valid-upload" class="btn btn-success margin-bottom-10"><i class="fas fa-handshake"></i>&nbsp; Envoyer </button>
             </div>
-            <input type="hidden" name="lien_mp3" id="lien_mp3" />
+            <input type="hidden" name="lien_mp3" id="lien_mp3" value="" />
         </div>
     </div>
 
@@ -64,8 +72,15 @@ echo form_open_multipart('episodes/create/' . $podcast->id);
     Dropzone.autoDiscover = false;
     $(document).ready(function() {
         $('[name=tags]').tagify();
+        $("#mp3player").hide();
         $("#selectMp3").change(function(e) {
             $("#lien_mp3").val($(this).val());
+            if ($(this).val()) {
+                console.log($("#mp3source").data("path") + "/" + $(this).val());
+                $("#mp3player").attr("src", $("#mp3source").data("path") + "/" + $(this).val()).show();
+            } else {
+                $("#mp3player").hide();
+            }
         });
         var myDropzone = new Dropzone("div#dropzone", {
             url: "/myuploads/file_upload_no_flashdata",
@@ -91,7 +106,8 @@ echo form_open_multipart('episodes/create/' . $podcast->id);
                 });
                 this.on("success", function(file) {
                     myDropzone.removeFile(file);
-                    $("#selectMp3").append($('<option>').val(file.name).text(file.name)).val(file.name);
+                    $("#selectMp3").append($('<option>').val(file.name).text(file.name)).trigger("change");
+                    $("#nbmp3").html(parseInt($("#nbmp3").html()) + 1);
                 });
             }
         });

@@ -160,6 +160,11 @@ if ( ! function_exists('getPrivateDir'))
         return realpath(__DIR__."/../../assets/private/".($id_user ?: ""));
     }
 
+	function getPrivateUrl($id_user = 0)
+    {
+        return base_url("assets/private/".($id_user ?: ""));
+    }
+
 	function getPrivateListOfFileForUser($id_user)
     {
          //La liste des fichiers

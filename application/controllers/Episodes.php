@@ -56,7 +56,6 @@ class Episodes extends Badgeek_Controller
         $this->form_validation->set_rules('lien_mp3', 'MP3', 'required');
         $errors = "";
         if (false === $this->form_validation->run()) {
-            $errors = implode("<br/>", array_values($this->form_validation->error_array()));
         } else {
 
                 $this->episodes_model->setNumero($this->helper->numero($this->input->post('saison'), $this->input->post('numero')));
