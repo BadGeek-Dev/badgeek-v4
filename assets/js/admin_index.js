@@ -49,9 +49,3 @@ function setNbArticlesHomePage()
         }
     });
 }
-
-function showSuccessMessage(message)
-{
-    $('#toast-js .toast-body').html(message);
-    $('#toast-js').toast('show');
-}

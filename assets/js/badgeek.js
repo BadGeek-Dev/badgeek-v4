@@ -7,3 +7,9 @@ $(document).ready(function () {
         $("#search-form").submit();
     });
 });
+
+function showSuccessMessage(message)
+{
+    $('#toast-js .toast-body').html(message);
+    $('#toast-js').toast('show');
+}

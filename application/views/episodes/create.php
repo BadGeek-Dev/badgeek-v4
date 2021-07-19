@@ -108,6 +108,7 @@
                     myDropzone.removeFile(file);
                     $("#selectMp3").append($('<option>').val(file.name).text(file.name)).trigger("change");
                     $("#nbmp3").html(parseInt($("#nbmp3").html()) + 1);
+                    showSuccessMessage("<span class='icon-ok'>Fichier uploadé</span>");
                 });
             }
         });
