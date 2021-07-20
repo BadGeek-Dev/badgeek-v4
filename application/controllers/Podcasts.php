@@ -8,6 +8,7 @@ class Podcasts extends Badgeek_Controller
         parent::__construct();
         $this->load->model('podcasts_model');
         $this->load->model('episodes_model');
+		$this->load->model('favoris_model');
     }
 
     /**
@@ -180,7 +181,6 @@ class Podcasts extends Badgeek_Controller
     
 	public function indexPodcasteur()
 	{
-
 		checkIsPodcasteur();
 		$podcasts = $this->podcasts_model->findModelsByUser($this->user->id);
 		foreach ($podcasts as $podcast){
@@ -213,6 +213,7 @@ class Podcasts extends Badgeek_Controller
      */
     public function display($id)
     {
+
         $this->load->model('episodes_model');
         $podcast = $this->podcasts_model->findOneById($id);
         if($podcast)
@@ -224,10 +225,21 @@ class Podcasts extends Badgeek_Controller
                     $this->template->loadError($this->getErrorMessage("podcast_en_attente"));
                     break;
                 case Podcasts_model::VALIDE:
+                	$favorite = false;
+					$favorisUser = $this->favoris_model->getUserFavorites($this->user->id);
+					if(empty($favorisUser)){
+					$this->favoris_model->addUserFavorites($this->user->id);
+					}else{
+						$favorisUser = explode(",",$favorisUser->favorites);
+						$favorite=in_array($podcast->id,$favorisUser);
+					}
+
+
                     $episodes = $this->episodes_model->findByPodcast($podcast);
                     $this->template->load('podcasts/display', [
                         'podcast' => $podcast,
                         'episodes' => $episodes,
+                        'favorite' => $favorite,
                         'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem($podcast->titre))
                     ]);
                     break;
@@ -385,7 +397,28 @@ class Podcasts extends Badgeek_Controller
         $this->output->set_output(file_get_contents($mp3Path));
     }
 
-    private function initBreadcrumbItem($current = false)
+    public function addFavorite($idpodcast){
+		$favorisUser = $this->favoris_model->getUserFavorites($this->user->id);
+		$favorisUser = explode(",",$favorisUser->favorites);
+		$favorisUser[] = $idpodcast;
+		$favorisUser = implode(",",$favorisUser);
+		$this->favoris_model->setUserFavorites($this->user->id,$favorisUser);
+		redirect("/podcasts/display/".$idpodcast);
+
+	}
+
+	public function removeFavorite($idpodcast){
+		$favorisUser = $this->favoris_model->getUserFavorites($this->user->id);
+		$favorisUser = explode(",",$favorisUser->favorites);
+		$indexFavorisUser = array_search($idpodcast,$favorisUser);
+		unset($favorisUser[$indexFavorisUser]);
+		$favorisUser = implode(",",$favorisUser);
+		$this->favoris_model->setUserFavorites($this->user->id,$favorisUser);
+		redirect("/podcasts/display/".$idpodcast);
+
+	}
+
+	private function initBreadcrumbItem($current = false)
     {
         return array(BreadcrumbItem::getBreadcrumbItemAccueil(), new BreadcrumbItem("Podcasts", "/podcasts", $current));
     }
