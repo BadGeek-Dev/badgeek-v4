@@ -12,7 +12,7 @@ class Email_manager {
         $this->CI->config->load('config', TRUE);
     }
 
-    private function send($to, $subject, $message)
+    private function send($to, $subject, $message,$from = null)
     {
         if(is_array($to))
         {
@@ -24,7 +24,11 @@ class Email_manager {
         else
         {
             $this->CI->email->clear();
-            $this->CI->email->from($this->CI->config->item('admin_email', 'ion_auth'), $this->CI->config->item('site_title', 'ion_auth'));
+            if($from == null) {
+				$this->CI->email->from($this->CI->config->item('admin_email', 'ion_auth'), $this->CI->config->item('site_title', 'ion_auth'));
+			}else{
+            	$this->CI->email->from($from);
+			}
             $this->CI->email->to($to);
             $this->CI->email->subject($this->CI->config->item('site_title', 'ion_auth') . ' - ' . $subject);
             $this->CI->email->message($message);
@@ -122,4 +126,25 @@ class Email_manager {
         array_walk($admins, function (&$element) { $element = $element->email;});
         $this->send($admins,$subject ?: "Alerte destinée aux administrateurs", $message ?: print_r(debug_backtrace(),true));
     }
+
+
+	/**
+	 * sendSignalMailToAdmins
+	 *
+	 * @param  mixed $subject
+	 * @param  mixed $message
+	 * @param  mixed $email
+	 * @return void
+	 */
+	public function sendSignalToAdmins($subject = "", $message = "",$email="")
+	{
+
+		$this->CI->load->model("Users_model");
+		$admins = $this->CI->Users_model->getAdmins("email");
+		array_walk($admins, function (&$element) { $element = $element->email;});
+		$this->send($admins,$subject, $message);
+
+
+
+	}
 }

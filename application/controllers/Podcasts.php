@@ -385,6 +385,51 @@ class Podcasts extends Badgeek_Controller
         $this->output->set_output(file_get_contents($mp3Path));
     }
 
+    public function signal($podcastID){
+
+		$this->load->helper(['form', 'url']);
+		$this->load->library('form_validation');
+
+		$podcast = $this->podcasts_model->findOneById($podcastID);
+		if($podcast == null) {
+			setFlashdataMessage($this->session,$this->getErrorMessage("Podcast_not_found"),'top-center');
+			redirect("podcasts");
+		}
+
+
+		$config = [
+			[
+				'field' => 'email',
+				'label' => 'email',
+				'rules' => 'required',
+			],
+			[
+				'field' => 'signal',
+				'label' => 'Motif du signalement',
+				'rules' => 'required',
+			],
+		];
+
+		$this->form_validation->set_rules($config);
+
+		if(false === $this->form_validation->run()){}
+		else{
+			// envoi du mail de signalement à l'admin
+			$this->load->library('email_manager');
+			$this->emailmanger->sendMessageToAdmins("Signalement Podcast "+$podcast->title,$this->input->post('signal'));
+			$this->input->post('email');
+
+		}
+
+    	$attributes = [];
+
+		$this->template->load('podcasts/signal', [
+			'attributes' => $attributes,
+			'liste_BreadcrumbItems' => $this->getBreadcrumbItems(new BreadcrumbItem("Signaler un podcast"))
+		]);
+
+	}
+
     private function initBreadcrumbItem($current = false)
     {
         return array(BreadcrumbItem::getBreadcrumbItemAccueil(), new BreadcrumbItem("Podcasts", "/podcasts", $current));

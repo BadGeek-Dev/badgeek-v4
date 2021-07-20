@@ -61,6 +61,7 @@ $lang['group_update_successful']   = 'Informations sur le groupe mis à jour';
 $lang['group_delete_successful']   = 'Groupe supprimé';
 $lang['group_delete_unsuccessful'] = 'Impossible de supprimer le groupe';
 $lang['group_delete_notallowed']    = 'Le groupe Administrateur ne peut pas être supprimé';
+$lang['group_delete_notallowed']    = 'Le groupe Administrateur ne peut pas être supprimé';
 $lang['group_name_required']       = 'Le nom du groupe est un champ obligatoire';
 $lang['group_name_admin_not_alter'] = 'Le nom du groupe Admin ne peut pas être modifié';
 
@@ -75,4 +76,7 @@ $lang['email_forgotten_password_subject'] = 'Mot de Passe Oublié - Vérificatio
 $lang['email_forgot_password_heading']    = 'Réinitialiser le mot de passe pour %s';
 $lang['email_forgot_password_subheading'] = 'Veuillez cliquer sur ce lien pour %s.';
 $lang['email_forgot_password_link']       = 'Réinitialiser votre mot de passe';
+
+//podcast
+$lang['Podcast_not_found'] = 'Podcast Non trouvé';
 
