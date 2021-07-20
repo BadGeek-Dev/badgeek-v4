@@ -1,5 +1,5 @@
 <h2>
-    <?php echo $podcast->titre ?> 
+    <?php echo $podcast->titre ?> <a href="formulaire_reclamation" class="btn btn-danger margin-right-10">Signaler</a>
     <?php if($this->user && $podcast->id_createur == $this->user->id): ?>
         (<a href="<?= site_url("podcasts/edit/".$podcast->id) ?>">modifier</a>)
     <?php endif; ?>
@@ -19,7 +19,6 @@
         Supprimer le podcast
     </a>
 <?php endif; ?>
-
 <h3>Informations :</3>
 
 <p>Description : <?= $podcast->description ?></p>
